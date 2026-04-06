@@ -1,12 +1,12 @@
 [
   {
-    "id": "./sample_repository/fetch.py::retry::3",
+    "id": "server/sample_repository/fetch.py::retry::4",
     "name": "retry",
     "language": "python",
-    "file_path": "./sample_repository/fetch.py",
-    "start_line": 4,
-    "end_line": 14,
-    "source_code": "def retry(max_attempts=3):\n    def decorator(func):\n        @functools.wraps(func)  # decorator call: functools.wraps\n        def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return func(*args, **kwargs)\n                except Exception:\n                    pass\n        return wrapper\n    return decorator",
+    "file_path": "server/sample_repository/fetch.py",
+    "start_line": 5,
+    "end_line": 15,
+    "source_code": "def retry(max_attempts=3):\n    def decorator(func):\n        @functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass\n        return wrapper\n    return decorator",
     "docstring": null,
     "calls": [
       {
@@ -27,13 +27,13 @@
     ]
   },
   {
-    "id": "./sample_repository/fetch.py::decorator::4",
+    "id": "server/sample_repository/fetch.py::decorator::5",
     "name": "decorator",
     "language": "python",
-    "file_path": "./sample_repository/fetch.py",
-    "start_line": 5,
-    "end_line": 13,
-    "source_code": "def decorator(func):\n        @functools.wraps(func)  # decorator call: functools.wraps\n        def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return func(*args, **kwargs)\n                except Exception:\n                    pass\n        return wrapper",
+    "file_path": "server/sample_repository/fetch.py",
+    "start_line": 6,
+    "end_line": 14,
+    "source_code": "def decorator(func):\n        @functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass\n        return wrapper",
     "docstring": null,
     "calls": [
       {
@@ -54,13 +54,13 @@
     ]
   },
   {
-    "id": "./sample_repository/fetch.py::wrapper::5",
+    "id": "server/sample_repository/fetch.py::wrapper::6",
     "name": "wrapper",
     "language": "python",
-    "file_path": "./sample_repository/fetch.py",
-    "start_line": 6,
-    "end_line": 12,
-    "source_code": "@functools.wraps(func)  # decorator call: functools.wraps\n        def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return func(*args, **kwargs)\n                except Exception:\n                    pass",
+    "file_path": "server/sample_repository/fetch.py",
+    "start_line": 7,
+    "end_line": 13,
+    "source_code": "@functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass",
     "docstring": null,
     "calls": [
       {
@@ -81,13 +81,13 @@
     ]
   },
   {
-    "id": "./sample_repository/fetch.py::fetch_data::15",
+    "id": "server/sample_repository/fetch.py::fetch_data::16",
     "name": "fetch_data",
     "language": "python",
-    "file_path": "./sample_repository/fetch.py",
-    "start_line": 16,
-    "end_line": 19,
-    "source_code": "@retry(max_attempts=5)       # decorator call: retry\ndef fetch_data(url):\n    response = requests.get(url)   # body call: requests.get\n    return response.json()         # body call: response.json",
+    "file_path": "server/sample_repository/fetch.py",
+    "start_line": 17,
+    "end_line": 24,
+    "source_code": "@retry(max_attempts=5)\nasync def fetch_data(url):\n    \"\"\"Fetches data from the given URL asynchronously.\"\"\"\n    reader, writer = await asyncio.open_connection(url, 80)\n    writer.write(b\"GET / HTTP/1.0\\r\\n\\r\\n\")\n    data = await reader.read(100)\n    writer.close()\n    return data",
     "docstring": null,
     "calls": [
       {
@@ -96,22 +96,76 @@
         "is_decorator": true
       },
       {
-        "name": "get",
+        "name": "open_connection",
         "is_method": true,
         "is_decorator": false
       },
       {
-        "name": "json",
+        "name": "write",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "read",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "close",
         "is_method": true,
         "is_decorator": false
       }
     ]
   },
   {
-    "id": "./sample_repository/math_utils.py::calculate_bm25::0",
+    "id": "server/sample_repository/fetch.py::process_batch::25",
+    "name": "process_batch",
+    "language": "python",
+    "file_path": "server/sample_repository/fetch.py",
+    "start_line": 26,
+    "end_line": 28,
+    "source_code": "async def process_batch(items):\n    results = await asyncio.gather(*[fetch_data(item) for item in items])\n    return results",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "gather",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "fetch_data",
+        "is_method": false,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
+    "id": "server/sample_repository/fetch.py::__main__::29",
+    "name": "__main__",
+    "language": "python",
+    "file_path": "server/sample_repository/fetch.py",
+    "start_line": 30,
+    "end_line": 31,
+    "source_code": "if __name__ == \"__main__\":\n    asyncio.run(process_batch([\"example.com\", \"test.com\"]))",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "run",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "process_batch",
+        "is_method": false,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
+    "id": "server/sample_repository/math_utils.py::calculate_bm25::0",
     "name": "calculate_bm25",
     "language": "python",
-    "file_path": "./sample_repository/math_utils.py",
+    "file_path": "server/sample_repository/math_utils.py",
     "start_line": 1,
     "end_line": 4,
     "source_code": "def calculate_bm25(tf, idf):\n    \"\"\"Calculates the BM25 score for a given term.\"\"\"\n    # Simplified for testing\n    return tf * idf",
@@ -119,10 +173,10 @@
     "calls": []
   },
   {
-    "id": "./sample_repository/math_utils.py::normalize_score::5",
+    "id": "server/sample_repository/math_utils.py::normalize_score::5",
     "name": "normalize_score",
     "language": "python",
-    "file_path": "./sample_repository/math_utils.py",
+    "file_path": "server/sample_repository/math_utils.py",
     "start_line": 6,
     "end_line": 8,
     "source_code": "def normalize_score(score):\n    # Notice this function intentionally lacks a docstring\n    return score / 100.0",
@@ -130,10 +184,10 @@
     "calls": []
   },
   {
-    "id": "./sample_repository/text_processor.py::DocumentProcessor.__init__::1",
+    "id": "server/sample_repository/text_processor.py::DocumentProcessor.__init__::1",
     "name": "DocumentProcessor.__init__",
     "language": "python",
-    "file_path": "./sample_repository/text_processor.py",
+    "file_path": "server/sample_repository/text_processor.py",
     "start_line": 2,
     "end_line": 4,
     "source_code": "def __init__(self, stop_words):\n        \"\"\"Initializes the processor with stop words.\"\"\"\n        self.stop_words = stop_words",
@@ -141,10 +195,10 @@
     "calls": []
   },
   {
-    "id": "./sample_repository/text_processor.py::DocumentProcessor.remove_punctuation::5",
+    "id": "server/sample_repository/text_processor.py::DocumentProcessor.remove_punctuation::5",
     "name": "DocumentProcessor.remove_punctuation",
     "language": "python",
-    "file_path": "./sample_repository/text_processor.py",
+    "file_path": "server/sample_repository/text_processor.py",
     "start_line": 6,
     "end_line": 8,
     "source_code": "def remove_punctuation(self, text):\n        # Calls string methods (.replace)\n        return text.replace(\".\", \"\").replace(\",\", \"\")",
@@ -158,10 +212,10 @@
     ]
   },
   {
-    "id": "./sample_repository/text_processor.py::DocumentProcessor.clean_text::9",
+    "id": "server/sample_repository/text_processor.py::DocumentProcessor.clean_text::9",
     "name": "DocumentProcessor.clean_text",
     "language": "python",
-    "file_path": "./sample_repository/text_processor.py",
+    "file_path": "server/sample_repository/text_processor.py",
     "start_line": 10,
     "end_line": 16,
     "source_code": "def clean_text(self, raw_text):\n        \"\"\"Cleans the text by removing punctuation and converting to lowercase.\"\"\"\n        # Calls another method within the same class\n        no_punct = self.remove_punctuation(raw_text)\n        \n        # Calls string method (.lower)\n        return no_punct.lower()",
@@ -180,10 +234,10 @@
     ]
   },
   {
-    "id": "./sample_repository/main.py::run_pipeline::3",
+    "id": "server/sample_repository/main.py::run_pipeline::3",
     "name": "run_pipeline",
     "language": "python",
-    "file_path": "./sample_repository/main.py",
+    "file_path": "server/sample_repository/main.py",
     "start_line": 4,
     "end_line": 15,
     "source_code": "def run_pipeline(document_text):\n    \"\"\"Main execution function for the pipeline.\"\"\"\n    processor = DocumentProcessor([\"the\", \"is\", \"and\"])\n    \n    # Call to object method\n    cleaned_doc = processor.clean_text(document_text)\n    \n    # Standalone function call\n    score = calculate_bm25(5.0, 1.2)\n    \n    print(f\"Processed document score: {score}\")\n    return score",
@@ -212,10 +266,10 @@
     ]
   },
   {
-    "id": "./sample_repository/main.py::__main__::16",
+    "id": "server/sample_repository/main.py::__main__::16",
     "name": "__main__",
     "language": "python",
-    "file_path": "./sample_repository/main.py",
+    "file_path": "server/sample_repository/main.py",
     "start_line": 17,
     "end_line": 19,
     "source_code": "if __name__ == \"__main__\":\n    sample_text = \"This is a sample document to test the processing pipeline.\"\n    run_pipeline(sample_text)",

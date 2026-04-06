@@ -185,6 +185,7 @@ def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
     fn_matches = cursor.matches(tree.root_node)
 
     functions = []
+    call_query = Query(language, CALL_QUERIES[language_name])
     for _, capture_dict in fn_matches:
         # Get required nodes from the captures
         name_node = capture_dict.get("name")
@@ -213,14 +214,16 @@ def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
         source_text = get_node_text(func_node, source_bytes)
         doc_text = get_node_text(doc_node[0] if isinstance(doc_node, list) else doc_node, source_bytes).strip('"\' \n') if doc_node else None
 
-        call_query = Query(language, CALL_QUERIES[language_name])
         calls_list = []
         seen_calls = set()
 
         if func_node.type == "decorated_definition":
             for deco_node in (c for c in func_node.children if c.type == "decorator"):
                 extract_calls(deco_node, call_query, source_bytes, is_decorator=True, calls_list=calls_list, seen_calls=seen_calls)
-            inner_func = next(c for c in func_node.children if c.type == "function_definition")
+            inner_func = next(
+                c for c in func_node.children
+                if c.type in ("function_definition")
+            )
             extract_calls(inner_func.child_by_field_name("body"), call_query, source_bytes, is_decorator=False, calls_list=calls_list, seen_calls=seen_calls)
         else:
             extract_calls(func_node.child_by_field_name("body"), call_query, source_bytes, is_decorator=False, calls_list=calls_list, seen_calls=seen_calls)
@@ -264,7 +267,6 @@ def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
             # Reuse the call extraction logic on this block
             calls_list = []
             seen_calls = set()
-            call_query = Query(language, CALL_QUERIES[language_name])
             extract_calls(child, call_query, source_bytes, is_decorator=False, calls_list=calls_list, seen_calls=seen_calls)
 
             node_id = f"{file_path}::__main__::{child.start_point[0]}"
@@ -350,6 +352,6 @@ if __name__ == "__main__":
     print("="*60)
     print(json.dumps(extracted_imports, indent=4))
     
-    output_json = "extracted_functions.json"
+    output_json = "./extracted_functions.json"
     save_functions_to_json(extracted_functions, output_json)
     print(f"\nSaved extracted functions to {output_json}")
