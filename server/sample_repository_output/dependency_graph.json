@@ -1,0 +1,451 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "name": "retry",
+      "language": "python",
+      "file": "server/sample_repository/fetch.py",
+      "start_line": 5,
+      "end_line": 15,
+      "docstring": null,
+      "source": "def retry(max_attempts=3):\n    def decorator(func):\n        @functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass\n        return wrapper\n    return decorator",
+      "embedding": null,
+      "id": "server/sample_repository/fetch.py::retry::4"
+    },
+    {
+      "name": "decorator",
+      "language": "python",
+      "file": "server/sample_repository/fetch.py",
+      "start_line": 6,
+      "end_line": 14,
+      "docstring": null,
+      "source": "def decorator(func):\n        @functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass\n        return wrapper",
+      "embedding": null,
+      "id": "server/sample_repository/fetch.py::decorator::5"
+    },
+    {
+      "name": "wrapper",
+      "language": "python",
+      "file": "server/sample_repository/fetch.py",
+      "start_line": 7,
+      "end_line": 13,
+      "docstring": null,
+      "source": "@functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass",
+      "embedding": null,
+      "id": "server/sample_repository/fetch.py::wrapper::6"
+    },
+    {
+      "name": "fetch_data",
+      "language": "python",
+      "file": "server/sample_repository/fetch.py",
+      "start_line": 17,
+      "end_line": 24,
+      "docstring": null,
+      "source": "@retry(max_attempts=5)\nasync def fetch_data(url):\n    \"\"\"Fetches data from the given URL asynchronously.\"\"\"\n    reader, writer = await asyncio.open_connection(url, 80)\n    writer.write(b\"GET / HTTP/1.0\\r\\n\\r\\n\")\n    data = await reader.read(100)\n    writer.close()\n    return data",
+      "embedding": null,
+      "id": "server/sample_repository/fetch.py::fetch_data::16"
+    },
+    {
+      "name": "process_batch",
+      "language": "python",
+      "file": "server/sample_repository/fetch.py",
+      "start_line": 26,
+      "end_line": 28,
+      "docstring": null,
+      "source": "async def process_batch(items):\n    results = await asyncio.gather(*[fetch_data(item) for item in items])\n    return results",
+      "embedding": null,
+      "id": "server/sample_repository/fetch.py::process_batch::25"
+    },
+    {
+      "name": "__main__",
+      "language": "python",
+      "file": "server/sample_repository/fetch.py",
+      "start_line": 30,
+      "end_line": 31,
+      "docstring": null,
+      "source": "if __name__ == \"__main__\":\n    asyncio.run(process_batch([\"example.com\", \"test.com\"]))",
+      "embedding": null,
+      "id": "server/sample_repository/fetch.py::__main__::29"
+    },
+    {
+      "name": "calculate_bm25",
+      "language": "python",
+      "file": "server/sample_repository/math_utils.py",
+      "start_line": 1,
+      "end_line": 4,
+      "docstring": null,
+      "source": "def calculate_bm25(tf, idf):\n    \"\"\"Calculates the BM25 score for a given term.\"\"\"\n    # Simplified for testing\n    return tf * idf",
+      "embedding": null,
+      "id": "server/sample_repository/math_utils.py::calculate_bm25::0"
+    },
+    {
+      "name": "normalize_score",
+      "language": "python",
+      "file": "server/sample_repository/math_utils.py",
+      "start_line": 6,
+      "end_line": 8,
+      "docstring": null,
+      "source": "def normalize_score(score):\n    # Notice this function intentionally lacks a docstring\n    return score / 100.0",
+      "embedding": null,
+      "id": "server/sample_repository/math_utils.py::normalize_score::5"
+    },
+    {
+      "name": "DocumentProcessor.__init__",
+      "language": "python",
+      "file": "server/sample_repository/text_processor.py",
+      "start_line": 2,
+      "end_line": 4,
+      "docstring": null,
+      "source": "def __init__(self, stop_words):\n        \"\"\"Initializes the processor with stop words.\"\"\"\n        self.stop_words = stop_words",
+      "embedding": null,
+      "id": "server/sample_repository/text_processor.py::DocumentProcessor.__init__::1"
+    },
+    {
+      "name": "DocumentProcessor.remove_punctuation",
+      "language": "python",
+      "file": "server/sample_repository/text_processor.py",
+      "start_line": 6,
+      "end_line": 8,
+      "docstring": null,
+      "source": "def remove_punctuation(self, text):\n        # Calls string methods (.replace)\n        return text.replace(\".\", \"\").replace(\",\", \"\")",
+      "embedding": null,
+      "id": "server/sample_repository/text_processor.py::DocumentProcessor.remove_punctuation::5"
+    },
+    {
+      "name": "DocumentProcessor.clean_text",
+      "language": "python",
+      "file": "server/sample_repository/text_processor.py",
+      "start_line": 10,
+      "end_line": 16,
+      "docstring": null,
+      "source": "def clean_text(self, raw_text):\n        \"\"\"Cleans the text by removing punctuation and converting to lowercase.\"\"\"\n        # Calls another method within the same class\n        no_punct = self.remove_punctuation(raw_text)\n        \n        # Calls string method (.lower)\n        return no_punct.lower()",
+      "embedding": null,
+      "id": "server/sample_repository/text_processor.py::DocumentProcessor.clean_text::9"
+    },
+    {
+      "name": "run_pipeline",
+      "language": "python",
+      "file": "server/sample_repository/main.py",
+      "start_line": 4,
+      "end_line": 15,
+      "docstring": null,
+      "source": "def run_pipeline(document_text):\n    \"\"\"Main execution function for the pipeline.\"\"\"\n    processor = DocumentProcessor([\"the\", \"is\", \"and\"])\n    \n    # Call to object method\n    cleaned_doc = processor.clean_text(document_text)\n    \n    # Standalone function call\n    score = calculate_bm25(5.0, 1.2)\n    \n    print(f\"Processed document score: {score}\")\n    return score",
+      "embedding": null,
+      "id": "server/sample_repository/main.py::run_pipeline::3"
+    },
+    {
+      "name": "__main__",
+      "language": "python",
+      "file": "server/sample_repository/main.py",
+      "start_line": 17,
+      "end_line": 19,
+      "docstring": null,
+      "source": "if __name__ == \"__main__\":\n    sample_text = \"This is a sample document to test the processing pipeline.\"\n    run_pipeline(sample_text)",
+      "embedding": null,
+      "id": "server/sample_repository/main.py::__main__::16"
+    },
+    {
+      "name": "wraps",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::wraps"
+    },
+    {
+      "name": "range",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::range"
+    },
+    {
+      "name": "func",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::func"
+    },
+    {
+      "name": "open_connection",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::open_connection"
+    },
+    {
+      "name": "write",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::write"
+    },
+    {
+      "name": "read",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::read"
+    },
+    {
+      "name": "close",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::close"
+    },
+    {
+      "name": "gather",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::gather"
+    },
+    {
+      "name": "run",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::run"
+    },
+    {
+      "name": "replace",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::replace"
+    },
+    {
+      "name": "lower",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::lower"
+    },
+    {
+      "name": "DocumentProcessor",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::DocumentProcessor"
+    },
+    {
+      "name": "print",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::print"
+    }
+  ],
+  "edges": [
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::retry::4",
+      "target": "__external__::wraps"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::retry::4",
+      "target": "__external__::range"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::retry::4",
+      "target": "__external__::func"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::decorator::5",
+      "target": "__external__::wraps"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::decorator::5",
+      "target": "__external__::range"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::decorator::5",
+      "target": "__external__::func"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": true,
+      "source": "server/sample_repository/fetch.py::wrapper::6",
+      "target": "__external__::wraps"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::wrapper::6",
+      "target": "__external__::range"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::wrapper::6",
+      "target": "__external__::func"
+    },
+    {
+      "weight": 1.0,
+      "is_decorator": true,
+      "source": "server/sample_repository/fetch.py::fetch_data::16",
+      "target": "server/sample_repository/fetch.py::retry::4"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::fetch_data::16",
+      "target": "__external__::open_connection"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::fetch_data::16",
+      "target": "__external__::write"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::fetch_data::16",
+      "target": "__external__::read"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::fetch_data::16",
+      "target": "__external__::close"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::process_batch::25",
+      "target": "__external__::gather"
+    },
+    {
+      "weight": 1.0,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::process_batch::25",
+      "target": "server/sample_repository/fetch.py::fetch_data::16"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::__main__::29",
+      "target": "__external__::run"
+    },
+    {
+      "weight": 1.0,
+      "is_decorator": false,
+      "source": "server/sample_repository/fetch.py::__main__::29",
+      "target": "server/sample_repository/fetch.py::process_batch::25"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/text_processor.py::DocumentProcessor.remove_punctuation::5",
+      "target": "__external__::replace"
+    },
+    {
+      "weight": 0.9,
+      "is_decorator": false,
+      "source": "server/sample_repository/text_processor.py::DocumentProcessor.clean_text::9",
+      "target": "server/sample_repository/text_processor.py::DocumentProcessor.remove_punctuation::5"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/text_processor.py::DocumentProcessor.clean_text::9",
+      "target": "__external__::lower"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/main.py::run_pipeline::3",
+      "target": "__external__::DocumentProcessor"
+    },
+    {
+      "weight": 0.9,
+      "is_decorator": false,
+      "source": "server/sample_repository/main.py::run_pipeline::3",
+      "target": "server/sample_repository/text_processor.py::DocumentProcessor.clean_text::9"
+    },
+    {
+      "weight": 1.0,
+      "is_decorator": false,
+      "source": "server/sample_repository/main.py::run_pipeline::3",
+      "target": "server/sample_repository/math_utils.py::calculate_bm25::0"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/main.py::run_pipeline::3",
+      "target": "__external__::print"
+    },
+    {
+      "weight": 1.0,
+      "is_decorator": false,
+      "source": "server/sample_repository/main.py::__main__::16",
+      "target": "server/sample_repository/main.py::run_pipeline::3"
+    }
+  ]
+}

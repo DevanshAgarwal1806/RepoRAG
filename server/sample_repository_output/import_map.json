@@ -1,0 +1,12 @@
+{
+  "server/sample_repository/fetch.py": {
+    "asyncio": "asyncio",
+    "functools": "functools"
+  },
+  "server/sample_repository/math_utils.py": {},
+  "server/sample_repository/text_processor.py": {},
+  "server/sample_repository/main.py": {
+    "DocumentProcessor": "text_processor",
+    "calculate_bm25": "math_utils"
+  }
+}
