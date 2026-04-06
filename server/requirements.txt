@@ -2,7 +2,6 @@ openai
 python-dotenv
 rank-bm25
 sentence-transformers
-numpyappnope==0.1.4
 asttokens==3.0.1
 comm==0.2.3
 debugpy==1.8.20
