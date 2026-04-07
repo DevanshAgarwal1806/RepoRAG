@@ -13,15 +13,13 @@ from tree_sitter import Language
 QUERIES = {
     "python": """
         (function_definition
-            name: (identifier) @name
-            body: (_) @body)
-
-        (function_definition
-            name: (identifier) @name
-            body: (block
-                (expression_statement
-                    (string) @docstring) .
-                (_)*))
+        name: (identifier) @name
+        body: (block
+            .
+            (expression_statement
+            (string
+                (string_content) @docstring))?
+            (_)*) @body)
     """
 }
 

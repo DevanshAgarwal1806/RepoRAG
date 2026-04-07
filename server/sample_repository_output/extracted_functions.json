@@ -1,18 +1,18 @@
 [
   {
-    "id": "server/sample_repository/fetch.py::retry::4",
-    "name": "retry",
+    "id": "server/sample_repository/fetch.py::wrapper::6",
+    "name": "wrapper",
     "language": "python",
     "file_path": "server/sample_repository/fetch.py",
-    "start_line": 5,
-    "end_line": 15,
-    "source_code": "def retry(max_attempts=3):\n    def decorator(func):\n        @functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass\n        return wrapper\n    return decorator",
+    "start_line": 7,
+    "end_line": 13,
+    "source_code": "@functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass",
     "docstring": null,
     "calls": [
       {
         "name": "wraps",
         "is_method": true,
-        "is_decorator": false
+        "is_decorator": true
       },
       {
         "name": "range",
@@ -54,19 +54,19 @@
     ]
   },
   {
-    "id": "server/sample_repository/fetch.py::wrapper::6",
-    "name": "wrapper",
+    "id": "server/sample_repository/fetch.py::retry::4",
+    "name": "retry",
     "language": "python",
     "file_path": "server/sample_repository/fetch.py",
-    "start_line": 7,
-    "end_line": 13,
-    "source_code": "@functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass",
+    "start_line": 5,
+    "end_line": 15,
+    "source_code": "def retry(max_attempts=3):\n    def decorator(func):\n        @functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass\n        return wrapper\n    return decorator",
     "docstring": null,
     "calls": [
       {
         "name": "wraps",
         "is_method": true,
-        "is_decorator": true
+        "is_decorator": false
       },
       {
         "name": "range",
@@ -88,7 +88,7 @@
     "start_line": 17,
     "end_line": 24,
     "source_code": "@retry(max_attempts=5)\nasync def fetch_data(url):\n    \"\"\"Fetches data from the given URL asynchronously.\"\"\"\n    reader, writer = await asyncio.open_connection(url, 80)\n    writer.write(b\"GET / HTTP/1.0\\r\\n\\r\\n\")\n    data = await reader.read(100)\n    writer.close()\n    return data",
-    "docstring": null,
+    "docstring": "Fetches data from the given URL asynchronously.",
     "calls": [
       {
         "name": "retry",
@@ -169,7 +169,7 @@
     "start_line": 1,
     "end_line": 4,
     "source_code": "def calculate_bm25(tf, idf):\n    \"\"\"Calculates the BM25 score for a given term.\"\"\"\n    # Simplified for testing\n    return tf * idf",
-    "docstring": null,
+    "docstring": "Calculates the BM25 score for a given term.",
     "calls": []
   },
   {
@@ -191,7 +191,7 @@
     "start_line": 2,
     "end_line": 4,
     "source_code": "def __init__(self, stop_words):\n        \"\"\"Initializes the processor with stop words.\"\"\"\n        self.stop_words = stop_words",
-    "docstring": null,
+    "docstring": "Initializes the processor with stop words.",
     "calls": []
   },
   {
@@ -219,7 +219,7 @@
     "start_line": 10,
     "end_line": 16,
     "source_code": "def clean_text(self, raw_text):\n        \"\"\"Cleans the text by removing punctuation and converting to lowercase.\"\"\"\n        # Calls another method within the same class\n        no_punct = self.remove_punctuation(raw_text)\n        \n        # Calls string method (.lower)\n        return no_punct.lower()",
-    "docstring": null,
+    "docstring": "Cleans the text by removing punctuation and converting to lowercase.",
     "calls": [
       {
         "name": "remove_punctuation",
@@ -241,7 +241,7 @@
     "start_line": 4,
     "end_line": 15,
     "source_code": "def run_pipeline(document_text):\n    \"\"\"Main execution function for the pipeline.\"\"\"\n    processor = DocumentProcessor([\"the\", \"is\", \"and\"])\n    \n    # Call to object method\n    cleaned_doc = processor.clean_text(document_text)\n    \n    # Standalone function call\n    score = calculate_bm25(5.0, 1.2)\n    \n    print(f\"Processed document score: {score}\")\n    return score",
-    "docstring": null,
+    "docstring": "Main execution function for the pipeline.",
     "calls": [
       {
         "name": "DocumentProcessor",
