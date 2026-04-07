@@ -20,3 +20,5 @@ transformers==4.41.2
 torch
 numpy
 networkx
+optimum
+huggingface_hub==0.23.2

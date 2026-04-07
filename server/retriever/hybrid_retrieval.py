@@ -1,3 +1,4 @@
+import warnings
 import json
 import os
 from rank_bm25 import BM25Okapi
@@ -6,6 +7,9 @@ from rank_bm25 import BM25Okapi
 from query_expansion import expand_query
 from bm25_basic import tokenize_code # Reusing your regex tokenizer
 from dense_retrieval import get_dense_rankings
+
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=UserWarning)
 
 # ---------------------------------------------------------
 # RRF Formula Logic

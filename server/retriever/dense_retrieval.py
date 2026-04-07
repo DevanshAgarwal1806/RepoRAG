@@ -1,7 +1,10 @@
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-_model = SentenceTransformer('jinaai/jina-embeddings-v2-base-code')
+_model = SentenceTransformer(
+    'jinaai/jina-embeddings-v2-base-code',
+    trust_remote_code=True
+)
 
 def cosine_similarity(vec1: list[float], vec2: list[float]) -> float:
     """Calculates the mathematical closeness of two vectors."""

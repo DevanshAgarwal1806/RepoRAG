@@ -10,10 +10,14 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from collections import defaultdict
 from pathlib import Path
+import warnings
 
 from ast_parser import index_repository, save_functions_to_json, FunctionNode
 from graph_builder import build_dependency_graph
 from embedder import embed_functions
+
+warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 # ── Colours ───────────────────────────────────────────────────────────────────
 NODE_COLORS = {
