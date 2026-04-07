@@ -82,8 +82,8 @@ if __name__ == "__main__":
     # 8. Display Final Results
     print("--- Final Hybrid Results (RRF) ---")
     for rank, (doc_id, rrf_score) in enumerate(final_hybrid_ranking[:3], start=1):
-        function_name = doc_map[doc_id]["name"]
-        print(f"Rank {rank} | RRF Score: {rrf_score:.4f} | Function: {function_name}")
+        function_id = doc_map[doc_id]["id"]
+        print(f"Rank {rank} | RRF Score: {rrf_score:.4f} | Function: {function_id}")
         
         # Optional: Print the individual ranks to see how it was calculated
         print(f"          -> (BM25 Rank: {bm25_ranks.get(doc_id, 'N/A')}, Dense Rank: {dense_ranks.get(doc_id, 'N/A')})")
