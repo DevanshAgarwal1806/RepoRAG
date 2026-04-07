@@ -38,8 +38,7 @@ def build_dependency_graph(
             "start_line": fn.start_line,
             "end_line":   fn.end_line,
             "docstring":  fn.docstring,
-            "source":     fn.source_code,
-            "embedding":  fn.embedding,
+            "source":     fn.source_code
         })
 
         exact_name_to_ids.setdefault(fn.name, []).append(fn.id)

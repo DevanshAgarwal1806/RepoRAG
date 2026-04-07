@@ -11,7 +11,6 @@
       "end_line": 13,
       "docstring": null,
       "source": "@functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass",
-      "embedding": null,
       "id": "server/sample_repository/fetch.py::wrapper::6"
     },
     {
@@ -22,7 +21,6 @@
       "end_line": 14,
       "docstring": null,
       "source": "def decorator(func):\n        @functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass\n        return wrapper",
-      "embedding": null,
       "id": "server/sample_repository/fetch.py::decorator::5"
     },
     {
@@ -33,7 +31,6 @@
       "end_line": 15,
       "docstring": null,
       "source": "def retry(max_attempts=3):\n    def decorator(func):\n        @functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass\n        return wrapper\n    return decorator",
-      "embedding": null,
       "id": "server/sample_repository/fetch.py::retry::4"
     },
     {
@@ -44,7 +41,6 @@
       "end_line": 24,
       "docstring": "Fetches data from the given URL asynchronously.",
       "source": "@retry(max_attempts=5)\nasync def fetch_data(url):\n    \"\"\"Fetches data from the given URL asynchronously.\"\"\"\n    reader, writer = await asyncio.open_connection(url, 80)\n    writer.write(b\"GET / HTTP/1.0\\r\\n\\r\\n\")\n    data = await reader.read(100)\n    writer.close()\n    return data",
-      "embedding": null,
       "id": "server/sample_repository/fetch.py::fetch_data::16"
     },
     {
@@ -55,7 +51,6 @@
       "end_line": 28,
       "docstring": null,
       "source": "async def process_batch(items):\n    results = await asyncio.gather(*[fetch_data(item) for item in items])\n    return results",
-      "embedding": null,
       "id": "server/sample_repository/fetch.py::process_batch::25"
     },
     {
@@ -66,7 +61,6 @@
       "end_line": 31,
       "docstring": null,
       "source": "if __name__ == \"__main__\":\n    asyncio.run(process_batch([\"example.com\", \"test.com\"]))",
-      "embedding": null,
       "id": "server/sample_repository/fetch.py::__main__::29"
     },
     {
@@ -77,7 +71,6 @@
       "end_line": 4,
       "docstring": "Calculates the BM25 score for a given term.",
       "source": "def calculate_bm25(tf, idf):\n    \"\"\"Calculates the BM25 score for a given term.\"\"\"\n    # Simplified for testing\n    return tf * idf",
-      "embedding": null,
       "id": "server/sample_repository/math_utils.py::calculate_bm25::0"
     },
     {
@@ -88,7 +81,6 @@
       "end_line": 8,
       "docstring": null,
       "source": "def normalize_score(score):\n    # Notice this function intentionally lacks a docstring\n    return score / 100.0",
-      "embedding": null,
       "id": "server/sample_repository/math_utils.py::normalize_score::5"
     },
     {
@@ -99,7 +91,6 @@
       "end_line": 4,
       "docstring": "Initializes the processor with stop words.",
       "source": "def __init__(self, stop_words):\n        \"\"\"Initializes the processor with stop words.\"\"\"\n        self.stop_words = stop_words",
-      "embedding": null,
       "id": "server/sample_repository/text_processor.py::DocumentProcessor.__init__::1"
     },
     {
@@ -110,7 +101,6 @@
       "end_line": 8,
       "docstring": null,
       "source": "def remove_punctuation(self, text):\n        # Calls string methods (.replace)\n        return text.replace(\".\", \"\").replace(\",\", \"\")",
-      "embedding": null,
       "id": "server/sample_repository/text_processor.py::DocumentProcessor.remove_punctuation::5"
     },
     {
@@ -121,7 +111,6 @@
       "end_line": 16,
       "docstring": "Cleans the text by removing punctuation and converting to lowercase.",
       "source": "def clean_text(self, raw_text):\n        \"\"\"Cleans the text by removing punctuation and converting to lowercase.\"\"\"\n        # Calls another method within the same class\n        no_punct = self.remove_punctuation(raw_text)\n        \n        # Calls string method (.lower)\n        return no_punct.lower()",
-      "embedding": null,
       "id": "server/sample_repository/text_processor.py::DocumentProcessor.clean_text::9"
     },
     {
@@ -132,7 +121,6 @@
       "end_line": 15,
       "docstring": "Main execution function for the pipeline.",
       "source": "def run_pipeline(document_text):\n    \"\"\"Main execution function for the pipeline.\"\"\"\n    processor = DocumentProcessor([\"the\", \"is\", \"and\"])\n    \n    # Call to object method\n    cleaned_doc = processor.clean_text(document_text)\n    \n    # Standalone function call\n    score = calculate_bm25(5.0, 1.2)\n    \n    print(f\"Processed document score: {score}\")\n    return score",
-      "embedding": null,
       "id": "server/sample_repository/main.py::run_pipeline::3"
     },
     {
@@ -143,7 +131,6 @@
       "end_line": 19,
       "docstring": null,
       "source": "if __name__ == \"__main__\":\n    sample_text = \"This is a sample document to test the processing pipeline.\"\n    run_pipeline(sample_text)",
-      "embedding": null,
       "id": "server/sample_repository/main.py::__main__::16"
     },
     {
@@ -290,7 +277,7 @@
       "id": "__external__::print"
     }
   ],
-  "edges": [
+  "links": [
     {
       "weight": 0.1,
       "is_decorator": true,

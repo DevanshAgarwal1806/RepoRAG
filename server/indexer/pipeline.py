@@ -13,6 +13,7 @@ from pathlib import Path
 
 from ast_parser import index_repository, save_functions_to_json, FunctionNode
 from graph_builder import build_dependency_graph
+from embedder import embed_functions
 
 # ── Colours ───────────────────────────────────────────────────────────────────
 NODE_COLORS = {
@@ -220,6 +221,11 @@ def run_pipeline(repo_path: str, output_dir: str = "."):
     print(f"\n[3/3] Visualizing dependency graph ...")
     graph_png = output_dir / "dependency_graph.png"
     visualize_graph(G, output_path=str(graph_png))
+    
+    # ── Step 4: Embed functions ─────────────────────────────────────────────────
+    print(f"\n[4/4] Generating function embeddings ...")
+    embeddings_json = output_dir / "embeddings.json"
+    embed_functions(functions, output_path=str(embeddings_json))
 
     print("\n" + "="*60)
     print("Pipeline complete.")
@@ -227,6 +233,7 @@ def run_pipeline(repo_path: str, output_dir: str = "."):
     print(f"  Import map     : {imports_json}")
     print(f"  Graph JSON     : {graph_json}")
     print(f"  Graph PNG      : {graph_png}")
+    print(f"  Embeddings JSON: {embeddings_json}")
     print("="*60)
 
     return G

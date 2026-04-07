@@ -18,7 +18,6 @@ class FunctionNode:
     source_code: str
     docstring: Optional[str]
     calls: List[dict] = field(default_factory=list)
-    embedding: Optional[list] = None
 
 # Detects language based on file extension
 def detect_language(file_path: str) -> Optional[str]:
