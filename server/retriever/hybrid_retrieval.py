@@ -42,19 +42,22 @@ def calculate_rrf(bm25_ranks: dict, dense_ranks: dict, k: int = 60) -> list[tupl
 # ---------------------------------------------------------
 if __name__ == "__main__":
     # 1. Load the fully embedded data
-    corpus_path = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "sample_repository_output", "embedding.json"))
-    with open(corpus_path, "r") as f:
-        corpus = json.load(f)
+    corpus_path_embeddings = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "sample_repository_output", "embeddings.json"))
+    corpus_path_functions = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "sample_repository_output", "extracted_functions.json"))
+    with open(corpus_path_embeddings, "r") as f:
+        corpus_embeddings = json.load(f)
+    with open(corpus_path_functions, "r") as f:
+        corpus_functions = json.load(f)
         
     # Map documents by ID for easy lookup later
-    doc_map = {doc["id"]: doc for doc in corpus}
+    doc_map = {doc["id"]: doc for doc in corpus_functions}
 
     # 2. Setup BM25 (Sparse)
-    tokenized_corpus = [tokenize_code(doc["text"]) for doc in corpus]
+    tokenized_corpus = [tokenize_code(doc["source_code"]) for doc in corpus_functions]
     bm25 = BM25Okapi(tokenized_corpus)
 
     # 3. The User Input
-    original_query = "how to connect to the database"
+    original_query = "Which function handles cleaning text?"
     print(f"User Query: '{original_query}'\n")
 
     # 4. Expand Query (LLM)
@@ -65,12 +68,12 @@ if __name__ == "__main__":
     bm25_scores = bm25.get_scores(tokenized_query)
     
     # Pair doc_ids with scores, sort them, and map to ranks
-    bm25_results = sorted(zip([doc["id"] for doc in corpus], bm25_scores), key=lambda x: x[1], reverse=True)
+    bm25_results = sorted(zip([doc["id"] for doc in corpus_functions], bm25_scores), key=lambda x: x[1], reverse=True)
     bm25_ranks = {doc_id: rank for rank, (doc_id, score) in enumerate(bm25_results, start=1)}
 
     # 6. Get Dense Ranks (Vector) using original query
     # (Dense retrieval doesn't usually need the LLM synonyms since it understands semantics inherently)
-    dense_results = get_dense_rankings(original_query, corpus)
+    dense_results = get_dense_rankings(original_query, corpus_embeddings)
     dense_ranks = {doc_id: rank for doc_id, score, rank in dense_results}
 
     # 7. Merge with Reciprocal Rank Fusion

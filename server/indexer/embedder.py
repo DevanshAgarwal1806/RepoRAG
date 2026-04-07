@@ -74,10 +74,13 @@ def embed_functions(
         print(f"  Embedded {done}/{len(functions)}")
 
     # Create output dictionary
-    output = {}
+    output: List[dict] = []
     for fn, emb in zip(functions, all_embeddings):
         fn.embedding = emb          # still store in object
-        output[fn.id] = emb         # store in JSON
+        output.append({
+            "id": fn.id,
+            "embedding": emb
+        })
 
     # Save to file
     with open(output_path, "w", encoding="utf-8") as f:

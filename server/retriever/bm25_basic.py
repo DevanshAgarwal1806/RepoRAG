@@ -75,4 +75,4 @@ if __name__ == "__main__":
     print("--- Top Ranked Search Results ---")
     # Display the top 3 results (Recall@3)
     for rank, (score, doc) in enumerate(results[:3], start=1):
-        print(f"Rank {rank} | Score: {score:.4f} | Function: {doc['name']}")
+        print(f"Rank {rank} | Score: {score:.4f} | Function: {doc['id']}")

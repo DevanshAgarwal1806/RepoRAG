@@ -14,7 +14,10 @@ def get_dense_rankings(user_query: str, embedded_corpus: list[dict]) -> list[tup
     Returns a list of tuples: (doc_id, score, rank)
     """
     # 1. Turn the user's query into a vector
-    query_vector = _model.encode([user_query])[0].tolist()
+    query_vector = _model.encode(
+        [user_query],
+        normalize_embeddings=True
+    )[0].tolist()
     
     scores = []
     
