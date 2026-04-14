@@ -112,7 +112,7 @@ def extract_imports(
         # Case 2: from x import *
         # -----------------------------
         elif source_nodes and wildcard_nodes:
-            source_module = get_node_text(source_nodes[0], source_bytes)
+            source_module = get_node_text(source_nodes[0], source_bytes).strip("'\"")
 
             import_map.setdefault("__wildcard__", []).append(source_module)
 
@@ -120,7 +120,7 @@ def extract_imports(
         # Case 3: from x import y / y as z
         # -----------------------------
         elif source_nodes and symbol_nodes:
-            source_module = get_node_text(source_nodes[0], source_bytes)
+            source_module = get_node_text(source_nodes[0], source_bytes).strip("'\"")
 
             # Build alias map via AST
             alias_map = {}
@@ -182,6 +182,8 @@ def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
     fn_query = Query(language, QUERIES[language_name])
     cursor = QueryCursor(fn_query)
     fn_matches = cursor.matches(tree.root_node)
+    
+    seen_ids = set()
 
     functions = []
     call_query = Query(language, CALL_QUERIES[language_name])
@@ -195,39 +197,81 @@ def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
             continue
 
         # Get the function node (the parent of the body node).
+
         func_node = body_node[0].parent if isinstance(body_node, list) else body_node.parent
         if func_node is None:
             continue
 
-        # If this function is decorated, expand the node to include the decorators
+        # JS/TS: arrow_function or function_expression body's parent is the function node,
+        # but that function node's parent is variable_declarator — walk up one more level
+        # so func_node covers the full declaration including the variable name.
+        if func_node.type in ("function_expression", "arrow_function"):
+            if func_node.parent and func_node.parent.type == "variable_declarator":
+                func_node = func_node.parent
+
+        # Python: decorated functions
         if func_node.parent and func_node.parent.type == "decorated_definition":
             func_node = func_node.parent
 
         # Extract the name of the function/method.
-        base_name_text = get_node_text(name_node[0] if isinstance(name_node, list) else name_node, source_bytes)
+        # Standard name extraction
+        if name_node:
+            base_name_text = get_node_text(name_node[0] if isinstance(name_node, list) else name_node, source_bytes)
+        # NEW: Fallback for anonymous default exports
+        else:
+            base_name_text = "default_export"
         # For methods, we want to prefix with the parent class name to create a unique identifier. For functions, this will just be the function name.
         parent_class = get_full_parent_class_name(func_node, source_bytes)
         name_text = f"{parent_class}.{base_name_text}" if parent_class else base_name_text
         
         # Source code (entire function)
-        source_text = get_node_text(func_node, source_bytes)
+        source_node = func_node
+        if func_node.type == "variable_declarator" and func_node.parent and func_node.parent.type in ("lexical_declaration", "variable_declaration"):
+            source_node = func_node.parent
+        if source_node.parent and source_node.parent.type == 'export_statement':
+            source_node = source_node.parent
+        source_text = get_node_text(source_node, source_bytes)
         doc_text = get_node_text(doc_node[0] if isinstance(doc_node, list) else doc_node, source_bytes).strip('"\' \n') if doc_node else None
 
         calls_list = []
         seen_calls = set()
 
+        # Replace the call extraction block with this:
+
+        FUNC_DEF_TYPES = {
+            "function_definition",       # Python
+            "function_declaration",      # JS/TS
+            "function_expression",       # JS/TS
+            "arrow_function",            # JS/TS
+            "method_definition",         # JS/TS class methods
+        }
+
         if func_node.type == "decorated_definition":
+            # Python decorated functions only
             for deco_node in (c for c in func_node.children if c.type == "decorator"):
-                extract_calls(deco_node, call_query, source_bytes, is_decorator=True, calls_list=calls_list, seen_calls=seen_calls)
-            inner_func = next(
-                c for c in func_node.children
-                if c.type in ("function_definition")
-            )
-            extract_calls(inner_func.child_by_field_name("body"), call_query, source_bytes, is_decorator=False, calls_list=calls_list, seen_calls=seen_calls)
+                extract_calls(deco_node, call_query, source_bytes, is_decorator=True,
+                            calls_list=calls_list, seen_calls=seen_calls)
+            inner_func = next(c for c in func_node.children if c.type in FUNC_DEF_TYPES)
+            extract_calls(inner_func.child_by_field_name("body"), call_query, source_bytes,
+                        is_decorator=False, calls_list=calls_list, seen_calls=seen_calls)
+        elif func_node.type == "variable_declarator":
+            # JS/TS: arrow or function expression — body is inside the value child
+            value = func_node.child_by_field_name("value")
+            if value:
+                body = value.child_by_field_name("body")
+                if body:
+                    extract_calls(body, call_query, source_bytes, is_decorator=False,
+                                calls_list=calls_list, seen_calls=seen_calls)
         else:
-            extract_calls(func_node.child_by_field_name("body"), call_query, source_bytes, is_decorator=False, calls_list=calls_list, seen_calls=seen_calls)
+            body = func_node.child_by_field_name("body")
+            if body:
+                extract_calls(body, call_query, source_bytes, is_decorator=False,
+                            calls_list=calls_list, seen_calls=seen_calls)
 
         node_id = f"{file_path}::{name_text}::{func_node.start_point[0]}"
+        if node_id in seen_ids:
+            continue
+        seen_ids.add(node_id)
 
         functions.append(FunctionNode(
             id=node_id,

@@ -184,6 +184,80 @@
     "calls": []
   },
   {
+    "id": "server/sample_repository/userprofile.tsx::UserProfile::7",
+    "name": "UserProfile",
+    "language": "tsx",
+    "file_path": "server/sample_repository/userprofile.tsx",
+    "start_line": 8,
+    "end_line": 47,
+    "source_code": "export const UserProfile = ({ userId }: { userId: string }) => {\n    /** Main React Component for displaying a user's profile. */\n    \n    // React Hooks (Standalone calls)\n    const [user, setUser] = useState<any>(null);\n\n    useEffect(() => {\n        // Nested arrow function inside a hook\n        const loadUser = async () => {\n            // Object method call from the imported class\n            const data = await client.fetchUserData(userId);\n            setUser(data);\n        };\n        \n        loadUser();\n    }, [userId]);\n\n    if (!user) {\n        return <div>Loading...</div>;\n    }\n\n    return (\n        <div className=\"profile-card\">\n            <h1>{user.name}</h1>\n            {/* Standalone calls imported from utils */}\n            <p>Age: {calculateAge(user.birthYear)}</p>\n            <p>Joined: {formatDate(user.joinDate)}</p>\n            \n            <div className=\"hobbies\">\n                <h3>Hobbies</h3>\n                <ul>\n                    {/* Method call (.map) on an array inside JSX */}\n                    {user.hobbies.map((hobby: string) => (\n                        <li key={hobby}>{hobby}</li>\n                    ))}\n                </ul>\n            </div>\n        </div>\n    );\n};",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "useState",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "useEffect",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "fetchUserData",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "setUser",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "loadUser",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "calculateAge",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "formatDate",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "map",
+        "is_method": true,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
+    "id": "server/sample_repository/userprofile.tsx::loadUser::15",
+    "name": "loadUser",
+    "language": "tsx",
+    "file_path": "server/sample_repository/userprofile.tsx",
+    "start_line": 16,
+    "end_line": 20,
+    "source_code": "const loadUser = async () => {\n            // Object method call from the imported class\n            const data = await client.fetchUserData(userId);\n            setUser(data);\n        };",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "fetchUserData",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "setUser",
+        "is_method": false,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
     "id": "server/sample_repository/text_processor.py::DocumentProcessor.__init__::1",
     "name": "DocumentProcessor.__init__",
     "language": "python",
@@ -228,6 +302,73 @@
       },
       {
         "name": "lower",
+        "is_method": true,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
+    "id": "server/sample_repository/utils.ts::formatDate::2",
+    "name": "formatDate",
+    "language": "typescript",
+    "file_path": "server/sample_repository/utils.ts",
+    "start_line": 3,
+    "end_line": 8,
+    "source_code": "export function formatDate(dateString: string): string {\n    /** Formats a raw ISO date string into a readable local string. */\n    const date = new Date(dateString);\n    // Method call on standard JS object\n    return date.toLocaleDateString();\n}",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "toLocaleDateString",
+        "is_method": true,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
+    "id": "server/sample_repository/utils.ts::calculateAge::9",
+    "name": "calculateAge",
+    "language": "typescript",
+    "file_path": "server/sample_repository/utils.ts",
+    "start_line": 10,
+    "end_line": 14,
+    "source_code": "export const calculateAge = (birthYear: number): number => {\n    // Standard arrow function without a docstring\n    const currentYear = new Date().getFullYear();\n    return currentYear - birthYear;\n}",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "getFullYear",
+        "is_method": true,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
+    "id": "server/sample_repository/api.ts::ApiClient.constructor::5",
+    "name": "ApiClient.constructor",
+    "language": "typescript",
+    "file_path": "server/sample_repository/api.ts",
+    "start_line": 6,
+    "end_line": 8,
+    "source_code": "constructor(baseUrl: string) {\n        this.baseUrl = baseUrl;\n    }",
+    "docstring": null,
+    "calls": []
+  },
+  {
+    "id": "server/sample_repository/api.ts::ApiClient.fetchUserData::9",
+    "name": "ApiClient.fetchUserData",
+    "language": "typescript",
+    "file_path": "server/sample_repository/api.ts",
+    "start_line": 10,
+    "end_line": 16,
+    "source_code": "async fetchUserData(id: string) {\n        /** Fetches user data from the backend API. */\n        // Global fetch call\n        const response = await fetch(`${this.baseUrl}/users/${id}`);\n        // Object method call\n        return response.json();\n    }",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "fetch",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "json",
         "is_method": true,
         "is_decorator": false
       }

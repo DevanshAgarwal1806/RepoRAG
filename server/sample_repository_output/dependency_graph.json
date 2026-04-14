@@ -84,6 +84,26 @@
       "id": "server/sample_repository/math_utils.py::normalize_score::5"
     },
     {
+      "name": "UserProfile",
+      "language": "tsx",
+      "file": "server/sample_repository/userprofile.tsx",
+      "start_line": 8,
+      "end_line": 47,
+      "docstring": null,
+      "source": "export const UserProfile = ({ userId }: { userId: string }) => {\n    /** Main React Component for displaying a user's profile. */\n    \n    // React Hooks (Standalone calls)\n    const [user, setUser] = useState<any>(null);\n\n    useEffect(() => {\n        // Nested arrow function inside a hook\n        const loadUser = async () => {\n            // Object method call from the imported class\n            const data = await client.fetchUserData(userId);\n            setUser(data);\n        };\n        \n        loadUser();\n    }, [userId]);\n\n    if (!user) {\n        return <div>Loading...</div>;\n    }\n\n    return (\n        <div className=\"profile-card\">\n            <h1>{user.name}</h1>\n            {/* Standalone calls imported from utils */}\n            <p>Age: {calculateAge(user.birthYear)}</p>\n            <p>Joined: {formatDate(user.joinDate)}</p>\n            \n            <div className=\"hobbies\">\n                <h3>Hobbies</h3>\n                <ul>\n                    {/* Method call (.map) on an array inside JSX */}\n                    {user.hobbies.map((hobby: string) => (\n                        <li key={hobby}>{hobby}</li>\n                    ))}\n                </ul>\n            </div>\n        </div>\n    );\n};",
+      "id": "server/sample_repository/userprofile.tsx::UserProfile::7"
+    },
+    {
+      "name": "loadUser",
+      "language": "tsx",
+      "file": "server/sample_repository/userprofile.tsx",
+      "start_line": 16,
+      "end_line": 20,
+      "docstring": null,
+      "source": "const loadUser = async () => {\n            // Object method call from the imported class\n            const data = await client.fetchUserData(userId);\n            setUser(data);\n        };",
+      "id": "server/sample_repository/userprofile.tsx::loadUser::15"
+    },
+    {
       "name": "DocumentProcessor.__init__",
       "language": "python",
       "file": "server/sample_repository/text_processor.py",
@@ -112,6 +132,46 @@
       "docstring": "Cleans the text by removing punctuation and converting to lowercase.",
       "source": "def clean_text(self, raw_text):\n        \"\"\"Cleans the text by removing punctuation and converting to lowercase.\"\"\"\n        # Calls another method within the same class\n        no_punct = self.remove_punctuation(raw_text)\n        \n        # Calls string method (.lower)\n        return no_punct.lower()",
       "id": "server/sample_repository/text_processor.py::DocumentProcessor.clean_text::9"
+    },
+    {
+      "name": "formatDate",
+      "language": "typescript",
+      "file": "server/sample_repository/utils.ts",
+      "start_line": 3,
+      "end_line": 8,
+      "docstring": null,
+      "source": "export function formatDate(dateString: string): string {\n    /** Formats a raw ISO date string into a readable local string. */\n    const date = new Date(dateString);\n    // Method call on standard JS object\n    return date.toLocaleDateString();\n}",
+      "id": "server/sample_repository/utils.ts::formatDate::2"
+    },
+    {
+      "name": "calculateAge",
+      "language": "typescript",
+      "file": "server/sample_repository/utils.ts",
+      "start_line": 10,
+      "end_line": 14,
+      "docstring": null,
+      "source": "export const calculateAge = (birthYear: number): number => {\n    // Standard arrow function without a docstring\n    const currentYear = new Date().getFullYear();\n    return currentYear - birthYear;\n}",
+      "id": "server/sample_repository/utils.ts::calculateAge::9"
+    },
+    {
+      "name": "ApiClient.constructor",
+      "language": "typescript",
+      "file": "server/sample_repository/api.ts",
+      "start_line": 6,
+      "end_line": 8,
+      "docstring": null,
+      "source": "constructor(baseUrl: string) {\n        this.baseUrl = baseUrl;\n    }",
+      "id": "server/sample_repository/api.ts::ApiClient.constructor::5"
+    },
+    {
+      "name": "ApiClient.fetchUserData",
+      "language": "typescript",
+      "file": "server/sample_repository/api.ts",
+      "start_line": 10,
+      "end_line": 16,
+      "docstring": null,
+      "source": "async fetchUserData(id: string) {\n        /** Fetches user data from the backend API. */\n        // Global fetch call\n        const response = await fetch(`${this.baseUrl}/users/${id}`);\n        // Object method call\n        return response.json();\n    }",
+      "id": "server/sample_repository/api.ts::ApiClient.fetchUserData::9"
     },
     {
       "name": "run_pipeline",
@@ -233,6 +293,50 @@
       "id": "__external__::run"
     },
     {
+      "name": "useState",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::useState"
+    },
+    {
+      "name": "useEffect",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::useEffect"
+    },
+    {
+      "name": "setUser",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::setUser"
+    },
+    {
+      "name": "map",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::map"
+    },
+    {
       "name": "replace",
       "language": "external",
       "file": "",
@@ -253,6 +357,50 @@
       "source": "",
       "embedding": null,
       "id": "__external__::lower"
+    },
+    {
+      "name": "toLocaleDateString",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::toLocaleDateString"
+    },
+    {
+      "name": "getFullYear",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::getFullYear"
+    },
+    {
+      "name": "fetch",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::fetch"
+    },
+    {
+      "name": "json",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::json"
     },
     {
       "name": "DocumentProcessor",
@@ -389,6 +537,66 @@
     {
       "weight": 0.1,
       "is_decorator": false,
+      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
+      "target": "__external__::useState"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
+      "target": "__external__::useEffect"
+    },
+    {
+      "weight": 0.9,
+      "is_decorator": false,
+      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
+      "target": "server/sample_repository/api.ts::ApiClient.fetchUserData::9"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
+      "target": "__external__::setUser"
+    },
+    {
+      "weight": 1.0,
+      "is_decorator": false,
+      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
+      "target": "server/sample_repository/userprofile.tsx::loadUser::15"
+    },
+    {
+      "weight": 0.5,
+      "is_decorator": false,
+      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
+      "target": "server/sample_repository/utils.ts::calculateAge::9"
+    },
+    {
+      "weight": 0.5,
+      "is_decorator": false,
+      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
+      "target": "server/sample_repository/utils.ts::formatDate::2"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
+      "target": "__external__::map"
+    },
+    {
+      "weight": 0.9,
+      "is_decorator": false,
+      "source": "server/sample_repository/userprofile.tsx::loadUser::15",
+      "target": "server/sample_repository/api.ts::ApiClient.fetchUserData::9"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/userprofile.tsx::loadUser::15",
+      "target": "__external__::setUser"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
       "source": "server/sample_repository/text_processor.py::DocumentProcessor.remove_punctuation::5",
       "target": "__external__::replace"
     },
@@ -403,6 +611,30 @@
       "is_decorator": false,
       "source": "server/sample_repository/text_processor.py::DocumentProcessor.clean_text::9",
       "target": "__external__::lower"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/utils.ts::formatDate::2",
+      "target": "__external__::toLocaleDateString"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/utils.ts::calculateAge::9",
+      "target": "__external__::getFullYear"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/api.ts::ApiClient.fetchUserData::9",
+      "target": "__external__::fetch"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/api.ts::ApiClient.fetchUserData::9",
+      "target": "__external__::json"
     },
     {
       "weight": 0.1,

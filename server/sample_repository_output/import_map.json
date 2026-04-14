@@ -4,7 +4,17 @@
     "functools": "functools"
   },
   "server/sample_repository/math_utils.py": {},
+  "server/sample_repository/userprofile.tsx": {
+    "React": "react",
+    "useState": "react",
+    "useEffect": "react",
+    "formatDate": "./utils",
+    "calculateAge": "./utils",
+    "ApiClient": "./api"
+  },
   "server/sample_repository/text_processor.py": {},
+  "server/sample_repository/utils.ts": {},
+  "server/sample_repository/api.ts": {},
   "server/sample_repository/main.py": {
     "DocumentProcessor": "text_processor",
     "calculate_bm25": "math_utils"
