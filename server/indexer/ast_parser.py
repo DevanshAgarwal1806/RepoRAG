@@ -2,14 +2,14 @@ import os
 import json
 import sys
 from dataclasses import dataclass, field
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Set
 from tree_sitter import Parser, Node, Tree, Language, Query, QueryCursor
 from languages import LANGUAGE_MAP, EXTENSION_MAP, QUERIES, CALL_QUERIES, IMPORT_QUERIES
 
 # Template for function nodes extracted from the AST
 @dataclass
 class FunctionNode:
-    id: str # unique: "filepath::funcname::startline"
+    id: str # ID Format: "filepath[start_line:end_line]:funcname"
     name: str
     language: str
     file_path: str
@@ -17,79 +17,127 @@ class FunctionNode:
     end_line: int
     source_code: str
     docstring: Optional[str]
-    calls: List[dict] = field(default_factory=list)
+    calls: List[dict] = field(default_factory=list) # Initialize calls as an empty list by default, unique to each instance of the function node.
 
-# Detects language based on file extension
-def detect_language(file_path: str) -> Optional[str]:
+def get_language(file_path: str) -> Optional[str]:
+    """
+    Detects the language of the code based on the file extension
+
+    Args:
+        file_path (str): Path of the source file
+
+    Returns:
+        Optional[str]: Returns the name of the programming language. Returns None if the language is not supported or cannot be determined.
+    """
     ext = os.path.splitext(file_path)[1].lower()
     return EXTENSION_MAP.get(ext)
 
-# Extracts the full parent class name for a given function node, if it exists. This includes nested classes too.
-def get_full_parent_class_name(node, source_bytes: bytes) -> Optional[str]:
+def get_node_text(node: Node, source_code: bytes) -> str:
+    """
+    Returns the text of the node from the source code encoded in bytes.
+
+    Args:
+        node (Node): The node for which we want to extract the text.
+        source_code (bytes): The source code encoded in bytes.
+
+    Returns:
+        str: The text of the node.
+    """
+    return source_code[node.start_byte:node.end_byte].decode("utf-8", errors="replace")
+
+def get_full_parent_class_name(node: Node, source_code: bytes) -> Optional[str]:
+    """
+    Returns the complete parent class name for a function. It supports functions defined in nested classes. For multiple functions, they are returned in the format OuterClass.InnerClass. If the function is not defined within any class, it returns None.
+
+    Args:
+        node (Node): The node for which we want to extract the parent class name.
+        source_code (bytes): The source code encoded in bytes.
+
+    Returns:
+        Optional[str]: The complete parent class name, or None if the function is not defined within any class.
+    """
+    
     current = node.parent
 
     class_node_types = {
-        "class_definition", "class_declaration", "struct_specifier",
-        "impl_item", "type_declaration", "interface_declaration"
+        "class_definition",        # Python
+        "class_declaration",       # Java, JS, TS
+        "class_specifier",         # C++
+        "struct_specifier",        # C/C++
+        "interface_declaration",   # Java, TS
+        "enum_declaration",        # Java, C/C++
+        "impl_item",               # Rust
+        "type_declaration",        # Go, others
     }
 
-    class_names: List[str] = []
+    class_names = []
 
     while current is not None:
         if current.type in class_node_types:
-            # Find the class name inside this class node
             for child in current.children:
+                # For any node, the name is stored as a child node.
                 if child.type in ("identifier", "type_identifier", "name"):
-                    class_name = get_node_text(child, source_bytes)
+                    class_name = get_node_text(child, source_code)
                     class_names.append(class_name)
-                    break  # stop after finding the name
+                    break
 
         current = current.parent
 
     if not class_names:
         return None
 
-    # Reverse because we collected from inner → outer
     return ".".join(reversed(class_names))
 
-def get_node_text(node, source_bytes: bytes) -> str:
-    return source_bytes[node.start_byte:node.end_byte].decode("utf-8", errors="replace")
+def ensure_list(x):
+    """
+    Converts x to a list if it is not already an instance of list.
+    """
+    if x is None:
+        return []
+    return x if isinstance(x, list) else [x]
 
 def extract_imports(
     tree: Tree,
     language: Language,
     language_name: str,
-    source_bytes: bytes
+    source_code: bytes
 ) -> Dict[str, str]:
+    """
+    Generates an import map, which maps imports to the modules from which it is imported.
 
+    Args:
+        tree (Tree): tree-sitter parse tree of the source file
+        language (Language): Language object corresponding to the source file's programming language
+        language_name (str): Name of the programming language
+        source_code (bytes): Source code of the file encoded in bytes
+
+    Returns:
+        Dict[str, str]: A dictionary mapping imported symbols to their source modules.
+    """
+
+    # If language does not have a supported import query, return an empty map
     if language_name not in IMPORT_QUERIES:
         return {}
 
+    # Extract query pattern for the language and create a query object
     query = Query(language, IMPORT_QUERIES[language_name])
     cursor = QueryCursor(query)
     matches = cursor.matches(tree.root_node)
 
-    import_map: Dict[str, str] = {}
+    import_map = {}
 
     for _, captures in matches:
-
-        # Normalize all capture lists
-        def ensure_list(x):
-            if x is None:
-                return []
-            return x if isinstance(x, list) else [x]
-
         module_nodes = ensure_list(captures.get("imported_module"))
-        symbol_nodes = ensure_list(captures.get("imported_symbol"))
         alias_nodes = ensure_list(captures.get("alias"))
+        
         source_nodes = ensure_list(captures.get("source_module"))
+        symbol_nodes = ensure_list(captures.get("imported_symbol"))
+        
         wildcard_nodes = ensure_list(captures.get("wildcard"))
 
-        # -----------------------------
-        # Case 1: import x / import x as y
-        # -----------------------------
+        # import x / import x as y
+        # import module / import module as alias
         if module_nodes:
-            # Build alias map using AST structure
             alias_map = {}
 
             for alias_node in alias_nodes:
@@ -97,44 +145,48 @@ def extract_imports(
                 if parent:
                     for child in parent.children:
                         if child.type in ("dotted_name", "identifier"):
-                            name = get_node_text(child, source_bytes)
-                            alias_map[name] = get_node_text(alias_node, source_bytes)
+                            name = get_node_text(child, source_code)
+                            alias_map[name] = get_node_text(alias_node, source_code)
 
             for module_node in module_nodes:
-                module_name = get_node_text(module_node, source_bytes)
+                module_name = get_node_text(module_node, source_code)
 
                 if module_name in alias_map:
                     import_map[alias_map[module_name]] = module_name
                 else:
                     import_map[module_name] = module_name
 
-        # -----------------------------
-        # Case 2: from x import *
-        # -----------------------------
+        # from x import *
+        # from source_module import *
         elif source_nodes and wildcard_nodes:
-            source_module = get_node_text(source_nodes[0], source_bytes).strip("'\"")
+            source_module = get_node_text(source_nodes[0], source_code).strip("'\"")
 
-            import_map.setdefault("__wildcard__", []).append(source_module)
+            if "__wildcard__" in import_map:
+                import_map["__wildcard__"].append(source_module)
+            else:
+                import_map["__wildcard__"] = [source_module]
 
-        # -----------------------------
-        # Case 3: from x import y / y as z
-        # -----------------------------
+        # Python:
+        # from x import y / y as z
+        # from source_module import symbol / symbol as alias
+        # JS/TS:
+        # import {symbol} from source_module
+        # import symbol from source_module
+        # import {symbol as alias} from source_module
         elif source_nodes and symbol_nodes:
-            source_module = get_node_text(source_nodes[0], source_bytes).strip("'\"")
+            source_module = get_node_text(source_nodes[0], source_code).strip("'\"")
 
-            # Build alias map via AST
             alias_map = {}
-
             for alias_node in alias_nodes:
                 parent = alias_node.parent
                 if parent:
                     for child in parent.children:
                         if child.type in ("dotted_name", "identifier"):
-                            symbol = get_node_text(child, source_bytes)
-                            alias_map[symbol] = get_node_text(alias_node, source_bytes)
+                            symbol = get_node_text(child, source_code)
+                            alias_map[symbol] = get_node_text(alias_node, source_code)
 
             for symbol_node in symbol_nodes:
-                symbol_name = get_node_text(symbol_node, source_bytes)
+                symbol_name = get_node_text(symbol_node, source_code)
 
                 if symbol_name in alias_map:
                     import_map[alias_map[symbol_name]] = source_module
@@ -143,27 +195,62 @@ def extract_imports(
 
     return import_map
 
-def extract_calls(node, call_query, source_bytes, is_decorator: bool, calls_list, seen_calls):
-    for _, caps in QueryCursor(call_query).matches(node):
-        if "callee" in caps:
-            callee_node = caps["callee"][0]
-            call_name = get_node_text(callee_node, source_bytes)
-            is_method = callee_node.parent.type in {
-                "attribute", "member_expression", "property_identifier",
-                "field_expression", "selector_expression", "qualified_identifier"
-            }
-            sig = (call_name, is_method, is_decorator)
-            if sig not in seen_calls:
-                seen_calls.add(sig)
-                calls_list.append({
-                    "name": call_name,
-                    "is_method": is_method,
-                    "is_decorator": is_decorator
-                })
+def extract_calls(
+    node: Node, 
+    call_query: Query, 
+    source_code: bytes,
+    is_decorator: bool, 
+    calls_list: List[dict], 
+    seen_list: Set[str]
+):
+    """
+    Extract function calls inside a function
 
-# Extracts functions from a single source file and returns a list of FunctionNodes along with the imports found in that file.
+    Args:
+        node (Node): Function Node returned from the query matches for function definitions. This is the root node from which we will start looking for function calls.
+        call_query (Query): Query object for extracting function calls
+        source_code (bytes): Source code encoded in bytes
+        is_decorator (bool): Indicates whether the current function is a decorator.
+        calls_list (List[dict]): List to which the called function details are appended.
+        seen_list (Set[str]): Set to keep track of already seen function calls to avoid duplicates.
+    """
+    if node is None:
+        return
+
+    for _, captures in QueryCursor(call_query).matches(node):
+        if "callee" in captures:
+            callee_capture = captures["callee"]
+            callee_node = callee_capture[0] if isinstance(callee_capture, list) else callee_capture
+            call_name = get_node_text(callee_node, source_code)
+            if callee_node.parent.type in {
+                "attribute", "member_expression", "property_identifier",
+                "field_expression", "selector_expression", "qualified_identifier", "method_invocation"
+            }:
+                is_method = True
+            else:
+                is_method = False
+            
+            signature = f"{call_name}|{is_method}|{is_decorator}"
+            if signature in seen_list:
+                continue
+            seen_list.add(signature)
+            calls_list.append({
+                "name": call_name,
+                "is_method": is_method,
+                "is_decorator": is_decorator
+            })
+
 def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
-    language_name = detect_language(file_path)
+    """
+    Extracts functions from the source file.
+
+    Args:
+        file_path (str): Path to the source file
+
+    Returns:
+        tuple[List[FunctionNode], dict]: Returns a tuple of extracted functions and an import map
+    """
+    language_name = get_language(file_path)
     if language_name not in LANGUAGE_MAP:
         return [], {}
 
@@ -173,6 +260,7 @@ def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
     with open(file_path, "rb") as f:
         source_bytes = f.read()
 
+    # Generates the parse tree for the source file using tree-sitter and appropriate language determined using the file extension
     tree = parser.parse(source_bytes)
     
     # Extract imports to build a import map for this file.
@@ -197,14 +285,15 @@ def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
             continue
 
         # Get the function node (the parent of the body node).
-
-        func_node = body_node[0].parent if isinstance(body_node, list) else body_node.parent
+        if isinstance(body_node, list):
+            func_node = body_node[0].parent
+        else:
+            func_node = body_node.parent
+        
         if func_node is None:
             continue
 
-        # JS/TS: arrow_function or function_expression body's parent is the function node,
-        # but that function node's parent is variable_declarator — walk up one more level
-        # so func_node covers the full declaration including the variable name.
+        # Extracting complete function node for function expressions and arrow functions.
         if func_node.type in ("function_expression", "arrow_function"):
             if func_node.parent and func_node.parent.type == "variable_declarator":
                 func_node = func_node.parent
@@ -214,12 +303,16 @@ def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
             func_node = func_node.parent
 
         # Extract the name of the function/method.
-        # Standard name extraction
         if name_node:
-            base_name_text = get_node_text(name_node[0] if isinstance(name_node, list) else name_node, source_bytes)
-        # NEW: Fallback for anonymous default exports
+            if isinstance(name_node, list):
+                name_node = name_node[0]
+            base_name_text = get_node_text(name_node, source_bytes)
         else:
             base_name_text = "default_export"
+
+        if language_name == "cpp" and "::" in base_name_text:
+            base_name_text = base_name_text.replace("::", ".")
+            
         # For methods, we want to prefix with the parent class name to create a unique identifier. For functions, this will just be the function name.
         parent_class = get_full_parent_class_name(func_node, source_bytes)
         name_text = f"{parent_class}.{base_name_text}" if parent_class else base_name_text
@@ -230,45 +323,49 @@ def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
             source_node = func_node.parent
         if source_node.parent and source_node.parent.type == 'export_statement':
             source_node = source_node.parent
+            
+        # Extract code for the function
         source_text = get_node_text(source_node, source_bytes)
-        doc_text = get_node_text(doc_node[0] if isinstance(doc_node, list) else doc_node, source_bytes).strip('"\' \n') if doc_node else None
+        
+        if isinstance(doc_node, list):
+            doc_node = doc_node[0]
+        if doc_node:
+            doc_text = get_node_text(doc_node, source_bytes).strip('"\' \n')
+        else:
+            doc_text = None
 
-        calls_list = []
+        calls_list = list()
         seen_calls = set()
 
-        # Replace the call extraction block with this:
-
         FUNC_DEF_TYPES = {
-            "function_definition",       # Python
-            "function_declaration",      # JS/TS
-            "function_expression",       # JS/TS
-            "arrow_function",            # JS/TS
-            "method_definition",         # JS/TS class methods
+            "function_definition",
+            "function_declaration",
+            "function_expression",
+            "arrow_function",
+            "method_definition"
         }
 
         if func_node.type == "decorated_definition":
-            # Python decorated functions only
-            for deco_node in (c for c in func_node.children if c.type == "decorator"):
-                extract_calls(deco_node, call_query, source_bytes, is_decorator=True,
-                            calls_list=calls_list, seen_calls=seen_calls)
+            decorator_nodes = [c for c in func_node.children if c.type == "decorator"]
+            for deco_node in decorator_nodes:
+                extract_calls(deco_node, call_query, source_bytes, is_decorator=True, calls_list=calls_list, seen_list=seen_calls)
+                
             inner_func = next(c for c in func_node.children if c.type in FUNC_DEF_TYPES)
-            extract_calls(inner_func.child_by_field_name("body"), call_query, source_bytes,
-                        is_decorator=False, calls_list=calls_list, seen_calls=seen_calls)
+            extract_calls(inner_func.child_by_field_name("body"), call_query, source_bytes, is_decorator=False, calls_list=calls_list, seen_list=seen_calls)
+            
         elif func_node.type == "variable_declarator":
-            # JS/TS: arrow or function expression — body is inside the value child
             value = func_node.child_by_field_name("value")
             if value:
                 body = value.child_by_field_name("body")
                 if body:
-                    extract_calls(body, call_query, source_bytes, is_decorator=False,
-                                calls_list=calls_list, seen_calls=seen_calls)
+                    extract_calls(body, call_query, source_bytes, is_decorator=False, calls_list=calls_list, seen_list=seen_calls)
+                    
         else:
             body = func_node.child_by_field_name("body")
             if body:
-                extract_calls(body, call_query, source_bytes, is_decorator=False,
-                            calls_list=calls_list, seen_calls=seen_calls)
+                extract_calls(body, call_query, source_bytes, is_decorator=False, calls_list=calls_list, seen_list=seen_calls)
 
-        node_id = f"{file_path}::{name_text}::{func_node.start_point[0]}"
+        node_id = f"{file_path}[{func_node.start_point[0] + 1}-{func_node.end_point[0] + 1}]:{name_text}"
         if node_id in seen_ids:
             continue
         seen_ids.add(node_id)
@@ -285,11 +382,6 @@ def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
             calls=calls_list,
         ))
         
-    # -------------------------------------------------------------------------
-    # Capture the __main__ guard block as a pseudo-function, if present.
-    # We walk only the top-level children of the module so we never mistake a
-    # nested if-statement (e.g. inside a function) for the entry-point block.
-    # -------------------------------------------------------------------------
     if language_name == "python":
         for child in tree.root_node.children:
             if child.type != "if_statement":
@@ -307,12 +399,11 @@ def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
             if body is None:
                 continue
 
-            # Reuse the call extraction logic on this block
             calls_list = []
             seen_calls = set()
-            extract_calls(child, call_query, source_bytes, is_decorator=False, calls_list=calls_list, seen_calls=seen_calls)
+            extract_calls(child, call_query, source_bytes, is_decorator=False, calls_list=calls_list, seen_list=seen_calls)
 
-            node_id = f"{file_path}::__main__::{child.start_point[0]}"
+            node_id = f"{file_path}[{child.start_point[0] + 1}-{child.end_point[0] + 1}]:__main__"
             functions.append(FunctionNode(
                 id=node_id,
                 name="__main__",
@@ -324,18 +415,26 @@ def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
                 docstring=None,
                 calls=calls_list,
             ))
-            break  # there can only be one __main__ block per file
+            break
 
     return functions, file_import_map
 
 def index_repository(repo_path: str) -> tuple[List[FunctionNode], dict]:
-    """Walk the entire repo and extract functions from all supported files."""
+    """
+    Indexes the complete repository by extracting the functions from each source file in the repository.
+
+    Args:
+        repo_path (str): Path to the repository
+
+    Returns:
+        tuple[List[FunctionNode], dict]: Returns a list of functions extracted and imports map
+    """
+    
     all_functions = []
     global_import_map = {}
     skipped = []
 
     for root, dirs, files in os.walk(repo_path):
-        # Skip irrelevant directories
         dirs[:] = [d for d in dirs if d not in {
             ".git", "node_modules", "__pycache__", ".venv",
             "venv", "dist", "build", "target", ".idea", ".vscode"
@@ -344,7 +443,7 @@ def index_repository(repo_path: str) -> tuple[List[FunctionNode], dict]:
         # Process each file in the current directory
         for file in files:
             full_path = os.path.join(root, file)
-            lang = detect_language(full_path)
+            lang = get_language(full_path)
             if lang is None:
                 continue
             try:
@@ -352,11 +451,9 @@ def index_repository(repo_path: str) -> tuple[List[FunctionNode], dict]:
                 all_functions.extend(fns)
                 global_import_map[full_path] = imports
             except Exception as e:
-                # Store the exact error message so we aren't guessing next time
                 skipped.append((full_path, str(e)))
 
-    print(f"Indexed {len(all_functions)} functions across "
-          f"{len(set(fn.file_path for fn in all_functions))} files.")
+    print(f"Indexed {len(all_functions)} functions across {len(set(fn.file_path for fn in all_functions))} files.")
     
     if skipped:
         print(f"Skipped {len(skipped)} files due to errors:")
@@ -366,6 +463,15 @@ def index_repository(repo_path: str) -> tuple[List[FunctionNode], dict]:
     return all_functions, global_import_map
 
 def serialize_func_node(fn: FunctionNode) -> dict:
+    """
+    Converts the function node into a dictionary for serializing.
+
+    Args:
+        fn (FunctionNode): Function Node to be serialized
+
+    Returns:
+        dict: Dictionary representation of the function node
+    """
     return {
         "id": fn.id,
         "name": fn.name,
@@ -378,7 +484,14 @@ def serialize_func_node(fn: FunctionNode) -> dict:
         "calls": fn.calls,
     }
     
-def save_functions_to_json(functions: list[FunctionNode], output_file: str):
+def save_functions_to_json(functions: list[FunctionNode], output_file: str) -> None:
+    """
+    Save functions extracted to a json file.
+
+    Args:
+        functions (list[FunctionNode]): List of function nodes to be saved
+        output_file (str): Path to the output JSON file
+    """
     data = [serialize_func_node(fn) for fn in functions]
 
     with open(output_file, "w", encoding="utf-8") as f:
@@ -390,9 +503,7 @@ if __name__ == "__main__":
     print(f"Starting parser on: {target_repo} ...")
     extracted_functions, extracted_imports = index_repository(target_repo)
     
-    print("\n" + "="*60)
-    print("GLOBAL IMPORT MAP (FILE -> {SYMBOL: MODULE})")
-    print("="*60)
+    print("Import Map structured as {SYMBOL: MODULE}:")
     print(json.dumps(extracted_imports, indent=4))
     
     output_json = "./extracted_functions.json"

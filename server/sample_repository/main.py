@@ -1,5 +1,7 @@
 from text_processor import DocumentProcessor
 from math_utils import calculate_bm25
+from a import b as c
+from math import sqrt, cos
 
 def run_pipeline(document_text):
     """Main execution function for the pipeline."""

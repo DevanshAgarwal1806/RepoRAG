@@ -2,24 +2,21 @@ import tree_sitter_python as tspython
 import tree_sitter_javascript as tsjavascript
 import tree_sitter_typescript as tstypescript
 import tree_sitter_java as tsjava
-import tree_sitter_go as tsgo
-import tree_sitter_rust as tsrust
 import tree_sitter_cpp as tscpp
 import tree_sitter_c as tsc
-import tree_sitter_ruby as tsruby
-import tree_sitter_php as tsphp
 from tree_sitter import Language
 
 QUERIES = {
     "python": """
         (function_definition
-        name: (identifier) @name
-        body: (block
-            .
-            (expression_statement
-            (string
-                (string_content) @docstring))?
-            (_)*) @body)
+            name: (identifier) @name
+            body: (block
+                .
+                (expression_statement
+                (string
+                    (string_content) @docstring))?
+                (_)*) @body
+            )
     """,
     "javascript": """
         (function_declaration
@@ -33,12 +30,27 @@ QUERIES = {
         (variable_declarator
             name: (identifier) @name
             value: (function_expression
-                body: (statement_block) @body))
-
+                        body: (statement_block) @body
+                    )
+        )
+        
         (variable_declarator
             name: (identifier) @name
             value: (arrow_function
-                body: (statement_block) @body))
+                        body: (statement_block) @body
+                    )
+        )
+        
+        (export_statement
+            declaration: (lexical_declaration
+                (variable_declarator
+                    name: (identifier) @name
+                    value: (arrow_function
+                        body: [(statement_block) (expression)] @body))))
+                        
+        (export_statement
+            value: (arrow_function
+                body: [(statement_block) (expression)] @body) @is_default_export)
     """,
     "typescript": """
         (function_declaration
@@ -100,26 +112,147 @@ QUERIES = {
             value: (arrow_function
                 body: [(statement_block) (expression)] @body) @is_default_export)
     """,
+    "java": """
+        (method_declaration
+            name: (identifier) @name
+            body: (block) @body)
+
+        (constructor_declaration
+            name: (identifier) @name
+            body: (constructor_body) @body)
+    """,
+    "c": """
+        (function_definition
+            declarator: (function_declarator
+                            declarator: (identifier) @name
+                        )
+            body: (compound_statement) @body
+        )
+
+        (function_definition
+            declarator: (pointer_declarator
+                            declarator: (function_declarator
+                                            declarator: (identifier) @name
+                                        )
+                        )
+            body: (compound_statement) @body
+        )
+        
+        (call_expression
+            function: (parenthesized_expression
+                            (pointer_expression
+                                (field_expression
+                                    field: (field_identifier) @callee
+                                )
+                            )
+                        )
+        )
+        
+        (call_expression
+            function: (parenthesized_expression
+                            (pointer_expression
+                                (identifier) @callee
+                            )
+                        )
+        )
+    """,
+    "cpp": """
+        (function_definition
+            declarator: (function_declarator
+                declarator: (identifier) @name)
+            body: (compound_statement) @body)
+
+        (function_definition
+            declarator: (function_declarator
+                declarator: (field_identifier) @name)
+            body: (compound_statement) @body)
+
+        (function_definition
+            declarator: (function_declarator
+                declarator: (qualified_identifier) @name)
+            body: (compound_statement) @body)
+
+        (function_definition
+            declarator: (pointer_declarator
+                declarator: (function_declarator
+                    declarator: (identifier) @name))
+            body: (compound_statement) @body)
+    """,
 }
 
 CALL_QUERIES = {
     "python": """
-        (call function: (identifier) @callee)
-        (call function: (attribute attribute: (identifier) @callee))
+        (call 
+            function: 
+                (identifier) @callee
+        )
+        (call 
+            function: 
+                (attribute 
+                    attribute: (identifier) @callee
+                )
+        )
     """,
     "javascript": """
-        (call_expression function: (identifier) @callee)
-        (call_expression function: (member_expression property: (property_identifier) @callee))
+        (call_expression 
+            function: (identifier) @callee
+        )
+        (call_expression 
+            function: 
+                (member_expression 
+                    property: (property_identifier) @callee
+                )
+        )
     """,
     "typescript": """
-        (call_expression function: (identifier) @callee)
-        (call_expression function: (member_expression property: (property_identifier) @callee))
+        (call_expression 
+            function: (identifier) @callee
+        )
+        (call_expression 
+            function: 
+                (member_expression 
+                    property: (property_identifier) @callee
+                )
+        )
     """,
     "tsx": """
-        (call_expression function: (identifier) @callee)
-        (call_expression function: (member_expression property: (property_identifier) @callee))
+        (call_expression 
+            function: (identifier) @callee
+        )
+        (call_expression 
+            function: 
+                (member_expression 
+                    property: (property_identifier) @callee
+                )
+        )
     """,
+    "java": """
+        (method_invocation
+            name: (identifier) @callee)
 
+        (object_creation_expression
+            type: (type_identifier) @callee)
+    """,
+    "c": """
+        (call_expression
+            function: (identifier) @callee)
+
+        (call_expression
+            function: (field_expression
+                field: (field_identifier) @callee))
+    """,
+    "cpp": """
+        (call_expression
+            function: (identifier) @callee)
+
+        (call_expression
+            function: (field_expression
+                field: (field_identifier) @callee))
+
+        (call_expression
+            function: (qualified_identifier
+                name: (identifier) @callee))
+    """,
 }
 
 IMPORT_QUERIES = {
@@ -222,6 +355,30 @@ IMPORT_QUERIES = {
             (import_clause (namespace_import (identifier) @imported_symbol))
             source: (string) @source_module)
     """,
+    "java": """
+        (import_declaration
+            (scoped_identifier
+                scope: (_) @source_module
+                name: (identifier) @imported_symbol))
+
+        (import_declaration
+            (scoped_identifier) @source_module
+            (asterisk) @wildcard)
+    """,
+    "c": """
+        (preproc_include
+            path: (system_lib_string) @source_module)
+
+        (preproc_include
+            path: (string_literal) @source_module)
+    """,
+    "cpp": """
+        (preproc_include
+            path: (system_lib_string) @source_module)
+
+        (preproc_include
+            path: (string_literal) @source_module)
+    """,
 }
 
 LANGUAGE_MAP = {
@@ -229,12 +386,22 @@ LANGUAGE_MAP = {
     "javascript": Language(tsjavascript.language()),
     "typescript": Language(tstypescript.language_typescript()),
     "tsx": Language(tstypescript.language_tsx()),
+    "java": Language(tsjava.language()),
+    "c": Language(tsc.language()),
+    "cpp": Language(tscpp.language()),
 }
 
 EXTENSION_MAP = {
     ".py": "python",
-    ".js":  "javascript",
+    ".js": "javascript",
     ".jsx": "javascript",   # JSX uses the JS grammar
-    ".ts":  "typescript",
+    ".ts": "typescript",
     ".tsx": "tsx",   # TSX uses the TS grammar
+    ".java": "java",
+    ".c": "c",
+    ".h": "c",       # C headers — may also contain function definitions
+    ".cpp": "cpp",
+    ".cc": "cpp",
+    ".cxx": "cpp",
+    ".hpp": "cpp",
 }

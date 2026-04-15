@@ -11,7 +11,7 @@
       "end_line": 13,
       "docstring": null,
       "source": "@functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass",
-      "id": "server/sample_repository/fetch.py::wrapper::6"
+      "id": "server/sample_repository/fetch.py[7-13]:wrapper"
     },
     {
       "name": "decorator",
@@ -21,7 +21,7 @@
       "end_line": 14,
       "docstring": null,
       "source": "def decorator(func):\n        @functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass\n        return wrapper",
-      "id": "server/sample_repository/fetch.py::decorator::5"
+      "id": "server/sample_repository/fetch.py[6-14]:decorator"
     },
     {
       "name": "retry",
@@ -31,7 +31,7 @@
       "end_line": 15,
       "docstring": null,
       "source": "def retry(max_attempts=3):\n    def decorator(func):\n        @functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass\n        return wrapper\n    return decorator",
-      "id": "server/sample_repository/fetch.py::retry::4"
+      "id": "server/sample_repository/fetch.py[5-15]:retry"
     },
     {
       "name": "fetch_data",
@@ -41,7 +41,7 @@
       "end_line": 24,
       "docstring": "Fetches data from the given URL asynchronously.",
       "source": "@retry(max_attempts=5)\nasync def fetch_data(url):\n    \"\"\"Fetches data from the given URL asynchronously.\"\"\"\n    reader, writer = await asyncio.open_connection(url, 80)\n    writer.write(b\"GET / HTTP/1.0\\r\\n\\r\\n\")\n    data = await reader.read(100)\n    writer.close()\n    return data",
-      "id": "server/sample_repository/fetch.py::fetch_data::16"
+      "id": "server/sample_repository/fetch.py[17-24]:fetch_data"
     },
     {
       "name": "process_batch",
@@ -51,7 +51,7 @@
       "end_line": 28,
       "docstring": null,
       "source": "async def process_batch(items):\n    results = await asyncio.gather(*[fetch_data(item) for item in items])\n    return results",
-      "id": "server/sample_repository/fetch.py::process_batch::25"
+      "id": "server/sample_repository/fetch.py[26-28]:process_batch"
     },
     {
       "name": "__main__",
@@ -61,7 +61,7 @@
       "end_line": 31,
       "docstring": null,
       "source": "if __name__ == \"__main__\":\n    asyncio.run(process_batch([\"example.com\", \"test.com\"]))",
-      "id": "server/sample_repository/fetch.py::__main__::29"
+      "id": "server/sample_repository/fetch.py[30-31]:__main__"
     },
     {
       "name": "calculate_bm25",
@@ -71,7 +71,7 @@
       "end_line": 4,
       "docstring": "Calculates the BM25 score for a given term.",
       "source": "def calculate_bm25(tf, idf):\n    \"\"\"Calculates the BM25 score for a given term.\"\"\"\n    # Simplified for testing\n    return tf * idf",
-      "id": "server/sample_repository/math_utils.py::calculate_bm25::0"
+      "id": "server/sample_repository/math_utils.py[1-4]:calculate_bm25"
     },
     {
       "name": "normalize_score",
@@ -81,7 +81,7 @@
       "end_line": 8,
       "docstring": null,
       "source": "def normalize_score(score):\n    # Notice this function intentionally lacks a docstring\n    return score / 100.0",
-      "id": "server/sample_repository/math_utils.py::normalize_score::5"
+      "id": "server/sample_repository/math_utils.py[6-8]:normalize_score"
     },
     {
       "name": "UserProfile",
@@ -91,7 +91,7 @@
       "end_line": 47,
       "docstring": null,
       "source": "export const UserProfile = ({ userId }: { userId: string }) => {\n    /** Main React Component for displaying a user's profile. */\n    \n    // React Hooks (Standalone calls)\n    const [user, setUser] = useState<any>(null);\n\n    useEffect(() => {\n        // Nested arrow function inside a hook\n        const loadUser = async () => {\n            // Object method call from the imported class\n            const data = await client.fetchUserData(userId);\n            setUser(data);\n        };\n        \n        loadUser();\n    }, [userId]);\n\n    if (!user) {\n        return <div>Loading...</div>;\n    }\n\n    return (\n        <div className=\"profile-card\">\n            <h1>{user.name}</h1>\n            {/* Standalone calls imported from utils */}\n            <p>Age: {calculateAge(user.birthYear)}</p>\n            <p>Joined: {formatDate(user.joinDate)}</p>\n            \n            <div className=\"hobbies\">\n                <h3>Hobbies</h3>\n                <ul>\n                    {/* Method call (.map) on an array inside JSX */}\n                    {user.hobbies.map((hobby: string) => (\n                        <li key={hobby}>{hobby}</li>\n                    ))}\n                </ul>\n            </div>\n        </div>\n    );\n};",
-      "id": "server/sample_repository/userprofile.tsx::UserProfile::7"
+      "id": "server/sample_repository/userprofile.tsx[8-47]:UserProfile"
     },
     {
       "name": "loadUser",
@@ -101,7 +101,7 @@
       "end_line": 20,
       "docstring": null,
       "source": "const loadUser = async () => {\n            // Object method call from the imported class\n            const data = await client.fetchUserData(userId);\n            setUser(data);\n        };",
-      "id": "server/sample_repository/userprofile.tsx::loadUser::15"
+      "id": "server/sample_repository/userprofile.tsx[16-20]:loadUser"
     },
     {
       "name": "DocumentProcessor.__init__",
@@ -111,7 +111,7 @@
       "end_line": 4,
       "docstring": "Initializes the processor with stop words.",
       "source": "def __init__(self, stop_words):\n        \"\"\"Initializes the processor with stop words.\"\"\"\n        self.stop_words = stop_words",
-      "id": "server/sample_repository/text_processor.py::DocumentProcessor.__init__::1"
+      "id": "server/sample_repository/text_processor.py[2-4]:DocumentProcessor.__init__"
     },
     {
       "name": "DocumentProcessor.remove_punctuation",
@@ -121,7 +121,7 @@
       "end_line": 8,
       "docstring": null,
       "source": "def remove_punctuation(self, text):\n        # Calls string methods (.replace)\n        return text.replace(\".\", \"\").replace(\",\", \"\")",
-      "id": "server/sample_repository/text_processor.py::DocumentProcessor.remove_punctuation::5"
+      "id": "server/sample_repository/text_processor.py[6-8]:DocumentProcessor.remove_punctuation"
     },
     {
       "name": "DocumentProcessor.clean_text",
@@ -131,7 +131,7 @@
       "end_line": 16,
       "docstring": "Cleans the text by removing punctuation and converting to lowercase.",
       "source": "def clean_text(self, raw_text):\n        \"\"\"Cleans the text by removing punctuation and converting to lowercase.\"\"\"\n        # Calls another method within the same class\n        no_punct = self.remove_punctuation(raw_text)\n        \n        # Calls string method (.lower)\n        return no_punct.lower()",
-      "id": "server/sample_repository/text_processor.py::DocumentProcessor.clean_text::9"
+      "id": "server/sample_repository/text_processor.py[10-16]:DocumentProcessor.clean_text"
     },
     {
       "name": "formatDate",
@@ -141,7 +141,7 @@
       "end_line": 8,
       "docstring": null,
       "source": "export function formatDate(dateString: string): string {\n    /** Formats a raw ISO date string into a readable local string. */\n    const date = new Date(dateString);\n    // Method call on standard JS object\n    return date.toLocaleDateString();\n}",
-      "id": "server/sample_repository/utils.ts::formatDate::2"
+      "id": "server/sample_repository/utils.ts[3-8]:formatDate"
     },
     {
       "name": "calculateAge",
@@ -151,7 +151,7 @@
       "end_line": 14,
       "docstring": null,
       "source": "export const calculateAge = (birthYear: number): number => {\n    // Standard arrow function without a docstring\n    const currentYear = new Date().getFullYear();\n    return currentYear - birthYear;\n}",
-      "id": "server/sample_repository/utils.ts::calculateAge::9"
+      "id": "server/sample_repository/utils.ts[10-14]:calculateAge"
     },
     {
       "name": "ApiClient.constructor",
@@ -161,7 +161,7 @@
       "end_line": 8,
       "docstring": null,
       "source": "constructor(baseUrl: string) {\n        this.baseUrl = baseUrl;\n    }",
-      "id": "server/sample_repository/api.ts::ApiClient.constructor::5"
+      "id": "server/sample_repository/api.ts[6-8]:ApiClient.constructor"
     },
     {
       "name": "ApiClient.fetchUserData",
@@ -171,27 +171,107 @@
       "end_line": 16,
       "docstring": null,
       "source": "async fetchUserData(id: string) {\n        /** Fetches user data from the backend API. */\n        // Global fetch call\n        const response = await fetch(`${this.baseUrl}/users/${id}`);\n        // Object method call\n        return response.json();\n    }",
-      "id": "server/sample_repository/api.ts::ApiClient.fetchUserData::9"
+      "id": "server/sample_repository/api.ts[10-16]:ApiClient.fetchUserData"
+    },
+    {
+      "name": "greet",
+      "language": "c",
+      "file": "server/sample_repository/code1.c",
+      "start_line": 11,
+      "end_line": 13,
+      "docstring": null,
+      "source": "void greet(struct Person p) {\n    printf(\"Hello, my name is %s and I am %d years old.\\n\", p.name, p.age);\n}",
+      "id": "server/sample_repository/code1.c[11-13]:greet"
+    },
+    {
+      "name": "main",
+      "language": "c",
+      "file": "server/sample_repository/code1.c",
+      "start_line": 15,
+      "end_line": 25,
+      "docstring": null,
+      "source": "int main() {\n    // Create and initialize a Person instance\n    struct Person person1;\n    strcpy(person1.name, \"Alice\");\n    person1.age = 30;\n\n    // Call the greeting function\n    greet(person1);\n\n    return 0;\n}",
+      "id": "server/sample_repository/code1.c[15-25]:main"
+    },
+    {
+      "name": "Main.Person.Person",
+      "language": "java",
+      "file": "server/sample_repository/Main.java",
+      "start_line": 11,
+      "end_line": 14,
+      "docstring": null,
+      "source": "public Person(String name, int age) {\n            this.name = name;\n            this.age = age;\n        }",
+      "id": "server/sample_repository/Main.java[11-14]:Main.Person.Person"
+    },
+    {
+      "name": "Main.Person.greet",
+      "language": "java",
+      "file": "server/sample_repository/Main.java",
+      "start_line": 17,
+      "end_line": 20,
+      "docstring": null,
+      "source": "public void greet() {\n            System.out.println(\"Hello, my name is \" + name + \n                               \" and I am \" + age + \" years old.\");\n        }",
+      "id": "server/sample_repository/Main.java[17-20]:Main.Person.greet"
+    },
+    {
+      "name": "Main.main",
+      "language": "java",
+      "file": "server/sample_repository/Main.java",
+      "start_line": 24,
+      "end_line": 30,
+      "docstring": null,
+      "source": "public static void main(String[] args) {\n        // Create a new Person object\n        Person person1 = new Person(\"Charlie\", 28);\n        \n        // Call the method\n        person1.greet();\n    }",
+      "id": "server/sample_repository/Main.java[24-30]:Main.main"
     },
     {
       "name": "run_pipeline",
       "language": "python",
       "file": "server/sample_repository/main.py",
-      "start_line": 4,
-      "end_line": 15,
+      "start_line": 6,
+      "end_line": 17,
       "docstring": "Main execution function for the pipeline.",
       "source": "def run_pipeline(document_text):\n    \"\"\"Main execution function for the pipeline.\"\"\"\n    processor = DocumentProcessor([\"the\", \"is\", \"and\"])\n    \n    # Call to object method\n    cleaned_doc = processor.clean_text(document_text)\n    \n    # Standalone function call\n    score = calculate_bm25(5.0, 1.2)\n    \n    print(f\"Processed document score: {score}\")\n    return score",
-      "id": "server/sample_repository/main.py::run_pipeline::3"
+      "id": "server/sample_repository/main.py[6-17]:run_pipeline"
     },
     {
       "name": "__main__",
       "language": "python",
       "file": "server/sample_repository/main.py",
-      "start_line": 17,
-      "end_line": 19,
+      "start_line": 19,
+      "end_line": 21,
       "docstring": null,
       "source": "if __name__ == \"__main__\":\n    sample_text = \"This is a sample document to test the processing pipeline.\"\n    run_pipeline(sample_text)",
-      "id": "server/sample_repository/main.py::__main__::16"
+      "id": "server/sample_repository/main.py[19-21]:__main__"
+    },
+    {
+      "name": "Person.Person",
+      "language": "cpp",
+      "file": "server/sample_repository/code1.cpp",
+      "start_line": 11,
+      "end_line": 11,
+      "docstring": null,
+      "source": "Person(std::string n, int a) : name(n), age(a) {}",
+      "id": "server/sample_repository/code1.cpp[11-11]:Person.Person"
+    },
+    {
+      "name": "Person.greet",
+      "language": "cpp",
+      "file": "server/sample_repository/code1.cpp",
+      "start_line": 14,
+      "end_line": 17,
+      "docstring": null,
+      "source": "void greet() {\n        std::cout << \"Hello, my name is \" << name \n                  << \" and I am \" << age << \" years old.\\n\";\n    }",
+      "id": "server/sample_repository/code1.cpp[14-17]:Person.greet"
+    },
+    {
+      "name": "main",
+      "language": "cpp",
+      "file": "server/sample_repository/code1.cpp",
+      "start_line": 20,
+      "end_line": 28,
+      "docstring": null,
+      "source": "int main() {\n    // Create an instance of Person using the constructor\n    Person person1(\"Bob\", 25);\n\n    // Call the method on the object\n    person1.greet();\n\n    return 0;\n}",
+      "id": "server/sample_repository/code1.cpp[20-28]:main"
     },
     {
       "name": "wraps",
@@ -403,6 +483,39 @@
       "id": "__external__::json"
     },
     {
+      "name": "printf",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::printf"
+    },
+    {
+      "name": "strcpy",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::strcpy"
+    },
+    {
+      "name": "println",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::println"
+    },
+    {
       "name": "DocumentProcessor",
       "language": "external",
       "file": "",
@@ -429,242 +542,302 @@
     {
       "weight": 0.1,
       "is_decorator": true,
-      "source": "server/sample_repository/fetch.py::wrapper::6",
+      "source": "server/sample_repository/fetch.py[7-13]:wrapper",
       "target": "__external__::wraps"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::wrapper::6",
+      "source": "server/sample_repository/fetch.py[7-13]:wrapper",
       "target": "__external__::range"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::wrapper::6",
+      "source": "server/sample_repository/fetch.py[7-13]:wrapper",
       "target": "__external__::func"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::decorator::5",
+      "source": "server/sample_repository/fetch.py[6-14]:decorator",
       "target": "__external__::wraps"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::decorator::5",
+      "source": "server/sample_repository/fetch.py[6-14]:decorator",
       "target": "__external__::range"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::decorator::5",
+      "source": "server/sample_repository/fetch.py[6-14]:decorator",
       "target": "__external__::func"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::retry::4",
+      "source": "server/sample_repository/fetch.py[5-15]:retry",
       "target": "__external__::wraps"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::retry::4",
+      "source": "server/sample_repository/fetch.py[5-15]:retry",
       "target": "__external__::range"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::retry::4",
+      "source": "server/sample_repository/fetch.py[5-15]:retry",
       "target": "__external__::func"
     },
     {
       "weight": 1.0,
       "is_decorator": true,
-      "source": "server/sample_repository/fetch.py::fetch_data::16",
-      "target": "server/sample_repository/fetch.py::retry::4"
+      "source": "server/sample_repository/fetch.py[17-24]:fetch_data",
+      "target": "server/sample_repository/fetch.py[5-15]:retry"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::fetch_data::16",
+      "source": "server/sample_repository/fetch.py[17-24]:fetch_data",
       "target": "__external__::open_connection"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::fetch_data::16",
+      "source": "server/sample_repository/fetch.py[17-24]:fetch_data",
       "target": "__external__::write"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::fetch_data::16",
+      "source": "server/sample_repository/fetch.py[17-24]:fetch_data",
       "target": "__external__::read"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::fetch_data::16",
+      "source": "server/sample_repository/fetch.py[17-24]:fetch_data",
       "target": "__external__::close"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::process_batch::25",
+      "source": "server/sample_repository/fetch.py[26-28]:process_batch",
       "target": "__external__::gather"
     },
     {
       "weight": 1.0,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::process_batch::25",
-      "target": "server/sample_repository/fetch.py::fetch_data::16"
+      "source": "server/sample_repository/fetch.py[26-28]:process_batch",
+      "target": "server/sample_repository/fetch.py[17-24]:fetch_data"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::__main__::29",
+      "source": "server/sample_repository/fetch.py[30-31]:__main__",
       "target": "__external__::run"
     },
     {
       "weight": 1.0,
       "is_decorator": false,
-      "source": "server/sample_repository/fetch.py::__main__::29",
-      "target": "server/sample_repository/fetch.py::process_batch::25"
+      "source": "server/sample_repository/fetch.py[30-31]:__main__",
+      "target": "server/sample_repository/fetch.py[26-28]:process_batch"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
+      "source": "server/sample_repository/userprofile.tsx[8-47]:UserProfile",
       "target": "__external__::useState"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
+      "source": "server/sample_repository/userprofile.tsx[8-47]:UserProfile",
       "target": "__external__::useEffect"
     },
     {
       "weight": 0.9,
       "is_decorator": false,
-      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
-      "target": "server/sample_repository/api.ts::ApiClient.fetchUserData::9"
+      "source": "server/sample_repository/userprofile.tsx[8-47]:UserProfile",
+      "target": "server/sample_repository/api.ts[10-16]:ApiClient.fetchUserData"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
+      "source": "server/sample_repository/userprofile.tsx[8-47]:UserProfile",
       "target": "__external__::setUser"
     },
     {
       "weight": 1.0,
       "is_decorator": false,
-      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
-      "target": "server/sample_repository/userprofile.tsx::loadUser::15"
+      "source": "server/sample_repository/userprofile.tsx[8-47]:UserProfile",
+      "target": "server/sample_repository/userprofile.tsx[16-20]:loadUser"
     },
     {
       "weight": 0.5,
       "is_decorator": false,
-      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
-      "target": "server/sample_repository/utils.ts::calculateAge::9"
+      "source": "server/sample_repository/userprofile.tsx[8-47]:UserProfile",
+      "target": "server/sample_repository/utils.ts[10-14]:calculateAge"
     },
     {
       "weight": 0.5,
       "is_decorator": false,
-      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
-      "target": "server/sample_repository/utils.ts::formatDate::2"
+      "source": "server/sample_repository/userprofile.tsx[8-47]:UserProfile",
+      "target": "server/sample_repository/utils.ts[3-8]:formatDate"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/userprofile.tsx::UserProfile::7",
+      "source": "server/sample_repository/userprofile.tsx[8-47]:UserProfile",
       "target": "__external__::map"
     },
     {
       "weight": 0.9,
       "is_decorator": false,
-      "source": "server/sample_repository/userprofile.tsx::loadUser::15",
-      "target": "server/sample_repository/api.ts::ApiClient.fetchUserData::9"
+      "source": "server/sample_repository/userprofile.tsx[16-20]:loadUser",
+      "target": "server/sample_repository/api.ts[10-16]:ApiClient.fetchUserData"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/userprofile.tsx::loadUser::15",
+      "source": "server/sample_repository/userprofile.tsx[16-20]:loadUser",
       "target": "__external__::setUser"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/text_processor.py::DocumentProcessor.remove_punctuation::5",
+      "source": "server/sample_repository/text_processor.py[6-8]:DocumentProcessor.remove_punctuation",
       "target": "__external__::replace"
     },
     {
       "weight": 0.9,
       "is_decorator": false,
-      "source": "server/sample_repository/text_processor.py::DocumentProcessor.clean_text::9",
-      "target": "server/sample_repository/text_processor.py::DocumentProcessor.remove_punctuation::5"
+      "source": "server/sample_repository/text_processor.py[10-16]:DocumentProcessor.clean_text",
+      "target": "server/sample_repository/text_processor.py[6-8]:DocumentProcessor.remove_punctuation"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/text_processor.py::DocumentProcessor.clean_text::9",
+      "source": "server/sample_repository/text_processor.py[10-16]:DocumentProcessor.clean_text",
       "target": "__external__::lower"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/utils.ts::formatDate::2",
+      "source": "server/sample_repository/utils.ts[3-8]:formatDate",
       "target": "__external__::toLocaleDateString"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/utils.ts::calculateAge::9",
+      "source": "server/sample_repository/utils.ts[10-14]:calculateAge",
       "target": "__external__::getFullYear"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/api.ts::ApiClient.fetchUserData::9",
+      "source": "server/sample_repository/api.ts[10-16]:ApiClient.fetchUserData",
       "target": "__external__::fetch"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/api.ts::ApiClient.fetchUserData::9",
+      "source": "server/sample_repository/api.ts[10-16]:ApiClient.fetchUserData",
       "target": "__external__::json"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/main.py::run_pipeline::3",
+      "source": "server/sample_repository/code1.c[11-13]:greet",
+      "target": "__external__::printf"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/code1.c[15-25]:main",
+      "target": "__external__::strcpy"
+    },
+    {
+      "weight": 1.0,
+      "is_decorator": false,
+      "source": "server/sample_repository/code1.c[15-25]:main",
+      "target": "server/sample_repository/code1.c[11-13]:greet"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/Main.java[17-20]:Main.Person.greet",
+      "target": "__external__::println"
+    },
+    {
+      "weight": 0.6,
+      "is_decorator": false,
+      "source": "server/sample_repository/Main.java[24-30]:Main.main",
+      "target": "server/sample_repository/Main.java[11-14]:Main.Person.Person"
+    },
+    {
+      "weight": 0.3,
+      "is_decorator": false,
+      "source": "server/sample_repository/Main.java[24-30]:Main.main",
+      "target": "server/sample_repository/code1.cpp[11-11]:Person.Person"
+    },
+    {
+      "weight": 0.9,
+      "is_decorator": false,
+      "source": "server/sample_repository/Main.java[24-30]:Main.main",
+      "target": "server/sample_repository/Main.java[17-20]:Main.Person.greet"
+    },
+    {
+      "weight": 0.2,
+      "is_decorator": false,
+      "source": "server/sample_repository/Main.java[24-30]:Main.main",
+      "target": "server/sample_repository/code1.cpp[14-17]:Person.greet"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/main.py[6-17]:run_pipeline",
       "target": "__external__::DocumentProcessor"
     },
     {
       "weight": 0.9,
       "is_decorator": false,
-      "source": "server/sample_repository/main.py::run_pipeline::3",
-      "target": "server/sample_repository/text_processor.py::DocumentProcessor.clean_text::9"
+      "source": "server/sample_repository/main.py[6-17]:run_pipeline",
+      "target": "server/sample_repository/text_processor.py[10-16]:DocumentProcessor.clean_text"
     },
     {
       "weight": 1.0,
       "is_decorator": false,
-      "source": "server/sample_repository/main.py::run_pipeline::3",
-      "target": "server/sample_repository/math_utils.py::calculate_bm25::0"
+      "source": "server/sample_repository/main.py[6-17]:run_pipeline",
+      "target": "server/sample_repository/math_utils.py[1-4]:calculate_bm25"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/main.py::run_pipeline::3",
+      "source": "server/sample_repository/main.py[6-17]:run_pipeline",
       "target": "__external__::print"
     },
     {
       "weight": 1.0,
       "is_decorator": false,
-      "source": "server/sample_repository/main.py::__main__::16",
-      "target": "server/sample_repository/main.py::run_pipeline::3"
+      "source": "server/sample_repository/main.py[19-21]:__main__",
+      "target": "server/sample_repository/main.py[6-17]:run_pipeline"
+    },
+    {
+      "weight": 0.2,
+      "is_decorator": false,
+      "source": "server/sample_repository/code1.cpp[20-28]:main",
+      "target": "server/sample_repository/Main.java[17-20]:Main.Person.greet"
+    },
+    {
+      "weight": 0.9,
+      "is_decorator": false,
+      "source": "server/sample_repository/code1.cpp[20-28]:main",
+      "target": "server/sample_repository/code1.cpp[14-17]:Person.greet"
     }
   ]
 }

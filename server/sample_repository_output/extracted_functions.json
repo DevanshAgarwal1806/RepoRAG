@@ -1,6 +1,6 @@
 [
   {
-    "id": "server/sample_repository/fetch.py::wrapper::6",
+    "id": "server/sample_repository/fetch.py[7-13]:wrapper",
     "name": "wrapper",
     "language": "python",
     "file_path": "server/sample_repository/fetch.py",
@@ -27,7 +27,7 @@
     ]
   },
   {
-    "id": "server/sample_repository/fetch.py::decorator::5",
+    "id": "server/sample_repository/fetch.py[6-14]:decorator",
     "name": "decorator",
     "language": "python",
     "file_path": "server/sample_repository/fetch.py",
@@ -54,7 +54,7 @@
     ]
   },
   {
-    "id": "server/sample_repository/fetch.py::retry::4",
+    "id": "server/sample_repository/fetch.py[5-15]:retry",
     "name": "retry",
     "language": "python",
     "file_path": "server/sample_repository/fetch.py",
@@ -81,7 +81,7 @@
     ]
   },
   {
-    "id": "server/sample_repository/fetch.py::fetch_data::16",
+    "id": "server/sample_repository/fetch.py[17-24]:fetch_data",
     "name": "fetch_data",
     "language": "python",
     "file_path": "server/sample_repository/fetch.py",
@@ -118,7 +118,7 @@
     ]
   },
   {
-    "id": "server/sample_repository/fetch.py::process_batch::25",
+    "id": "server/sample_repository/fetch.py[26-28]:process_batch",
     "name": "process_batch",
     "language": "python",
     "file_path": "server/sample_repository/fetch.py",
@@ -140,7 +140,7 @@
     ]
   },
   {
-    "id": "server/sample_repository/fetch.py::__main__::29",
+    "id": "server/sample_repository/fetch.py[30-31]:__main__",
     "name": "__main__",
     "language": "python",
     "file_path": "server/sample_repository/fetch.py",
@@ -162,7 +162,7 @@
     ]
   },
   {
-    "id": "server/sample_repository/math_utils.py::calculate_bm25::0",
+    "id": "server/sample_repository/math_utils.py[1-4]:calculate_bm25",
     "name": "calculate_bm25",
     "language": "python",
     "file_path": "server/sample_repository/math_utils.py",
@@ -173,7 +173,7 @@
     "calls": []
   },
   {
-    "id": "server/sample_repository/math_utils.py::normalize_score::5",
+    "id": "server/sample_repository/math_utils.py[6-8]:normalize_score",
     "name": "normalize_score",
     "language": "python",
     "file_path": "server/sample_repository/math_utils.py",
@@ -184,7 +184,7 @@
     "calls": []
   },
   {
-    "id": "server/sample_repository/userprofile.tsx::UserProfile::7",
+    "id": "server/sample_repository/userprofile.tsx[8-47]:UserProfile",
     "name": "UserProfile",
     "language": "tsx",
     "file_path": "server/sample_repository/userprofile.tsx",
@@ -236,7 +236,7 @@
     ]
   },
   {
-    "id": "server/sample_repository/userprofile.tsx::loadUser::15",
+    "id": "server/sample_repository/userprofile.tsx[16-20]:loadUser",
     "name": "loadUser",
     "language": "tsx",
     "file_path": "server/sample_repository/userprofile.tsx",
@@ -258,7 +258,7 @@
     ]
   },
   {
-    "id": "server/sample_repository/text_processor.py::DocumentProcessor.__init__::1",
+    "id": "server/sample_repository/text_processor.py[2-4]:DocumentProcessor.__init__",
     "name": "DocumentProcessor.__init__",
     "language": "python",
     "file_path": "server/sample_repository/text_processor.py",
@@ -269,7 +269,7 @@
     "calls": []
   },
   {
-    "id": "server/sample_repository/text_processor.py::DocumentProcessor.remove_punctuation::5",
+    "id": "server/sample_repository/text_processor.py[6-8]:DocumentProcessor.remove_punctuation",
     "name": "DocumentProcessor.remove_punctuation",
     "language": "python",
     "file_path": "server/sample_repository/text_processor.py",
@@ -286,7 +286,7 @@
     ]
   },
   {
-    "id": "server/sample_repository/text_processor.py::DocumentProcessor.clean_text::9",
+    "id": "server/sample_repository/text_processor.py[10-16]:DocumentProcessor.clean_text",
     "name": "DocumentProcessor.clean_text",
     "language": "python",
     "file_path": "server/sample_repository/text_processor.py",
@@ -308,7 +308,7 @@
     ]
   },
   {
-    "id": "server/sample_repository/utils.ts::formatDate::2",
+    "id": "server/sample_repository/utils.ts[3-8]:formatDate",
     "name": "formatDate",
     "language": "typescript",
     "file_path": "server/sample_repository/utils.ts",
@@ -325,7 +325,7 @@
     ]
   },
   {
-    "id": "server/sample_repository/utils.ts::calculateAge::9",
+    "id": "server/sample_repository/utils.ts[10-14]:calculateAge",
     "name": "calculateAge",
     "language": "typescript",
     "file_path": "server/sample_repository/utils.ts",
@@ -342,7 +342,7 @@
     ]
   },
   {
-    "id": "server/sample_repository/api.ts::ApiClient.constructor::5",
+    "id": "server/sample_repository/api.ts[6-8]:ApiClient.constructor",
     "name": "ApiClient.constructor",
     "language": "typescript",
     "file_path": "server/sample_repository/api.ts",
@@ -353,7 +353,7 @@
     "calls": []
   },
   {
-    "id": "server/sample_repository/api.ts::ApiClient.fetchUserData::9",
+    "id": "server/sample_repository/api.ts[10-16]:ApiClient.fetchUserData",
     "name": "ApiClient.fetchUserData",
     "language": "typescript",
     "file_path": "server/sample_repository/api.ts",
@@ -375,12 +375,101 @@
     ]
   },
   {
-    "id": "server/sample_repository/main.py::run_pipeline::3",
+    "id": "server/sample_repository/code1.c[11-13]:greet",
+    "name": "greet",
+    "language": "c",
+    "file_path": "server/sample_repository/code1.c",
+    "start_line": 11,
+    "end_line": 13,
+    "source_code": "void greet(struct Person p) {\n    printf(\"Hello, my name is %s and I am %d years old.\\n\", p.name, p.age);\n}",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "printf",
+        "is_method": false,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
+    "id": "server/sample_repository/code1.c[15-25]:main",
+    "name": "main",
+    "language": "c",
+    "file_path": "server/sample_repository/code1.c",
+    "start_line": 15,
+    "end_line": 25,
+    "source_code": "int main() {\n    // Create and initialize a Person instance\n    struct Person person1;\n    strcpy(person1.name, \"Alice\");\n    person1.age = 30;\n\n    // Call the greeting function\n    greet(person1);\n\n    return 0;\n}",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "strcpy",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "greet",
+        "is_method": false,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
+    "id": "server/sample_repository/Main.java[11-14]:Main.Person.Person",
+    "name": "Main.Person.Person",
+    "language": "java",
+    "file_path": "server/sample_repository/Main.java",
+    "start_line": 11,
+    "end_line": 14,
+    "source_code": "public Person(String name, int age) {\n            this.name = name;\n            this.age = age;\n        }",
+    "docstring": null,
+    "calls": []
+  },
+  {
+    "id": "server/sample_repository/Main.java[17-20]:Main.Person.greet",
+    "name": "Main.Person.greet",
+    "language": "java",
+    "file_path": "server/sample_repository/Main.java",
+    "start_line": 17,
+    "end_line": 20,
+    "source_code": "public void greet() {\n            System.out.println(\"Hello, my name is \" + name + \n                               \" and I am \" + age + \" years old.\");\n        }",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "println",
+        "is_method": true,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
+    "id": "server/sample_repository/Main.java[24-30]:Main.main",
+    "name": "Main.main",
+    "language": "java",
+    "file_path": "server/sample_repository/Main.java",
+    "start_line": 24,
+    "end_line": 30,
+    "source_code": "public static void main(String[] args) {\n        // Create a new Person object\n        Person person1 = new Person(\"Charlie\", 28);\n        \n        // Call the method\n        person1.greet();\n    }",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "Person",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "greet",
+        "is_method": true,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
+    "id": "server/sample_repository/main.py[6-17]:run_pipeline",
     "name": "run_pipeline",
     "language": "python",
     "file_path": "server/sample_repository/main.py",
-    "start_line": 4,
-    "end_line": 15,
+    "start_line": 6,
+    "end_line": 17,
     "source_code": "def run_pipeline(document_text):\n    \"\"\"Main execution function for the pipeline.\"\"\"\n    processor = DocumentProcessor([\"the\", \"is\", \"and\"])\n    \n    # Call to object method\n    cleaned_doc = processor.clean_text(document_text)\n    \n    # Standalone function call\n    score = calculate_bm25(5.0, 1.2)\n    \n    print(f\"Processed document score: {score}\")\n    return score",
     "docstring": "Main execution function for the pipeline.",
     "calls": [
@@ -407,18 +496,57 @@
     ]
   },
   {
-    "id": "server/sample_repository/main.py::__main__::16",
+    "id": "server/sample_repository/main.py[19-21]:__main__",
     "name": "__main__",
     "language": "python",
     "file_path": "server/sample_repository/main.py",
-    "start_line": 17,
-    "end_line": 19,
+    "start_line": 19,
+    "end_line": 21,
     "source_code": "if __name__ == \"__main__\":\n    sample_text = \"This is a sample document to test the processing pipeline.\"\n    run_pipeline(sample_text)",
     "docstring": null,
     "calls": [
       {
         "name": "run_pipeline",
         "is_method": false,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
+    "id": "server/sample_repository/code1.cpp[11-11]:Person.Person",
+    "name": "Person.Person",
+    "language": "cpp",
+    "file_path": "server/sample_repository/code1.cpp",
+    "start_line": 11,
+    "end_line": 11,
+    "source_code": "Person(std::string n, int a) : name(n), age(a) {}",
+    "docstring": null,
+    "calls": []
+  },
+  {
+    "id": "server/sample_repository/code1.cpp[14-17]:Person.greet",
+    "name": "Person.greet",
+    "language": "cpp",
+    "file_path": "server/sample_repository/code1.cpp",
+    "start_line": 14,
+    "end_line": 17,
+    "source_code": "void greet() {\n        std::cout << \"Hello, my name is \" << name \n                  << \" and I am \" << age << \" years old.\\n\";\n    }",
+    "docstring": null,
+    "calls": []
+  },
+  {
+    "id": "server/sample_repository/code1.cpp[20-28]:main",
+    "name": "main",
+    "language": "cpp",
+    "file_path": "server/sample_repository/code1.cpp",
+    "start_line": 20,
+    "end_line": 28,
+    "source_code": "int main() {\n    // Create an instance of Person using the constructor\n    Person person1(\"Bob\", 25);\n\n    // Call the method on the object\n    person1.greet();\n\n    return 0;\n}",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "greet",
+        "is_method": true,
         "is_decorator": false
       }
     ]
