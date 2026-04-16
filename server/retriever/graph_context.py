@@ -2,6 +2,7 @@ import os
 import json
 import networkx as nx
 from collections import deque
+from pathlib import Path
 
 def load_data(output_dir: str):
     """Loads the dependency graph and the extracted functions."""
@@ -83,15 +84,19 @@ def assemble_llm_context(top_k_ids: list[str], output_dir: str, d: int = 1) -> s
         fn_data = function_map[node_id]
         role = "PRIMARY MATCH" if node_id in top_k_ids else "NEIGHBORING CONTEXT"
         
-        llm_prompt_context += f"--- {role}: {fn_data['name']} ---\n"
-        llm_prompt_context += f"File: {fn_data['file']}\n"
-        llm_prompt_context += f"Code:\n```\n{fn_data['source_code']}\n```\n\n"
+        # Safely extract the file path and source code
+        file_path = fn_data.get("file_path", fn_data.get("file", "Unknown File"))
+        source_code = fn_data.get("source_code", fn_data.get("source", "No source available."))
+        
+        llm_prompt_context += f"--- {role}: {fn_data.get('name', 'Unknown')} ---\n"
+        llm_prompt_context += f"File: {file_path}\n"
+        llm_prompt_context += f"Code:\n```\n{source_code}\n```\n\n"
         
     return llm_prompt_context
 
 
 if __name__ == "__main__":
-    from pathlib import Path
+    
     
     # This securely resolves the absolute path regardless of where you run the script from
     current_file_path = Path(__file__).resolve()
@@ -113,3 +118,10 @@ if __name__ == "__main__":
     
     print("\nSuccessfully built LLM context payload!")
     print(f"Payload length: {len(final_prompt_string)} characters.")
+    
+    # Save the string to a markdown file to inspect it easily
+    prompt_file = output_dir / "test_prompt_context.md"
+    with open(prompt_file, "w", encoding="utf-8") as f:
+        f.write(final_prompt_string)
+        
+    print(f"Saved prompt text to: {prompt_file}")
