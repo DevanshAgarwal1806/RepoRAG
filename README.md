@@ -1,5 +1,5 @@
 # RepoRAG
 
 ```bash
-python server/indexer/pipeline.py server/sample_repository --output server/sample_repository_output
+python server/run_pipeline.py --repo <repo_path> --query <query> --rerun
 ```
