@@ -75,4 +75,3 @@ if __name__ == "__main__":
         expanded = expand_query(q)
         print(f"Original : {q}")
         print(f"Expanded : {expanded}")
-        print("-" * 50)

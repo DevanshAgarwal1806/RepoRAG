@@ -76,17 +76,126 @@
     ]
   },
   {
-    "id": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[13-19]:StreamProcessor.ingestAndRoute",
+    "id": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
     "name": "StreamProcessor.ingestAndRoute",
     "language": "java",
     "file_path": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java",
-    "start_line": 13,
-    "end_line": 19,
-    "source_code": "public boolean ingestAndRoute(String rawData) {\n        if (rawData == null || rawData.isEmpty()) {\n            return false;\n        }\n        // Normalization logic would go here\n        return true;\n    }",
+    "start_line": 22,
+    "end_line": 47,
+    "source_code": "public boolean ingestAndRoute(String rawData) {\n        if (rawData == null || rawData.isEmpty()) {\n            LOGGER.warning(\"Received null or empty raw data packet. Dropping payload.\");\n            return false;\n        }\n\n        try {\n            // 1. Basic Structural Validation\n            if (!rawData.trim().startsWith(\"{\") || !rawData.trim().endsWith(\"}\")) {\n                throw new IllegalArgumentException(\"Malformed JSON payload: Must be a valid JSON object.\");\n            }\n\n            // 2. Schema Normalization\n            String normalizedData = normalizeSchema(rawData);\n\n            // 3. Routing to Analytics Queue\n            return routeToQueue(normalizedData);\n\n        } catch (IllegalArgumentException e) {\n            LOGGER.log(Level.WARNING, \"Validation error during ingestion: \" + e.getMessage());\n            return false;\n        } catch (Exception e) {\n            LOGGER.log(Level.SEVERE, \"Unexpected error routing data packet\", e);\n            return false;\n        }\n    }",
     "docstring": null,
     "calls": [
       {
         "name": "isEmpty",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "warning",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "trim",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "startsWith",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "endsWith",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "IllegalArgumentException",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "normalizeSchema",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "routeToQueue",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "log",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "getMessage",
+        "is_method": true,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
+    "id": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema",
+    "name": "StreamProcessor.normalizeSchema",
+    "language": "java",
+    "file_path": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java",
+    "start_line": 53,
+    "end_line": 65,
+    "source_code": "private String normalizeSchema(String payload) {\n        String processedPayload = payload;\n\n        // Ensure a timestamp exists; if not, inject the current system time\n        if (!TIMESTAMP_PATTERN.matcher(processedPayload).find()) {\n             processedPayload = processedPayload.replaceFirst(\"\\\\{\", \"{\\\"timestamp\\\": \" + System.currentTimeMillis() + \", \");\n        }\n\n        // Strip out deprecated legacy fields (Mock implementation)\n        processedPayload = processedPayload.replace(\"\\\"legacy_user_id\\\": null,\", \"\");\n        \n        return processedPayload;\n    }",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "matcher",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "find",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "replaceFirst",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "currentTimeMillis",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "replace",
+        "is_method": true,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
+    "id": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[70-74]:StreamProcessor.routeToQueue",
+    "name": "StreamProcessor.routeToQueue",
+    "language": "java",
+    "file_path": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java",
+    "start_line": 70,
+    "end_line": 74,
+    "source_code": "private boolean routeToQueue(String normalizedPayload) {\n        // Mock queue routing logic\n        LOGGER.info(String.format(\"Successfully routed payload [Hash: %d] to analytics queue.\", normalizedPayload.hashCode()));\n        return true;\n    }",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "info",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "format",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "hashCode",
         "is_method": true,
         "is_decorator": false
       }

@@ -1,4 +1,4 @@
-### USER QUERY: Where is the logic for finding statistical deviations in sensor data?
+### USER QUERY: Find references to z-score.
 
 ### CODEBASE CONTEXT
 
@@ -35,29 +35,43 @@ def detect_outliers(data_stream: list[float], threshold: float = 2.5) -> list[in
     return outliers
 ```
 
-PRIMARY MATCH: `isValidEvent`
+PRIMARY MATCH: `fetchLegacyUserData`
 
-File: `server/sample_repository/frontend/modern_dash/types.ts`
+File: `server/sample_repository/frontend/legacy_portal/api_client.js`
 
 Code:
 ```
-export function isValidEvent(event: TelemetryEvent): boolean {
-    return event.sensorReadings.length > 0 && event.timestamp > 0;
+export async function fetchLegacyUserData(userId) {
+    try {
+        const response = await fetch(`/api/v1/users/${userId}`);
+        return await response.json();
+    } catch (error) {
+        console.error("Failed to fetch user:", error);
+        return null;
+    }
 }
 ```
 
-PRIMARY MATCH: `StreamProcessor.ingestAndRoute`
+PRIMARY MATCH: `Dashboard`
 
-File: `server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java`
+File: `server/sample_repository/frontend/modern_dash/Dashboard.tsx`
 
 Code:
 ```
-public boolean ingestAndRoute(String rawData) {
-        if (rawData == null || rawData.isEmpty()) {
-            return false;
-        }
-        // Normalization logic would go here
-        return true;
-    }
+export const Dashboard: React.FC<Props> = ({ streamEndpoint }) => {
+    const [events, setEvents] = useState<TelemetryEvent[]>([]);
+
+    useEffect(() => {
+        // Mock WebSocket connection
+        console.log(`Subscribing to ${streamEndpoint}`);
+    }, [streamEndpoint]);
+
+    return (
+        <div className="dashboard-container">
+            <h1>Live Telemetry Analytics</h1>
+            <p>Active Events: {events.length}</p>
+        </div>
+    );
+};
 ```
 

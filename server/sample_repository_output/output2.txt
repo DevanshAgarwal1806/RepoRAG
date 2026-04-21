@@ -1,0 +1,13 @@
+User Query: 'Find the code that encrypts or obfuscates payloads before they are sent.'
+
+--- Final Hybrid Results (RRF) ---
+Rank 1 | RRF Score: 0.0309 | Function: server/sample_repository/backend/core_engine/crypto_utils.c[7-14]:mask_payload
+Rank 2 | RRF Score: 0.0308 | Function: server/sample_repository/backend/py_analytics/anomaly_detector.py[1-25]:detect_outliers
+Rank 3 | RRF Score: 0.0305 | Function: server/sample_repository/frontend/modern_dash/types.ts[11-13]:isValidEvent
+
+--- Generating Graph Context ---
+Successfully generated full RAG payload: 1531 characters.
+Saved to: server/sample_repository_output/final_llm_payload.md
+
+--- Sending Context to Groq LLM ---
+An error occurred during generation: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01j0jnxqgefhyag1b1bnh5vfhp` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99469, Requested 702. Please try again in 2m27.744s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}

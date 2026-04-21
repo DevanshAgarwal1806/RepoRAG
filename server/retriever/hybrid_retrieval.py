@@ -13,9 +13,6 @@ from retriever.dense_retrieval import get_dense_rankings
 
 from retriever.graph_context import assemble_llm_context
 
-# ---------------------------------------------------------
-# RRF Formula Logic
-# ---------------------------------------------------------
 def calculate_rrf(bm25_ranks: dict, dense_ranks: dict, k: int = 60) -> list[tuple[str, float]]:
     """
     Combines ranks using Reciprocal Rank Fusion.
@@ -84,7 +81,12 @@ def run_hybrid_retrieval(output_dir: Path, query: str):
     # 9. Build the LLM Context Package
     print("\n--- Generating Graph Context ---")
     # We pass the real IDs we just found, and set depth (d) to 1
-    final_prompt = assemble_llm_context(top_k_ids, str(output_dir), d=1)
+    final_prompt, context_nodes = assemble_llm_context(top_k_ids, str(output_dir), d=1)
+    
+    if len(context_nodes) > 0:
+        print(f"\nNeighbouring Context: ")
+        for node_id in context_nodes:
+            print(f"Function: {node_id}")
     
     # 10. Save it to a markdown file for the LLM (and so you can read it easily)
     prompt_file = output_dir / "final_llm_payload.md"
@@ -96,9 +98,6 @@ def run_hybrid_retrieval(output_dir: Path, query: str):
     print(f"Successfully generated full RAG payload: {len(final_prompt)} characters.")
     print(f"Saved to: {prompt_file}")
 
-# ---------------------------------------------------------
-# Main Execution
-# ---------------------------------------------------------
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Hybrid Retrieval with RRF and Graph Context")
     parser.add_argument("--output", "-o", required=True, help="Output directory for results")

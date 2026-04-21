@@ -1,4 +1,3 @@
-# embedder.py
 import os
 import json
 import torch
@@ -25,12 +24,7 @@ def get_model() -> SentenceTransformer:
         print(f"Device: {device.upper()}")
     return _model
 
-# ── Text construction ──────────────────────────────────────────────────────────
 def build_embedding_text(fn: FunctionNode) -> str:
-    """
-    Combines docstring + name + source into a single string.
-    Docstring is placed first so the model sees semantic intent before raw code.
-    """
     parts = []
     if fn.docstring:
         parts.append(f"Description: {fn.docstring}")

@@ -1,0 +1,14 @@
+User Query: 'Where is the entry point for getting user profiles from the v1 API?'
+Error during query expansion: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01j0jnxqgefhyag1b1bnh5vfhp` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99840, Requested 262. Please try again in 1m28.128s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+--- Final Hybrid Results (RRF) ---
+Rank 1 | RRF Score: 0.0328 | Function: server/sample_repository/frontend/legacy_portal/api_client.js[5-13]:fetchLegacyUserData
+Rank 2 | RRF Score: 0.0318 | Function: server/sample_repository/backend/py_analytics/anomaly_detector.py[1-25]:detect_outliers
+Rank 3 | RRF Score: 0.0315 | Function: server/sample_repository/frontend/legacy_portal/UserWidget.jsx[6-13]:UserWidget
+
+--- Generating Graph Context ---
+Successfully generated full RAG payload: 1721 characters.
+Saved to: server/sample_repository_output/final_llm_payload.md
+
+--- Sending Context to Groq LLM ---
+An error occurred during generation: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01j0jnxqgefhyag1b1bnh5vfhp` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99838, Requested 729. Please try again in 8m9.888s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}

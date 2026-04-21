@@ -47,11 +47,31 @@
       "name": "StreamProcessor.ingestAndRoute",
       "language": "java",
       "file": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java",
-      "start_line": 13,
-      "end_line": 19,
+      "start_line": 22,
+      "end_line": 47,
       "docstring": null,
-      "source": "public boolean ingestAndRoute(String rawData) {\n        if (rawData == null || rawData.isEmpty()) {\n            return false;\n        }\n        // Normalization logic would go here\n        return true;\n    }",
-      "id": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[13-19]:StreamProcessor.ingestAndRoute"
+      "source": "public boolean ingestAndRoute(String rawData) {\n        if (rawData == null || rawData.isEmpty()) {\n            LOGGER.warning(\"Received null or empty raw data packet. Dropping payload.\");\n            return false;\n        }\n\n        try {\n            // 1. Basic Structural Validation\n            if (!rawData.trim().startsWith(\"{\") || !rawData.trim().endsWith(\"}\")) {\n                throw new IllegalArgumentException(\"Malformed JSON payload: Must be a valid JSON object.\");\n            }\n\n            // 2. Schema Normalization\n            String normalizedData = normalizeSchema(rawData);\n\n            // 3. Routing to Analytics Queue\n            return routeToQueue(normalizedData);\n\n        } catch (IllegalArgumentException e) {\n            LOGGER.log(Level.WARNING, \"Validation error during ingestion: \" + e.getMessage());\n            return false;\n        } catch (Exception e) {\n            LOGGER.log(Level.SEVERE, \"Unexpected error routing data packet\", e);\n            return false;\n        }\n    }",
+      "id": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute"
+    },
+    {
+      "name": "StreamProcessor.normalizeSchema",
+      "language": "java",
+      "file": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java",
+      "start_line": 53,
+      "end_line": 65,
+      "docstring": null,
+      "source": "private String normalizeSchema(String payload) {\n        String processedPayload = payload;\n\n        // Ensure a timestamp exists; if not, inject the current system time\n        if (!TIMESTAMP_PATTERN.matcher(processedPayload).find()) {\n             processedPayload = processedPayload.replaceFirst(\"\\\\{\", \"{\\\"timestamp\\\": \" + System.currentTimeMillis() + \", \");\n        }\n\n        // Strip out deprecated legacy fields (Mock implementation)\n        processedPayload = processedPayload.replace(\"\\\"legacy_user_id\\\": null,\", \"\");\n        \n        return processedPayload;\n    }",
+      "id": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema"
+    },
+    {
+      "name": "StreamProcessor.routeToQueue",
+      "language": "java",
+      "file": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java",
+      "start_line": 70,
+      "end_line": 74,
+      "docstring": null,
+      "source": "private boolean routeToQueue(String normalizedPayload) {\n        // Mock queue routing logic\n        LOGGER.info(String.format(\"Successfully routed payload [Hash: %d] to analytics queue.\", normalizedPayload.hashCode()));\n        return true;\n    }",
+      "id": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[70-74]:StreamProcessor.routeToQueue"
     },
     {
       "name": "detect_outliers",
@@ -161,6 +181,160 @@
       "id": "__external__::isEmpty"
     },
     {
+      "name": "warning",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::warning"
+    },
+    {
+      "name": "trim",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::trim"
+    },
+    {
+      "name": "startsWith",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::startsWith"
+    },
+    {
+      "name": "endsWith",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::endsWith"
+    },
+    {
+      "name": "IllegalArgumentException",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::IllegalArgumentException"
+    },
+    {
+      "name": "getMessage",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::getMessage"
+    },
+    {
+      "name": "matcher",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::matcher"
+    },
+    {
+      "name": "find",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::find"
+    },
+    {
+      "name": "replaceFirst",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::replaceFirst"
+    },
+    {
+      "name": "currentTimeMillis",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::currentTimeMillis"
+    },
+    {
+      "name": "replace",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::replace"
+    },
+    {
+      "name": "info",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::info"
+    },
+    {
+      "name": "format",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::format"
+    },
+    {
+      "name": "hashCode",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::hashCode"
+    },
+    {
       "name": "sum",
       "language": "external",
       "file": "",
@@ -256,8 +430,110 @@
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[13-19]:StreamProcessor.ingestAndRoute",
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
       "target": "__external__::isEmpty"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::warning"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::trim"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::startsWith"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::endsWith"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::IllegalArgumentException"
+    },
+    {
+      "weight": 0.9,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema"
+    },
+    {
+      "weight": 0.9,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[70-74]:StreamProcessor.routeToQueue"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::log"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::getMessage"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema",
+      "target": "__external__::matcher"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema",
+      "target": "__external__::find"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema",
+      "target": "__external__::replaceFirst"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema",
+      "target": "__external__::currentTimeMillis"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema",
+      "target": "__external__::replace"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[70-74]:StreamProcessor.routeToQueue",
+      "target": "__external__::info"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[70-74]:StreamProcessor.routeToQueue",
+      "target": "__external__::format"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[70-74]:StreamProcessor.routeToQueue",
+      "target": "__external__::hashCode"
     },
     {
       "weight": 0.1,

@@ -1,0 +1,25 @@
+User Query: 'Where is the logic for finding statistical deviations in sensor data?'
+
+--- Final Hybrid Results (RRF) ---
+Rank 1 | RRF Score: 0.0328 | Function: server/sample_repository/backend/py_analytics/anomaly_detector.py[1-25]:detect_outliers
+Rank 2 | RRF Score: 0.0323 | Function: server/sample_repository/frontend/modern_dash/types.ts[11-13]:isValidEvent
+Rank 3 | RRF Score: 0.0308 | Function: server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-26]:Dashboard
+
+--- Generating Graph Context ---
+Successfully generated full RAG payload: 1796 characters.
+Saved to: server/sample_repository_output/final_llm_payload.md
+
+--- Sending Context to Groq LLM ---
+
+--- Final Generated Answer ---
+The logic for finding statistical deviations in sensor data is located in the `detect_outliers` function within the `anomaly_detector.py` file. This function uses a simple z-score thresholding mechanism to identify indices of anomalous data points in a time-series data stream. 
+
+The `detect_outliers` function calculates the mean and standard deviation of the input data stream, then iterates over the data points to identify those that exceed the specified threshold. The function returns a list of indices where outliers occur. 
+
+Here's a brief summary of the `detect_outliers` function:
+
+* **Purpose:** Identify indices of anomalous data points in a time-series data stream.
+* **Input:** 
+  + `data_stream`: A list of float values representing sensor readings.
+  + `threshold`: The z-score limit for an anomaly (default is 2.5).
+* **Output:** A list of indices where outliers occur.

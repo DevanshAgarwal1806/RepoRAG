@@ -25,40 +25,31 @@ def build_dependency_graph(
             "docstring": fn.docstring,
             "source": fn.source_code
         })
-
         exact_name_to_ids.setdefault(fn.name, []).append(fn.id)
-
         if "." in fn.name:
             base_name = fn.name.split(".")[-1]
             base_name_to_ids.setdefault(base_name, []).append(fn.id)
 
     for fn in functions:
         file_imports = global_import_map.get(fn.file_path, {})
-
         for call_obj in fn.calls:
             called_name = call_obj["name"]
             is_method   = call_obj["is_method"]
             is_decorator = call_obj.get("is_decorator", False)
-
             if not is_method:
                 if called_name in exact_name_to_ids:
-                    # High confidence: exact match on a module-level function name
                     for callee_id in exact_name_to_ids[called_name]:
                         callee_lang = G.nodes[callee_id].get("language")
                         weight = 1.0 if callee_lang == fn.language else 0.5
                         G.add_edge(fn.id, callee_id, weight=weight, is_decorator=is_decorator)
 
                 elif called_name in base_name_to_ids:
-                    # Medium confidence: name matches a method base name — could be a
-                    # standalone call to a function that happens to share the method name,
-                    # or a direct call without the object prefix (e.g. inside the class itself)
                     for callee_id in base_name_to_ids[called_name]:
                         callee_lang = G.nodes[callee_id].get("language")
                         weight = 0.6 if callee_lang == fn.language else 0.3
                         G.add_edge(fn.id, callee_id, weight=weight, is_decorator=is_decorator)
 
                 else:
-                    # No internal match — treat as an external/library call
                     lib_node_id = f"__external__::{called_name}"
                     if not G.has_node(lib_node_id):
                         G.add_node(lib_node_id, **{
@@ -71,38 +62,23 @@ def build_dependency_graph(
                             "source": "",
                             "embedding": None,
                         })
-                    G.add_edge(fn.id, lib_node_id, weight=0.1, is_decorator=is_decorator)
-
-            # ── Case 2: Method calls e.g. processor.clean_text() ──────────────
+                    G.add_edge(fn.id, lib_node_id, weight=0.1, is_decorator=is_decorator) 
             else:
                 if called_name in base_name_to_ids:
                     for callee_id in base_name_to_ids[called_name]:
                         callee_node = G.nodes[callee_id]
                         callee_full_name = callee_node["name"]
                         callee_file = callee_node["file"]
-
-                        # The class name is the first segment of the qualified name
-                        # e.g. "DocumentProcessor.clean_text" -> "DocumentProcessor"
+                        
                         class_name = callee_full_name.split(".")[0]
 
-                        # High confidence: class is explicitly imported in the caller's file
-                        # file_imports maps symbol -> module, so class names are keys
-                        # e.g. {"DocumentProcessor": "document_processor", ...}
                         if class_name in file_imports:
                             G.add_edge(fn.id, callee_id, weight=0.9, is_decorator=is_decorator)
-
-                        # High confidence: class is defined in the same file as the caller
                         elif callee_file == fn.file_path:
                             G.add_edge(fn.id, callee_id, weight=0.9, is_decorator=is_decorator)
-
-                        # Low confidence: method name matches but no import evidence —
-                        # noisy edge kept intentionally as an IR fallback since a missed
-                        # link is worse than a low-weight false positive for graph traversal
                         else:
                             G.add_edge(fn.id, callee_id, weight=0.2, is_decorator=is_decorator)
-
                 else:
-                    # No internal match — external method call e.g. requests.get()
                     lib_node_id = f"__external__::{called_name}"
                     if not G.has_node(lib_node_id):
                         G.add_node(lib_node_id, **{

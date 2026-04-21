@@ -1,0 +1,13 @@
+User Query: 'How do we generate 768-dimensional vectors from text?'
+
+--- Final Hybrid Results (RRF) ---
+Rank 1 | RRF Score: 0.0328 | Function: server/sample_repository/backend/core_engine/fast_math.cpp[9-13]:compute_embeddings
+Rank 2 | RRF Score: 0.0315 | Function: server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-26]:Dashboard
+Rank 3 | RRF Score: 0.0308 | Function: server/sample_repository/frontend/modern_dash/types.ts[11-13]:isValidEvent
+
+--- Generating Graph Context ---
+Successfully generated full RAG payload: 1164 characters.
+Saved to: server/sample_repository_output/final_llm_payload.md
+
+--- Sending Context to Groq LLM ---
+An error occurred during generation: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01j0jnxqgefhyag1b1bnh5vfhp` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99673, Requested 440. Please try again in 1m37.631999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}

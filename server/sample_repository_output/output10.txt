@@ -1,0 +1,14 @@
+User Query: 'Search for ingestAndRoute.'
+Error during query expansion: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01j0jnxqgefhyag1b1bnh5vfhp` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99941, Requested 253. Please try again in 2m47.616s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+
+--- Final Hybrid Results (RRF) ---
+Rank 1 | RRF Score: 0.0323 | Function: server/sample_repository/backend/py_analytics/anomaly_detector.py[1-25]:detect_outliers
+Rank 2 | RRF Score: 0.0315 | Function: server/sample_repository/frontend/modern_dash/types.ts[11-13]:isValidEvent
+Rank 3 | RRF Score: 0.0312 | Function: server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-26]:Dashboard
+
+--- Generating Graph Context ---
+Successfully generated full RAG payload: 1796 characters.
+Saved to: server/sample_repository_output/final_llm_payload.md
+
+--- Sending Context to Groq LLM ---
+An error occurred during generation: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01j0jnxqgefhyag1b1bnh5vfhp` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99940, Requested 598. Please try again in 7m44.832s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}

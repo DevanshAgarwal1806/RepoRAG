@@ -5,7 +5,9 @@ from collections import deque
 from pathlib import Path
 
 def load_data(output_dir: str):
-    """Loads the dependency graph and the extracted functions."""
+    """
+    Loads the dependency graph and the extracted functions.
+    """
     graph_path = os.path.join(output_dir, "dependency_graph.json")
     functions_path = os.path.join(output_dir, "extracted_functions.json")
     
@@ -65,7 +67,7 @@ def get_neighborhood(G: nx.DiGraph, start_nodes: list[str], max_depth: int = 1, 
     context_nodes -= set(start_nodes)
     final_functions = start_nodes + list(context_nodes)
                     
-    return final_functions
+    return final_functions, context_nodes
 
 def assemble_llm_context(top_k_ids: list[str], output_dir: str, d: int = 1) -> str:
     """
@@ -74,7 +76,7 @@ def assemble_llm_context(top_k_ids: list[str], output_dir: str, d: int = 1) -> s
     G, function_map = load_data(output_dir)
     
     # Get all relevant node IDs (the core k + their neighbors)
-    all_context_ids = get_neighborhood(G, top_k_ids, max_depth=d)
+    all_context_ids, context_nodes = get_neighborhood(G, top_k_ids, max_depth=d)
     
     # Format the payload
     llm_prompt_context = "### CODEBASE CONTEXT\n\n"
@@ -95,4 +97,4 @@ def assemble_llm_context(top_k_ids: list[str], output_dir: str, d: int = 1) -> s
         llm_prompt_context += f"File: `{file_path}`\n\n"
         llm_prompt_context += f"Code:\n```\n{source_code}\n```\n\n"
         
-    return llm_prompt_context
+    return llm_prompt_context, context_nodes
