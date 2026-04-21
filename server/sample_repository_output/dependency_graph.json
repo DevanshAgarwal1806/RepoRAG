@@ -8,10 +8,10 @@
       "language": "tsx",
       "file": "server/sample_repository/frontend/modern_dash/Dashboard.tsx",
       "start_line": 12,
-      "end_line": 26,
+      "end_line": 68,
       "docstring": null,
-      "source": "export const Dashboard: React.FC<Props> = ({ streamEndpoint }) => {\n    const [events, setEvents] = useState<TelemetryEvent[]>([]);\n\n    useEffect(() => {\n        // Mock WebSocket connection\n        console.log(`Subscribing to ${streamEndpoint}`);\n    }, [streamEndpoint]);\n\n    return (\n        <div className=\"dashboard-container\">\n            <h1>Live Telemetry Analytics</h1>\n            <p>Active Events: {events.length}</p>\n        </div>\n    );\n};",
-      "id": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-26]:Dashboard"
+      "source": "export const Dashboard: React.FC<Props> = ({ streamEndpoint }) => {\n    const [events, setEvents] = useState<TelemetryEvent[]>([]);\n    const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('disconnected');\n    const wsRef = useRef<WebSocket | null>(null);\n\n    useEffect(() => {\n        setConnectionStatus('connecting');\n        const ws = new WebSocket(streamEndpoint);\n        wsRef.current = ws;\n\n        ws.onopen = () => {\n            console.log(`Successfully connected to ${streamEndpoint}`);\n            setConnectionStatus('connected');\n        };\n\n        ws.onmessage = (messageEvent) => {\n            try {\n                const newEvent: TelemetryEvent = JSON.parse(messageEvent.data);\n                setEvents(prevEvents => {\n                    // Keep only the latest 100 events in memory to prevent browser lag\n                    const updated = [...prevEvents, newEvent];\n                    return updated.length > 100 ? updated.slice(updated.length - 100) : updated;\n                });\n            } catch (error) {\n                console.error(\"Failed to parse incoming telemetry data:\", error);\n            }\n        };\n\n        ws.onerror = (error) => {\n            console.error(\"WebSocket encountered an error:\", error);\n            setConnectionStatus('disconnected');\n        };\n\n        ws.onclose = () => {\n            console.log(\"WebSocket connection closed.\");\n            setConnectionStatus('disconnected');\n        };\n\n        // Cleanup function on component unmount\n        return () => {\n            if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {\n                wsRef.current.close();\n            }\n        };\n    }, [streamEndpoint]);\n\n    return (\n        <div className=\"dashboard-container\">\n            <h1>Live Telemetry Analytics</h1>\n            <div className={`status-indicator ${connectionStatus}`}>\n                Status: {connectionStatus}\n            </div>\n            <p>Active Events in Memory: {events.length}</p>\n            {/* Charting components would be rendered here using the 'events' state */}\n        </div>\n    );\n};",
+      "id": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard"
     },
     {
       "name": "isValidEvent",
@@ -97,11 +97,11 @@
       "name": "compute_embeddings",
       "language": "cpp",
       "file": "server/sample_repository/backend/core_engine/fast_math.cpp",
-      "start_line": 9,
-      "end_line": 13,
+      "start_line": 12,
+      "end_line": 52,
       "docstring": null,
-      "source": "std::vector<float> compute_embeddings(const std::vector<std::string>& texts) {\n    // Mock implementation returning a dummy embedding vector\n    std::vector<float> embeddings(768, 0.5f);\n    return embeddings;\n}",
-      "id": "server/sample_repository/backend/core_engine/fast_math.cpp[9-13]:compute_embeddings"
+      "source": "std::vector<float> compute_embeddings(const std::vector<std::string>& texts) {\n    const int EMBEDDING_DIM = 768;\n    std::vector<float> embeddings(EMBEDDING_DIM, 0.0f);\n    \n    if (texts.empty()) {\n        return embeddings;\n    }\n\n    // Iterate through all provided texts to build a composite embedding\n    for (size_t t = 0; t < texts.size(); ++t) {\n        const std::string& text = texts[t];\n        \n        for (size_t i = 0; i < text.length(); ++i) {\n            // Distribute the ASCII value across the 768 dimensions using sine/cosine waves\n            // This creates a deterministic, non-uniform distribution of floats\n            int dim_index = (i * 31 + t) % EMBEDDING_DIM;\n            float char_weight = static_cast<float>(text[i]);\n            \n            if (i % 2 == 0) {\n                embeddings[dim_index] += std::sin(char_weight * 0.1f);\n            } else {\n                embeddings[dim_index] += std::cos(char_weight * 0.1f);\n            }\n        }\n    }\n\n    // Normalize the final embedding vector using L2 normalization\n    float sum_squares = 0.0f;\n    for (float val : embeddings) {\n        sum_squares += val * val;\n    }\n    \n    if (sum_squares > 0.0f) {\n        float magnitude = std::sqrt(sum_squares);\n        for (float& val : embeddings) {\n            val /= magnitude;\n        }\n    }\n\n    return embeddings;\n}",
+      "id": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings"
     },
     {
       "name": "useState",
@@ -115,6 +115,17 @@
       "id": "__external__::useState"
     },
     {
+      "name": "useRef",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::useRef"
+    },
+    {
       "name": "useEffect",
       "language": "external",
       "file": "",
@@ -126,6 +137,17 @@
       "id": "__external__::useEffect"
     },
     {
+      "name": "setConnectionStatus",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::setConnectionStatus"
+    },
+    {
       "name": "log",
       "language": "external",
       "file": "",
@@ -135,6 +157,61 @@
       "source": "",
       "embedding": null,
       "id": "__external__::log"
+    },
+    {
+      "name": "parse",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::parse"
+    },
+    {
+      "name": "setEvents",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::setEvents"
+    },
+    {
+      "name": "slice",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::slice"
+    },
+    {
+      "name": "error",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::error"
+    },
+    {
+      "name": "close",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::close"
     },
     {
       "name": "fetch",
@@ -157,17 +234,6 @@
       "source": "",
       "embedding": null,
       "id": "__external__::json"
-    },
-    {
-      "name": "error",
-      "language": "external",
-      "file": "",
-      "start_line": 0,
-      "end_line": 0,
-      "docstring": null,
-      "source": "",
-      "embedding": null,
-      "id": "__external__::error"
     },
     {
       "name": "isEmpty",
@@ -388,26 +454,134 @@
       "source": "",
       "embedding": null,
       "id": "__external__::append"
+    },
+    {
+      "name": "empty",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::empty"
+    },
+    {
+      "name": "size",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::size"
+    },
+    {
+      "name": "length",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::length"
+    },
+    {
+      "name": "sin",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::sin"
+    },
+    {
+      "name": "cos",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::cos"
+    },
+    {
+      "name": "sqrt",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::sqrt"
     }
   ],
   "links": [
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-26]:Dashboard",
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
       "target": "__external__::useState"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-26]:Dashboard",
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::useRef"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
       "target": "__external__::useEffect"
     },
     {
       "weight": 0.1,
       "is_decorator": false,
-      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-26]:Dashboard",
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::setConnectionStatus"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
       "target": "__external__::log"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::parse"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::setEvents"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::slice"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::error"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::close"
     },
     {
       "weight": 0.1,
@@ -564,6 +738,42 @@
       "is_decorator": false,
       "source": "server/sample_repository/backend/py_analytics/anomaly_detector.py[1-25]:detect_outliers",
       "target": "__external__::append"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings",
+      "target": "__external__::empty"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings",
+      "target": "__external__::size"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings",
+      "target": "__external__::length"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings",
+      "target": "__external__::sin"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings",
+      "target": "__external__::cos"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings",
+      "target": "__external__::sqrt"
     }
   ]
 }

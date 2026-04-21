@@ -69,14 +69,14 @@ def run_hybrid_retrieval(output_dir: Path, query: str):
     final_hybrid_ranking = calculate_rrf(bm25_ranks, dense_ranks)
 
     # 8. Extract the REAL Top K Results
-    K_LIMIT = 3
+    K_LIMIT = 10
     top_k_ids = []
     
     print("\n--- Final Hybrid Results (RRF) ---")
     for rank, (doc_id, rrf_score) in enumerate(final_hybrid_ranking[:K_LIMIT], start=1):
         function_id = doc_map[doc_id]["id"]
         top_k_ids.append(function_id)  # Collect the ID for the graph builder
-        print(f"Rank {rank} | RRF Score: {rrf_score:.4f} | Function: {function_id}")
+        print(f"Rank {rank} | BM25 Rank: {bm25_ranks.get(doc_id, 'N/A')} | Dense Rank: {dense_ranks.get(doc_id, 'N/A')} | RRF Score: {rrf_score:.4f} | Function: {function_id}")
 
     # 9. Build the LLM Context Package
     print("\n--- Generating Graph Context ---")

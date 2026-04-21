@@ -4,7 +4,6 @@ queries=(
     "Where is the logic for finding statistical deviations in sensor data?"
     "Find the code that encrypts or obfuscates payloads before they are sent."
     "How do we generate 768-dimensional vectors from text?"
-    "Find the TypeScript interface definition for a telemetry event."
     "Show me the enterprise Java class responsible for ingesting streams."
     "Locate the React component that renders the live analytics charts."
     "Where is the entry point for getting user profiles from the v1 API?"

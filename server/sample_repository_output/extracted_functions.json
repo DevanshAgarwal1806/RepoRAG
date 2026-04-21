@@ -1,16 +1,21 @@
 [
   {
-    "id": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-26]:Dashboard",
+    "id": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
     "name": "Dashboard",
     "language": "tsx",
     "file_path": "server/sample_repository/frontend/modern_dash/Dashboard.tsx",
     "start_line": 12,
-    "end_line": 26,
-    "source_code": "export const Dashboard: React.FC<Props> = ({ streamEndpoint }) => {\n    const [events, setEvents] = useState<TelemetryEvent[]>([]);\n\n    useEffect(() => {\n        // Mock WebSocket connection\n        console.log(`Subscribing to ${streamEndpoint}`);\n    }, [streamEndpoint]);\n\n    return (\n        <div className=\"dashboard-container\">\n            <h1>Live Telemetry Analytics</h1>\n            <p>Active Events: {events.length}</p>\n        </div>\n    );\n};",
+    "end_line": 68,
+    "source_code": "export const Dashboard: React.FC<Props> = ({ streamEndpoint }) => {\n    const [events, setEvents] = useState<TelemetryEvent[]>([]);\n    const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('disconnected');\n    const wsRef = useRef<WebSocket | null>(null);\n\n    useEffect(() => {\n        setConnectionStatus('connecting');\n        const ws = new WebSocket(streamEndpoint);\n        wsRef.current = ws;\n\n        ws.onopen = () => {\n            console.log(`Successfully connected to ${streamEndpoint}`);\n            setConnectionStatus('connected');\n        };\n\n        ws.onmessage = (messageEvent) => {\n            try {\n                const newEvent: TelemetryEvent = JSON.parse(messageEvent.data);\n                setEvents(prevEvents => {\n                    // Keep only the latest 100 events in memory to prevent browser lag\n                    const updated = [...prevEvents, newEvent];\n                    return updated.length > 100 ? updated.slice(updated.length - 100) : updated;\n                });\n            } catch (error) {\n                console.error(\"Failed to parse incoming telemetry data:\", error);\n            }\n        };\n\n        ws.onerror = (error) => {\n            console.error(\"WebSocket encountered an error:\", error);\n            setConnectionStatus('disconnected');\n        };\n\n        ws.onclose = () => {\n            console.log(\"WebSocket connection closed.\");\n            setConnectionStatus('disconnected');\n        };\n\n        // Cleanup function on component unmount\n        return () => {\n            if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {\n                wsRef.current.close();\n            }\n        };\n    }, [streamEndpoint]);\n\n    return (\n        <div className=\"dashboard-container\">\n            <h1>Live Telemetry Analytics</h1>\n            <div className={`status-indicator ${connectionStatus}`}>\n                Status: {connectionStatus}\n            </div>\n            <p>Active Events in Memory: {events.length}</p>\n            {/* Charting components would be rendered here using the 'events' state */}\n        </div>\n    );\n};",
     "docstring": null,
     "calls": [
       {
         "name": "useState",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "useRef",
         "is_method": false,
         "is_decorator": false
       },
@@ -20,7 +25,37 @@
         "is_decorator": false
       },
       {
+        "name": "setConnectionStatus",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
         "name": "log",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "parse",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "setEvents",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "slice",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "error",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "close",
         "is_method": true,
         "is_decorator": false
       }
@@ -250,14 +285,45 @@
     "calls": []
   },
   {
-    "id": "server/sample_repository/backend/core_engine/fast_math.cpp[9-13]:compute_embeddings",
+    "id": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings",
     "name": "compute_embeddings",
     "language": "cpp",
     "file_path": "server/sample_repository/backend/core_engine/fast_math.cpp",
-    "start_line": 9,
-    "end_line": 13,
-    "source_code": "std::vector<float> compute_embeddings(const std::vector<std::string>& texts) {\n    // Mock implementation returning a dummy embedding vector\n    std::vector<float> embeddings(768, 0.5f);\n    return embeddings;\n}",
+    "start_line": 12,
+    "end_line": 52,
+    "source_code": "std::vector<float> compute_embeddings(const std::vector<std::string>& texts) {\n    const int EMBEDDING_DIM = 768;\n    std::vector<float> embeddings(EMBEDDING_DIM, 0.0f);\n    \n    if (texts.empty()) {\n        return embeddings;\n    }\n\n    // Iterate through all provided texts to build a composite embedding\n    for (size_t t = 0; t < texts.size(); ++t) {\n        const std::string& text = texts[t];\n        \n        for (size_t i = 0; i < text.length(); ++i) {\n            // Distribute the ASCII value across the 768 dimensions using sine/cosine waves\n            // This creates a deterministic, non-uniform distribution of floats\n            int dim_index = (i * 31 + t) % EMBEDDING_DIM;\n            float char_weight = static_cast<float>(text[i]);\n            \n            if (i % 2 == 0) {\n                embeddings[dim_index] += std::sin(char_weight * 0.1f);\n            } else {\n                embeddings[dim_index] += std::cos(char_weight * 0.1f);\n            }\n        }\n    }\n\n    // Normalize the final embedding vector using L2 normalization\n    float sum_squares = 0.0f;\n    for (float val : embeddings) {\n        sum_squares += val * val;\n    }\n    \n    if (sum_squares > 0.0f) {\n        float magnitude = std::sqrt(sum_squares);\n        for (float& val : embeddings) {\n            val /= magnitude;\n        }\n    }\n\n    return embeddings;\n}",
     "docstring": null,
-    "calls": []
+    "calls": [
+      {
+        "name": "empty",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "size",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "length",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "sin",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "cos",
+        "is_method": true,
+        "is_decorator": false
+      },
+      {
+        "name": "sqrt",
+        "is_method": true,
+        "is_decorator": false
+      }
+    ]
   }
 ]

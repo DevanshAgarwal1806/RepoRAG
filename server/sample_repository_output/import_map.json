@@ -3,6 +3,7 @@
     "React": "react",
     "useState": "react",
     "useEffect": "react",
+    "useRef": "react",
     "TelemetryEvent": "./types"
   },
   "server/sample_repository/frontend/modern_dash/types.ts": {},
