@@ -22,3 +22,4 @@ numpy
 networkx
 optimum
 huggingface_hub==0.23.2
+groq

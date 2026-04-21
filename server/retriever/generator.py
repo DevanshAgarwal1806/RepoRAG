@@ -2,18 +2,17 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from groq import Groq
+import argparse
 
-def generate_rag_answer():
-    # 1. Bulletproof Path Resolution
+def generate_rag_answer(output_dir: str) -> str:
     current_dir = Path(__file__).resolve().parent
     server_dir = current_dir.parent  
-    
     env_path = server_dir / ".env"
-    output_dir = server_dir / "sample_repository_output"
+    
+    output_dir = Path(output_dir)
     payload_path = output_dir / "final_llm_payload.md"
     
     # 2. Load Environment Variables
-    print(f"Loading .env from: {env_path}")
     load_dotenv(dotenv_path=env_path)
     
     api_key = os.getenv("ANSWER_GENERATION_LLM_KEY") 
@@ -31,7 +30,7 @@ def generate_rag_answer():
     # 4. Initialize the Groq Client
     client = Groq(api_key=api_key)
 
-    print("\n--- Sending Context to Groq LLM ---")
+    print("--- Sending Context to Groq LLM ---")
     
     # 5. Generate the Answer
     try:
@@ -59,9 +58,8 @@ def generate_rag_answer():
         
         final_answer = response.choices[0].message.content
         
-        print("\n================ FINAL RAG ANSWER ================\n")
+        print("\n--- Final Generated Answer ---")
         print(final_answer)
-        print("\n==================================================")
         
         return final_answer
 
@@ -69,4 +67,7 @@ def generate_rag_answer():
         print(f"An error occurred during generation: {e}")
 
 if __name__ == "__main__":
-    generate_rag_answer()
+    parser = argparse.ArgumentParser(description="LLM Generator ")
+    parser.add_argument("--output", "-o", required=True, help="Output directory for results")
+    args = parser.parse_args()
+    generate_rag_answer(args.output)

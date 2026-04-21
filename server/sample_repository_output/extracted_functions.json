@@ -1,196 +1,12 @@
 [
   {
-    "id": "server/sample_repository/fetch.py[7-13]:wrapper",
-    "name": "wrapper",
-    "language": "python",
-    "file_path": "server/sample_repository/fetch.py",
-    "start_line": 7,
-    "end_line": 13,
-    "source_code": "@functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass",
-    "docstring": null,
-    "calls": [
-      {
-        "name": "wraps",
-        "is_method": true,
-        "is_decorator": true
-      },
-      {
-        "name": "range",
-        "is_method": false,
-        "is_decorator": false
-      },
-      {
-        "name": "func",
-        "is_method": false,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/fetch.py[6-14]:decorator",
-    "name": "decorator",
-    "language": "python",
-    "file_path": "server/sample_repository/fetch.py",
-    "start_line": 6,
-    "end_line": 14,
-    "source_code": "def decorator(func):\n        @functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass\n        return wrapper",
-    "docstring": null,
-    "calls": [
-      {
-        "name": "wraps",
-        "is_method": true,
-        "is_decorator": false
-      },
-      {
-        "name": "range",
-        "is_method": false,
-        "is_decorator": false
-      },
-      {
-        "name": "func",
-        "is_method": false,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/fetch.py[5-15]:retry",
-    "name": "retry",
-    "language": "python",
-    "file_path": "server/sample_repository/fetch.py",
-    "start_line": 5,
-    "end_line": 15,
-    "source_code": "def retry(max_attempts=3):\n    def decorator(func):\n        @functools.wraps(func)\n        async def wrapper(*args, **kwargs):\n            for i in range(max_attempts):\n                try:\n                    return await func(*args, **kwargs)\n                except Exception:\n                    pass\n        return wrapper\n    return decorator",
-    "docstring": null,
-    "calls": [
-      {
-        "name": "wraps",
-        "is_method": true,
-        "is_decorator": false
-      },
-      {
-        "name": "range",
-        "is_method": false,
-        "is_decorator": false
-      },
-      {
-        "name": "func",
-        "is_method": false,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/fetch.py[17-24]:fetch_data",
-    "name": "fetch_data",
-    "language": "python",
-    "file_path": "server/sample_repository/fetch.py",
-    "start_line": 17,
-    "end_line": 24,
-    "source_code": "@retry(max_attempts=5)\nasync def fetch_data(url):\n    \"\"\"Fetches data from the given URL asynchronously.\"\"\"\n    reader, writer = await asyncio.open_connection(url, 80)\n    writer.write(b\"GET / HTTP/1.0\\r\\n\\r\\n\")\n    data = await reader.read(100)\n    writer.close()\n    return data",
-    "docstring": "Fetches data from the given URL asynchronously.",
-    "calls": [
-      {
-        "name": "retry",
-        "is_method": false,
-        "is_decorator": true
-      },
-      {
-        "name": "open_connection",
-        "is_method": true,
-        "is_decorator": false
-      },
-      {
-        "name": "write",
-        "is_method": true,
-        "is_decorator": false
-      },
-      {
-        "name": "read",
-        "is_method": true,
-        "is_decorator": false
-      },
-      {
-        "name": "close",
-        "is_method": true,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/fetch.py[26-28]:process_batch",
-    "name": "process_batch",
-    "language": "python",
-    "file_path": "server/sample_repository/fetch.py",
-    "start_line": 26,
-    "end_line": 28,
-    "source_code": "async def process_batch(items):\n    results = await asyncio.gather(*[fetch_data(item) for item in items])\n    return results",
-    "docstring": null,
-    "calls": [
-      {
-        "name": "gather",
-        "is_method": true,
-        "is_decorator": false
-      },
-      {
-        "name": "fetch_data",
-        "is_method": false,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/fetch.py[30-31]:__main__",
-    "name": "__main__",
-    "language": "python",
-    "file_path": "server/sample_repository/fetch.py",
-    "start_line": 30,
-    "end_line": 31,
-    "source_code": "if __name__ == \"__main__\":\n    asyncio.run(process_batch([\"example.com\", \"test.com\"]))",
-    "docstring": null,
-    "calls": [
-      {
-        "name": "run",
-        "is_method": true,
-        "is_decorator": false
-      },
-      {
-        "name": "process_batch",
-        "is_method": false,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/math_utils.py[1-4]:calculate_bm25",
-    "name": "calculate_bm25",
-    "language": "python",
-    "file_path": "server/sample_repository/math_utils.py",
-    "start_line": 1,
-    "end_line": 4,
-    "source_code": "def calculate_bm25(tf, idf):\n    \"\"\"Calculates the BM25 score for a given term.\"\"\"\n    # Simplified for testing\n    return tf * idf",
-    "docstring": "Calculates the BM25 score for a given term.",
-    "calls": []
-  },
-  {
-    "id": "server/sample_repository/math_utils.py[6-8]:normalize_score",
-    "name": "normalize_score",
-    "language": "python",
-    "file_path": "server/sample_repository/math_utils.py",
-    "start_line": 6,
-    "end_line": 8,
-    "source_code": "def normalize_score(score):\n    # Notice this function intentionally lacks a docstring\n    return score / 100.0",
-    "docstring": null,
-    "calls": []
-  },
-  {
-    "id": "server/sample_repository/userprofile.tsx[8-47]:UserProfile",
-    "name": "UserProfile",
+    "id": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-26]:Dashboard",
+    "name": "Dashboard",
     "language": "tsx",
-    "file_path": "server/sample_repository/userprofile.tsx",
-    "start_line": 8,
-    "end_line": 47,
-    "source_code": "export const UserProfile = ({ userId }: { userId: string }) => {\n    /** Main React Component for displaying a user's profile. */\n    \n    // React Hooks (Standalone calls)\n    const [user, setUser] = useState<any>(null);\n\n    useEffect(() => {\n        // Nested arrow function inside a hook\n        const loadUser = async () => {\n            // Object method call from the imported class\n            const data = await client.fetchUserData(userId);\n            setUser(data);\n        };\n        \n        loadUser();\n    }, [userId]);\n\n    if (!user) {\n        return <div>Loading...</div>;\n    }\n\n    return (\n        <div className=\"profile-card\">\n            <h1>{user.name}</h1>\n            {/* Standalone calls imported from utils */}\n            <p>Age: {calculateAge(user.birthYear)}</p>\n            <p>Joined: {formatDate(user.joinDate)}</p>\n            \n            <div className=\"hobbies\">\n                <h3>Hobbies</h3>\n                <ul>\n                    {/* Method call (.map) on an array inside JSX */}\n                    {user.hobbies.map((hobby: string) => (\n                        <li key={hobby}>{hobby}</li>\n                    ))}\n                </ul>\n            </div>\n        </div>\n    );\n};",
+    "file_path": "server/sample_repository/frontend/modern_dash/Dashboard.tsx",
+    "start_line": 12,
+    "end_line": 26,
+    "source_code": "export const Dashboard: React.FC<Props> = ({ streamEndpoint }) => {\n    const [events, setEvents] = useState<TelemetryEvent[]>([]);\n\n    useEffect(() => {\n        // Mock WebSocket connection\n        console.log(`Subscribing to ${streamEndpoint}`);\n    }, [streamEndpoint]);\n\n    return (\n        <div className=\"dashboard-container\">\n            <h1>Live Telemetry Analytics</h1>\n            <p>Active Events: {events.length}</p>\n        </div>\n    );\n};",
     "docstring": null,
     "calls": [
       {
@@ -204,162 +20,42 @@
         "is_decorator": false
       },
       {
-        "name": "fetchUserData",
-        "is_method": true,
-        "is_decorator": false
-      },
-      {
-        "name": "setUser",
-        "is_method": false,
-        "is_decorator": false
-      },
-      {
-        "name": "loadUser",
-        "is_method": false,
-        "is_decorator": false
-      },
-      {
-        "name": "calculateAge",
-        "is_method": false,
-        "is_decorator": false
-      },
-      {
-        "name": "formatDate",
-        "is_method": false,
-        "is_decorator": false
-      },
-      {
-        "name": "map",
+        "name": "log",
         "is_method": true,
         "is_decorator": false
       }
     ]
   },
   {
-    "id": "server/sample_repository/userprofile.tsx[16-20]:loadUser",
-    "name": "loadUser",
-    "language": "tsx",
-    "file_path": "server/sample_repository/userprofile.tsx",
-    "start_line": 16,
-    "end_line": 20,
-    "source_code": "const loadUser = async () => {\n            // Object method call from the imported class\n            const data = await client.fetchUserData(userId);\n            setUser(data);\n        };",
-    "docstring": null,
-    "calls": [
-      {
-        "name": "fetchUserData",
-        "is_method": true,
-        "is_decorator": false
-      },
-      {
-        "name": "setUser",
-        "is_method": false,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/text_processor.py[2-4]:DocumentProcessor.__init__",
-    "name": "DocumentProcessor.__init__",
-    "language": "python",
-    "file_path": "server/sample_repository/text_processor.py",
-    "start_line": 2,
-    "end_line": 4,
-    "source_code": "def __init__(self, stop_words):\n        \"\"\"Initializes the processor with stop words.\"\"\"\n        self.stop_words = stop_words",
-    "docstring": "Initializes the processor with stop words.",
-    "calls": []
-  },
-  {
-    "id": "server/sample_repository/text_processor.py[6-8]:DocumentProcessor.remove_punctuation",
-    "name": "DocumentProcessor.remove_punctuation",
-    "language": "python",
-    "file_path": "server/sample_repository/text_processor.py",
-    "start_line": 6,
-    "end_line": 8,
-    "source_code": "def remove_punctuation(self, text):\n        # Calls string methods (.replace)\n        return text.replace(\".\", \"\").replace(\",\", \"\")",
-    "docstring": null,
-    "calls": [
-      {
-        "name": "replace",
-        "is_method": true,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/text_processor.py[10-16]:DocumentProcessor.clean_text",
-    "name": "DocumentProcessor.clean_text",
-    "language": "python",
-    "file_path": "server/sample_repository/text_processor.py",
-    "start_line": 10,
-    "end_line": 16,
-    "source_code": "def clean_text(self, raw_text):\n        \"\"\"Cleans the text by removing punctuation and converting to lowercase.\"\"\"\n        # Calls another method within the same class\n        no_punct = self.remove_punctuation(raw_text)\n        \n        # Calls string method (.lower)\n        return no_punct.lower()",
-    "docstring": "Cleans the text by removing punctuation and converting to lowercase.",
-    "calls": [
-      {
-        "name": "remove_punctuation",
-        "is_method": true,
-        "is_decorator": false
-      },
-      {
-        "name": "lower",
-        "is_method": true,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/utils.ts[3-8]:formatDate",
-    "name": "formatDate",
+    "id": "server/sample_repository/frontend/modern_dash/types.ts[11-13]:isValidEvent",
+    "name": "isValidEvent",
     "language": "typescript",
-    "file_path": "server/sample_repository/utils.ts",
-    "start_line": 3,
-    "end_line": 8,
-    "source_code": "export function formatDate(dateString: string): string {\n    /** Formats a raw ISO date string into a readable local string. */\n    const date = new Date(dateString);\n    // Method call on standard JS object\n    return date.toLocaleDateString();\n}",
-    "docstring": null,
-    "calls": [
-      {
-        "name": "toLocaleDateString",
-        "is_method": true,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/utils.ts[10-14]:calculateAge",
-    "name": "calculateAge",
-    "language": "typescript",
-    "file_path": "server/sample_repository/utils.ts",
-    "start_line": 10,
-    "end_line": 14,
-    "source_code": "export const calculateAge = (birthYear: number): number => {\n    // Standard arrow function without a docstring\n    const currentYear = new Date().getFullYear();\n    return currentYear - birthYear;\n}",
-    "docstring": null,
-    "calls": [
-      {
-        "name": "getFullYear",
-        "is_method": true,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/api.ts[6-8]:ApiClient.constructor",
-    "name": "ApiClient.constructor",
-    "language": "typescript",
-    "file_path": "server/sample_repository/api.ts",
-    "start_line": 6,
-    "end_line": 8,
-    "source_code": "constructor(baseUrl: string) {\n        this.baseUrl = baseUrl;\n    }",
+    "file_path": "server/sample_repository/frontend/modern_dash/types.ts",
+    "start_line": 11,
+    "end_line": 13,
+    "source_code": "export function isValidEvent(event: TelemetryEvent): boolean {\n    return event.sensorReadings.length > 0 && event.timestamp > 0;\n}",
     "docstring": null,
     "calls": []
   },
   {
-    "id": "server/sample_repository/api.ts[10-16]:ApiClient.fetchUserData",
-    "name": "ApiClient.fetchUserData",
-    "language": "typescript",
-    "file_path": "server/sample_repository/api.ts",
-    "start_line": 10,
-    "end_line": 16,
-    "source_code": "async fetchUserData(id: string) {\n        /** Fetches user data from the backend API. */\n        // Global fetch call\n        const response = await fetch(`${this.baseUrl}/users/${id}`);\n        // Object method call\n        return response.json();\n    }",
+    "id": "server/sample_repository/frontend/legacy_portal/UserWidget.jsx[6-13]:UserWidget",
+    "name": "UserWidget",
+    "language": "javascript",
+    "file_path": "server/sample_repository/frontend/legacy_portal/UserWidget.jsx",
+    "start_line": 6,
+    "end_line": 13,
+    "source_code": "const UserWidget = ({ username, avatarUrl }) => {\n    return (\n        <div className=\"widget-card\">\n            <img src={avatarUrl} alt={`${username}'s avatar`} />\n            <h3>@{username}</h3>\n        </div>\n    );\n};",
+    "docstring": null,
+    "calls": []
+  },
+  {
+    "id": "server/sample_repository/frontend/legacy_portal/api_client.js[5-13]:fetchLegacyUserData",
+    "name": "fetchLegacyUserData",
+    "language": "javascript",
+    "file_path": "server/sample_repository/frontend/legacy_portal/api_client.js",
+    "start_line": 5,
+    "end_line": 13,
+    "source_code": "export async function fetchLegacyUserData(userId) {\n    try {\n        const response = await fetch(`/api/v1/users/${userId}`);\n        return await response.json();\n    } catch (error) {\n        console.error(\"Failed to fetch user:\", error);\n        return null;\n    }\n}",
     "docstring": null,
     "calls": [
       {
@@ -371,184 +67,88 @@
         "name": "json",
         "is_method": true,
         "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/code1.c[11-13]:greet",
-    "name": "greet",
-    "language": "c",
-    "file_path": "server/sample_repository/code1.c",
-    "start_line": 11,
-    "end_line": 13,
-    "source_code": "void greet(struct Person p) {\n    printf(\"Hello, my name is %s and I am %d years old.\\n\", p.name, p.age);\n}",
-    "docstring": null,
-    "calls": [
+      },
       {
-        "name": "printf",
-        "is_method": false,
+        "name": "error",
+        "is_method": true,
         "is_decorator": false
       }
     ]
   },
   {
-    "id": "server/sample_repository/code1.c[15-25]:main",
-    "name": "main",
-    "language": "c",
-    "file_path": "server/sample_repository/code1.c",
-    "start_line": 15,
+    "id": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[13-19]:StreamProcessor.ingestAndRoute",
+    "name": "StreamProcessor.ingestAndRoute",
+    "language": "java",
+    "file_path": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java",
+    "start_line": 13,
+    "end_line": 19,
+    "source_code": "public boolean ingestAndRoute(String rawData) {\n        if (rawData == null || rawData.isEmpty()) {\n            return false;\n        }\n        // Normalization logic would go here\n        return true;\n    }",
+    "docstring": null,
+    "calls": [
+      {
+        "name": "isEmpty",
+        "is_method": true,
+        "is_decorator": false
+      }
+    ]
+  },
+  {
+    "id": "server/sample_repository/backend/py_analytics/anomaly_detector.py[1-25]:detect_outliers",
+    "name": "detect_outliers",
+    "language": "python",
+    "file_path": "server/sample_repository/backend/py_analytics/anomaly_detector.py",
+    "start_line": 1,
     "end_line": 25,
-    "source_code": "int main() {\n    // Create and initialize a Person instance\n    struct Person person1;\n    strcpy(person1.name, \"Alice\");\n    person1.age = 30;\n\n    // Call the greeting function\n    greet(person1);\n\n    return 0;\n}",
-    "docstring": null,
+    "source_code": "def detect_outliers(data_stream: list[float], threshold: float = 2.5) -> list[int]:\n    \"\"\"\n    Scans a time-series data stream and identifies indices of anomalous data points\n    using a simple z-score thresholding mechanism.\n    \n    Args:\n        data_stream: A list of float values representing sensor readings.\n        threshold: The z-score limit for an anomaly.\n        \n    Returns:\n        List of indices where outliers occur.\n    \"\"\"\n    if not data_stream:\n        return []\n    \n    mean = sum(data_stream) / len(data_stream)\n    variance = sum((x - mean) ** 2 for x in data_stream) / len(data_stream)\n    std_dev = variance ** 0.5\n    \n    outliers = []\n    for i, val in enumerate(data_stream):\n        if std_dev > 0 and abs(val - mean) / std_dev > threshold:\n            outliers.append(i)\n            \n    return outliers",
+    "docstring": "Scans a time-series data stream and identifies indices of anomalous data points\n    using a simple z-score thresholding mechanism.\n    \n    Args:\n        data_stream: A list of float values representing sensor readings.\n        threshold: The z-score limit for an anomaly.\n        \n    Returns:\n        List of indices where outliers occur.",
     "calls": [
       {
-        "name": "strcpy",
+        "name": "sum",
         "is_method": false,
         "is_decorator": false
       },
       {
-        "name": "greet",
+        "name": "len",
         "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "enumerate",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "abs",
+        "is_method": false,
+        "is_decorator": false
+      },
+      {
+        "name": "append",
+        "is_method": true,
         "is_decorator": false
       }
     ]
   },
   {
-    "id": "server/sample_repository/Main.java[11-14]:Main.Person.Person",
-    "name": "Main.Person.Person",
-    "language": "java",
-    "file_path": "server/sample_repository/Main.java",
-    "start_line": 11,
+    "id": "server/sample_repository/backend/core_engine/crypto_utils.c[7-14]:mask_payload",
+    "name": "mask_payload",
+    "language": "c",
+    "file_path": "server/sample_repository/backend/core_engine/crypto_utils.c",
+    "start_line": 7,
     "end_line": 14,
-    "source_code": "public Person(String name, int age) {\n            this.name = name;\n            this.age = age;\n        }",
+    "source_code": "void mask_payload(const char* input, char* output, char key) {\n    int i = 0;\n    while (input[i] != '\\0') {\n        output[i] = input[i] ^ key;\n        i++;\n    }\n    output[i] = '\\0';\n}",
     "docstring": null,
     "calls": []
   },
   {
-    "id": "server/sample_repository/Main.java[17-20]:Main.Person.greet",
-    "name": "Main.Person.greet",
-    "language": "java",
-    "file_path": "server/sample_repository/Main.java",
-    "start_line": 17,
-    "end_line": 20,
-    "source_code": "public void greet() {\n            System.out.println(\"Hello, my name is \" + name + \n                               \" and I am \" + age + \" years old.\");\n        }",
-    "docstring": null,
-    "calls": [
-      {
-        "name": "println",
-        "is_method": true,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/Main.java[24-30]:Main.main",
-    "name": "Main.main",
-    "language": "java",
-    "file_path": "server/sample_repository/Main.java",
-    "start_line": 24,
-    "end_line": 30,
-    "source_code": "public static void main(String[] args) {\n        // Create a new Person object\n        Person person1 = new Person(\"Charlie\", 28);\n        \n        // Call the method\n        person1.greet();\n    }",
-    "docstring": null,
-    "calls": [
-      {
-        "name": "Person",
-        "is_method": false,
-        "is_decorator": false
-      },
-      {
-        "name": "greet",
-        "is_method": true,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/main.py[6-17]:run_pipeline",
-    "name": "run_pipeline",
-    "language": "python",
-    "file_path": "server/sample_repository/main.py",
-    "start_line": 6,
-    "end_line": 17,
-    "source_code": "def run_pipeline(document_text):\n    \"\"\"Main execution function for the pipeline.\"\"\"\n    processor = DocumentProcessor([\"the\", \"is\", \"and\"])\n    \n    # Call to object method\n    cleaned_doc = processor.clean_text(document_text)\n    \n    # Standalone function call\n    score = calculate_bm25(5.0, 1.2)\n    \n    print(f\"Processed document score: {score}\")\n    return score",
-    "docstring": "Main execution function for the pipeline.",
-    "calls": [
-      {
-        "name": "DocumentProcessor",
-        "is_method": false,
-        "is_decorator": false
-      },
-      {
-        "name": "clean_text",
-        "is_method": true,
-        "is_decorator": false
-      },
-      {
-        "name": "calculate_bm25",
-        "is_method": false,
-        "is_decorator": false
-      },
-      {
-        "name": "print",
-        "is_method": false,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/main.py[19-21]:__main__",
-    "name": "__main__",
-    "language": "python",
-    "file_path": "server/sample_repository/main.py",
-    "start_line": 19,
-    "end_line": 21,
-    "source_code": "if __name__ == \"__main__\":\n    sample_text = \"This is a sample document to test the processing pipeline.\"\n    run_pipeline(sample_text)",
-    "docstring": null,
-    "calls": [
-      {
-        "name": "run_pipeline",
-        "is_method": false,
-        "is_decorator": false
-      }
-    ]
-  },
-  {
-    "id": "server/sample_repository/code1.cpp[11-11]:Person.Person",
-    "name": "Person.Person",
+    "id": "server/sample_repository/backend/core_engine/fast_math.cpp[9-13]:compute_embeddings",
+    "name": "compute_embeddings",
     "language": "cpp",
-    "file_path": "server/sample_repository/code1.cpp",
-    "start_line": 11,
-    "end_line": 11,
-    "source_code": "Person(std::string n, int a) : name(n), age(a) {}",
+    "file_path": "server/sample_repository/backend/core_engine/fast_math.cpp",
+    "start_line": 9,
+    "end_line": 13,
+    "source_code": "std::vector<float> compute_embeddings(const std::vector<std::string>& texts) {\n    // Mock implementation returning a dummy embedding vector\n    std::vector<float> embeddings(768, 0.5f);\n    return embeddings;\n}",
     "docstring": null,
     "calls": []
-  },
-  {
-    "id": "server/sample_repository/code1.cpp[14-17]:Person.greet",
-    "name": "Person.greet",
-    "language": "cpp",
-    "file_path": "server/sample_repository/code1.cpp",
-    "start_line": 14,
-    "end_line": 17,
-    "source_code": "void greet() {\n        std::cout << \"Hello, my name is \" << name \n                  << \" and I am \" << age << \" years old.\\n\";\n    }",
-    "docstring": null,
-    "calls": []
-  },
-  {
-    "id": "server/sample_repository/code1.cpp[20-28]:main",
-    "name": "main",
-    "language": "cpp",
-    "file_path": "server/sample_repository/code1.cpp",
-    "start_line": 20,
-    "end_line": 28,
-    "source_code": "int main() {\n    // Create an instance of Person using the constructor\n    Person person1(\"Bob\", 25);\n\n    // Call the method on the object\n    person1.greet();\n\n    return 0;\n}",
-    "docstring": null,
-    "calls": [
-      {
-        "name": "greet",
-        "is_method": true,
-        "is_decorator": false
-      }
-    ]
   }
 ]

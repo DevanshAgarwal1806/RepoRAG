@@ -1,63 +1,63 @@
-USER QUERY: Which function handles cleaning text?
+### USER QUERY: Where is the logic for finding statistical deviations in sensor data?
 
-### CODEBASE CONTEXT ###
+### CODEBASE CONTEXT
 
---- PRIMARY MATCH: DocumentProcessor.clean_text ---
-File: server/sample_repository/text_processor.py
+PRIMARY MATCH: `detect_outliers`
+
+File: `server/sample_repository/backend/py_analytics/anomaly_detector.py`
+
 Code:
 ```
-def clean_text(self, raw_text):
-        """Cleans the text by removing punctuation and converting to lowercase."""
-        # Calls another method within the same class
-        no_punct = self.remove_punctuation(raw_text)
+def detect_outliers(data_stream: list[float], threshold: float = 2.5) -> list[int]:
+    """
+    Scans a time-series data stream and identifies indices of anomalous data points
+    using a simple z-score thresholding mechanism.
+    
+    Args:
+        data_stream: A list of float values representing sensor readings.
+        threshold: The z-score limit for an anomaly.
         
-        # Calls string method (.lower)
-        return no_punct.lower()
-```
-
---- NEIGHBORING CONTEXT: __main__ ---
-File: server/sample_repository/main.py
-Code:
-```
-if __name__ == "__main__":
-    sample_text = "This is a sample document to test the processing pipeline."
-    run_pipeline(sample_text)
-```
-
---- PRIMARY MATCH: run_pipeline ---
-File: server/sample_repository/main.py
-Code:
-```
-def run_pipeline(document_text):
-    """Main execution function for the pipeline."""
-    processor = DocumentProcessor(["the", "is", "and"])
+    Returns:
+        List of indices where outliers occur.
+    """
+    if not data_stream:
+        return []
     
-    # Call to object method
-    cleaned_doc = processor.clean_text(document_text)
+    mean = sum(data_stream) / len(data_stream)
+    variance = sum((x - mean) ** 2 for x in data_stream) / len(data_stream)
+    std_dev = variance ** 0.5
     
-    # Standalone function call
-    score = calculate_bm25(5.0, 1.2)
-    
-    print(f"Processed document score: {score}")
-    return score
+    outliers = []
+    for i, val in enumerate(data_stream):
+        if std_dev > 0 and abs(val - mean) / std_dev > threshold:
+            outliers.append(i)
+            
+    return outliers
 ```
 
---- PRIMARY MATCH: DocumentProcessor.remove_punctuation ---
-File: server/sample_repository/text_processor.py
+PRIMARY MATCH: `isValidEvent`
+
+File: `server/sample_repository/frontend/modern_dash/types.ts`
+
 Code:
 ```
-def remove_punctuation(self, text):
-        # Calls string methods (.replace)
-        return text.replace(".", "").replace(",", "")
+export function isValidEvent(event: TelemetryEvent): boolean {
+    return event.sensorReadings.length > 0 && event.timestamp > 0;
+}
 ```
 
---- NEIGHBORING CONTEXT: calculate_bm25 ---
-File: server/sample_repository/math_utils.py
+PRIMARY MATCH: `StreamProcessor.ingestAndRoute`
+
+File: `server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java`
+
 Code:
 ```
-def calculate_bm25(tf, idf):
-    """Calculates the BM25 score for a given term."""
-    # Simplified for testing
-    return tf * idf
+public boolean ingestAndRoute(String rawData) {
+        if (rawData == null || rawData.isEmpty()) {
+            return false;
+        }
+        // Normalization logic would go here
+        return true;
+    }
 ```
 

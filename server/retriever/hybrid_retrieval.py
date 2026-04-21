@@ -1,18 +1,17 @@
 import warnings
+warnings.filterwarnings("ignore", category=FutureWarning, module="huggingface_hub")
+warnings.filterwarnings("ignore", category=UserWarning, module="transformers")
+
 import json
 from pathlib import Path
 from rank_bm25 import BM25Okapi
+import argparse
 
-# Import your modular components
-from query_expansion import expand_query
-from bm25_basic import tokenize_code # Reusing your regex tokenizer
-from dense_retrieval import get_dense_rankings
+from retriever.query_expansion import expand_query
+from retriever.bm25_basic import tokenize_code # Reusing your regex tokenizer
+from retriever.dense_retrieval import get_dense_rankings
 
-# --- THE NEW INTEGRATION ---
-from graph_context import assemble_llm_context
-
-warnings.filterwarnings("ignore", category=FutureWarning)
-warnings.filterwarnings("ignore", category=UserWarning)
+from retriever.graph_context import assemble_llm_context
 
 # ---------------------------------------------------------
 # RRF Formula Logic
@@ -36,15 +35,7 @@ def calculate_rrf(bm25_ranks: dict, dense_ranks: dict, k: int = 60) -> list[tupl
     sorted_rrf = sorted(rrf_scores.items(), key=lambda item: item[1], reverse=True)
     return sorted_rrf
 
-# ---------------------------------------------------------
-# Main Execution
-# ---------------------------------------------------------
-if __name__ == "__main__":
-    # --- Bulletproof Pathing ---
-    current_dir = Path(__file__).resolve().parent
-    server_dir = current_dir.parent
-    output_dir = server_dir / "sample_repository_output"
-
+def run_hybrid_retrieval(output_dir: Path, query: str):
     # 1. Load the fully embedded data
     corpus_path_embeddings = output_dir / "embeddings.json"
     corpus_path_functions = output_dir / "extracted_functions.json"
@@ -61,8 +52,8 @@ if __name__ == "__main__":
     bm25 = BM25Okapi(tokenized_corpus)
 
     # 3. The User Input
-    original_query = "Which function handles cleaning text?"
-    print(f"\nUser Query: '{original_query}'")
+    original_query = query
+    print(f"User Query: '{original_query}'")
 
     # 4. Expand Query (LLM)
     expanded_query = expand_query(original_query)
@@ -90,7 +81,7 @@ if __name__ == "__main__":
         top_k_ids.append(function_id)  # Collect the ID for the graph builder
         print(f"Rank {rank} | RRF Score: {rrf_score:.4f} | Function: {function_id}")
 
-    # 9. Build the LLM Context Package!
+    # 9. Build the LLM Context Package
     print("\n--- Generating Graph Context ---")
     # We pass the real IDs we just found, and set depth (d) to 1
     final_prompt = assemble_llm_context(top_k_ids, str(output_dir), d=1)
@@ -99,8 +90,22 @@ if __name__ == "__main__":
     prompt_file = output_dir / "final_llm_payload.md"
     with open(prompt_file, "w", encoding="utf-8") as f:
         # We append the original query to the top so the LLM knows what to answer!
-        f.write(f"USER QUERY: {original_query}\n\n")
+        f.write(f"### USER QUERY: {original_query}\n\n")
         f.write(final_prompt)
         
     print(f"Successfully generated full RAG payload: {len(final_prompt)} characters.")
     print(f"Saved to: {prompt_file}")
+
+# ---------------------------------------------------------
+# Main Execution
+# ---------------------------------------------------------
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Hybrid Retrieval with RRF and Graph Context")
+    parser.add_argument("--output", "-o", required=True, help="Output directory for results")
+    parser.add_argument("--query", "-q", required=True, help="User query to search for")
+    args = parser.parse_args()
+    
+    output_dir = Path(args.output)
+    query = args.query
+
+    run_hybrid_retrieval(output_dir, query)

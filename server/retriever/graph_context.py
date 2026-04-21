@@ -62,7 +62,10 @@ def get_neighborhood(G: nx.DiGraph, start_nodes: list[str], max_depth: int = 1, 
                     context_nodes.add(parent)
                     queue.append((parent, depth + 1))
                     
-    return context_nodes
+    context_nodes -= set(start_nodes)
+    final_functions = start_nodes + list(context_nodes)
+                    
+    return final_functions
 
 def assemble_llm_context(top_k_ids: list[str], output_dir: str, d: int = 1) -> str:
     """
@@ -74,7 +77,7 @@ def assemble_llm_context(top_k_ids: list[str], output_dir: str, d: int = 1) -> s
     all_context_ids = get_neighborhood(G, top_k_ids, max_depth=d)
     
     # Format the payload
-    llm_prompt_context = "### CODEBASE CONTEXT ###\n\n"
+    llm_prompt_context = "### CODEBASE CONTEXT\n\n"
     
     for node_id in all_context_ids:
         # Filter out external/library nodes (they don't have source code in our map)
@@ -88,40 +91,8 @@ def assemble_llm_context(top_k_ids: list[str], output_dir: str, d: int = 1) -> s
         file_path = fn_data.get("file_path", fn_data.get("file", "Unknown File"))
         source_code = fn_data.get("source_code", fn_data.get("source", "No source available."))
         
-        llm_prompt_context += f"--- {role}: {fn_data.get('name', 'Unknown')} ---\n"
-        llm_prompt_context += f"File: {file_path}\n"
+        llm_prompt_context += f"{role}: `{fn_data.get('name', 'Unknown')}`\n\n"
+        llm_prompt_context += f"File: `{file_path}`\n\n"
         llm_prompt_context += f"Code:\n```\n{source_code}\n```\n\n"
         
     return llm_prompt_context
-
-
-if __name__ == "__main__":
-    
-    
-    # This securely resolves the absolute path regardless of where you run the script from
-    current_file_path = Path(__file__).resolve()
-    
-    # .parent goes to 'retriever', .parent again goes to 'server'
-    server_dir = current_file_path.parent.parent
-    output_dir = server_dir / "sample_repository_output"
-    
-    print(f"Looking for data in: {output_dir}") # Debug print
-    
-    mock_top_k = [
-        "sample_repository/text_processor.py::DocumentProcessor.clean_text::15",
-        "sample_repository/utils.ts::calculate_bm25::10",
-        "sample_repository/math_utils.py::normalize_vector::5"
-    ]
-    
-    # Build the context with d=1
-    final_prompt_string = assemble_llm_context(mock_top_k, str(output_dir), d=1)
-    
-    print("\nSuccessfully built LLM context payload!")
-    print(f"Payload length: {len(final_prompt_string)} characters.")
-    
-    # Save the string to a markdown file to inspect it easily
-    prompt_file = output_dir / "test_prompt_context.md"
-    with open(prompt_file, "w", encoding="utf-8") as f:
-        f.write(final_prompt_string)
-        
-    print(f"Saved prompt text to: {prompt_file}")

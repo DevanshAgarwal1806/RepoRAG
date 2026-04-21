@@ -1,7 +1,7 @@
 import json
 import re
 from rank_bm25 import BM25Okapi
-from query_expansion import expand_query 
+from retriever.query_expansion import expand_query 
 import os
 
 # 1. Data Loader

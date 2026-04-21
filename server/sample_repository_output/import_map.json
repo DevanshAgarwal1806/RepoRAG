@@ -1,28 +1,18 @@
 {
-  "server/sample_repository/fetch.py": {
-    "asyncio": "asyncio",
-    "functools": "functools"
-  },
-  "server/sample_repository/math_utils.py": {},
-  "server/sample_repository/userprofile.tsx": {
+  "server/sample_repository/frontend/modern_dash/Dashboard.tsx": {
     "React": "react",
     "useState": "react",
     "useEffect": "react",
-    "formatDate": "./utils",
-    "calculateAge": "./utils",
-    "ApiClient": "./api"
+    "TelemetryEvent": "./types"
   },
-  "server/sample_repository/text_processor.py": {},
-  "server/sample_repository/utils.ts": {},
-  "server/sample_repository/api.ts": {},
-  "server/sample_repository/code1.c": {},
-  "server/sample_repository/Main.java": {},
-  "server/sample_repository/main.py": {
-    "DocumentProcessor": "text_processor",
-    "calculate_bm25": "math_utils",
-    "c": "a",
-    "sqrt": "math",
-    "cos": "math"
+  "server/sample_repository/frontend/modern_dash/types.ts": {},
+  "server/sample_repository/frontend/legacy_portal/UserWidget.jsx": {
+    "React": "react"
   },
-  "server/sample_repository/code1.cpp": {}
+  "server/sample_repository/frontend/legacy_portal/api_client.js": {},
+  "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java": {},
+  "server/sample_repository/backend/py_analytics/anomaly_detector.py": {},
+  "server/sample_repository/backend/core_engine/crypto_utils.c": {},
+  "server/sample_repository/backend/core_engine/fast_math.h": {},
+  "server/sample_repository/backend/core_engine/fast_math.cpp": {}
 }

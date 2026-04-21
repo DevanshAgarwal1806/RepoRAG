@@ -4,7 +4,7 @@ import sys
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Set
 from tree_sitter import Parser, Node, Tree, Language, Query, QueryCursor
-from languages import LANGUAGE_MAP, EXTENSION_MAP, QUERIES, CALL_QUERIES, IMPORT_QUERIES
+from indexer.languages import LANGUAGE_MAP, EXTENSION_MAP, QUERIES, CALL_QUERIES, IMPORT_QUERIES
 
 # Template for function nodes extracted from the AST
 @dataclass
