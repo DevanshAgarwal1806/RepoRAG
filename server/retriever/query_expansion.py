@@ -1,14 +1,22 @@
 import os
 import json
+from pathlib import Path
 from dotenv import load_dotenv
 from openai import OpenAI
 
-load_dotenv()
+ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(dotenv_path=ENV_PATH)
 
-client = OpenAI(
-    api_key=os.environ.get("QUERY_EXPANSION_LLM_KEY"), 
-    base_url="https://api.groq.com/openai/v1" 
-)
+
+def get_client() -> OpenAI | None:
+    api_key = os.environ.get("QUERY_EXPANSION_LLM_KEY")
+    if not api_key:
+        return None
+
+    return OpenAI(
+        api_key=api_key,
+        base_url="https://api.groq.com/openai/v1"
+    )
 
 def expand_query(user_query: str) -> str:
     """
@@ -27,6 +35,10 @@ def expand_query(user_query: str) -> str:
     )
 
     try:
+        client = get_client()
+        if client is None:
+            return user_query
+
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile", 
             messages=[

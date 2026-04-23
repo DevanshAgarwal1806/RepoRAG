@@ -1,0 +1,779 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "name": "Dashboard",
+      "language": "tsx",
+      "file": "server/sample_repository/frontend/modern_dash/Dashboard.tsx",
+      "start_line": 12,
+      "end_line": 68,
+      "docstring": null,
+      "source": "export const Dashboard: React.FC<Props> = ({ streamEndpoint }) => {\n    const [events, setEvents] = useState<TelemetryEvent[]>([]);\n    const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('disconnected');\n    const wsRef = useRef<WebSocket | null>(null);\n\n    useEffect(() => {\n        setConnectionStatus('connecting');\n        const ws = new WebSocket(streamEndpoint);\n        wsRef.current = ws;\n\n        ws.onopen = () => {\n            console.log(`Successfully connected to ${streamEndpoint}`);\n            setConnectionStatus('connected');\n        };\n\n        ws.onmessage = (messageEvent) => {\n            try {\n                const newEvent: TelemetryEvent = JSON.parse(messageEvent.data);\n                setEvents(prevEvents => {\n                    // Keep only the latest 100 events in memory to prevent browser lag\n                    const updated = [...prevEvents, newEvent];\n                    return updated.length > 100 ? updated.slice(updated.length - 100) : updated;\n                });\n            } catch (error) {\n                console.error(\"Failed to parse incoming telemetry data:\", error);\n            }\n        };\n\n        ws.onerror = (error) => {\n            console.error(\"WebSocket encountered an error:\", error);\n            setConnectionStatus('disconnected');\n        };\n\n        ws.onclose = () => {\n            console.log(\"WebSocket connection closed.\");\n            setConnectionStatus('disconnected');\n        };\n\n        // Cleanup function on component unmount\n        return () => {\n            if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {\n                wsRef.current.close();\n            }\n        };\n    }, [streamEndpoint]);\n\n    return (\n        <div className=\"dashboard-container\">\n            <h1>Live Telemetry Analytics</h1>\n            <div className={`status-indicator ${connectionStatus}`}>\n                Status: {connectionStatus}\n            </div>\n            <p>Active Events in Memory: {events.length}</p>\n            {/* Charting components would be rendered here using the 'events' state */}\n        </div>\n    );\n};",
+      "id": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard"
+    },
+    {
+      "name": "isValidEvent",
+      "language": "typescript",
+      "file": "server/sample_repository/frontend/modern_dash/types.ts",
+      "start_line": 11,
+      "end_line": 13,
+      "docstring": null,
+      "source": "export function isValidEvent(event: TelemetryEvent): boolean {\n    return event.sensorReadings.length > 0 && event.timestamp > 0;\n}",
+      "id": "server/sample_repository/frontend/modern_dash/types.ts[11-13]:isValidEvent"
+    },
+    {
+      "name": "UserWidget",
+      "language": "javascript",
+      "file": "server/sample_repository/frontend/legacy_portal/UserWidget.jsx",
+      "start_line": 6,
+      "end_line": 13,
+      "docstring": null,
+      "source": "const UserWidget = ({ username, avatarUrl }) => {\n    return (\n        <div className=\"widget-card\">\n            <img src={avatarUrl} alt={`${username}'s avatar`} />\n            <h3>@{username}</h3>\n        </div>\n    );\n};",
+      "id": "server/sample_repository/frontend/legacy_portal/UserWidget.jsx[6-13]:UserWidget"
+    },
+    {
+      "name": "fetchLegacyUserData",
+      "language": "javascript",
+      "file": "server/sample_repository/frontend/legacy_portal/api_client.js",
+      "start_line": 5,
+      "end_line": 13,
+      "docstring": null,
+      "source": "export async function fetchLegacyUserData(userId) {\n    try {\n        const response = await fetch(`/api/v1/users/${userId}`);\n        return await response.json();\n    } catch (error) {\n        console.error(\"Failed to fetch user:\", error);\n        return null;\n    }\n}",
+      "id": "server/sample_repository/frontend/legacy_portal/api_client.js[5-13]:fetchLegacyUserData"
+    },
+    {
+      "name": "StreamProcessor.ingestAndRoute",
+      "language": "java",
+      "file": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java",
+      "start_line": 22,
+      "end_line": 47,
+      "docstring": null,
+      "source": "public boolean ingestAndRoute(String rawData) {\n        if (rawData == null || rawData.isEmpty()) {\n            LOGGER.warning(\"Received null or empty raw data packet. Dropping payload.\");\n            return false;\n        }\n\n        try {\n            // 1. Basic Structural Validation\n            if (!rawData.trim().startsWith(\"{\") || !rawData.trim().endsWith(\"}\")) {\n                throw new IllegalArgumentException(\"Malformed JSON payload: Must be a valid JSON object.\");\n            }\n\n            // 2. Schema Normalization\n            String normalizedData = normalizeSchema(rawData);\n\n            // 3. Routing to Analytics Queue\n            return routeToQueue(normalizedData);\n\n        } catch (IllegalArgumentException e) {\n            LOGGER.log(Level.WARNING, \"Validation error during ingestion: \" + e.getMessage());\n            return false;\n        } catch (Exception e) {\n            LOGGER.log(Level.SEVERE, \"Unexpected error routing data packet\", e);\n            return false;\n        }\n    }",
+      "id": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute"
+    },
+    {
+      "name": "StreamProcessor.normalizeSchema",
+      "language": "java",
+      "file": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java",
+      "start_line": 53,
+      "end_line": 65,
+      "docstring": null,
+      "source": "private String normalizeSchema(String payload) {\n        String processedPayload = payload;\n\n        // Ensure a timestamp exists; if not, inject the current system time\n        if (!TIMESTAMP_PATTERN.matcher(processedPayload).find()) {\n             processedPayload = processedPayload.replaceFirst(\"\\\\{\", \"{\\\"timestamp\\\": \" + System.currentTimeMillis() + \", \");\n        }\n\n        // Strip out deprecated legacy fields (Mock implementation)\n        processedPayload = processedPayload.replace(\"\\\"legacy_user_id\\\": null,\", \"\");\n        \n        return processedPayload;\n    }",
+      "id": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema"
+    },
+    {
+      "name": "StreamProcessor.routeToQueue",
+      "language": "java",
+      "file": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java",
+      "start_line": 70,
+      "end_line": 74,
+      "docstring": null,
+      "source": "private boolean routeToQueue(String normalizedPayload) {\n        // Mock queue routing logic\n        LOGGER.info(String.format(\"Successfully routed payload [Hash: %d] to analytics queue.\", normalizedPayload.hashCode()));\n        return true;\n    }",
+      "id": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[70-74]:StreamProcessor.routeToQueue"
+    },
+    {
+      "name": "detect_outliers",
+      "language": "python",
+      "file": "server/sample_repository/backend/py_analytics/anomaly_detector.py",
+      "start_line": 1,
+      "end_line": 25,
+      "docstring": "Scans a time-series data stream and identifies indices of anomalous data points\n    using a simple z-score thresholding mechanism.\n    \n    Args:\n        data_stream: A list of float values representing sensor readings.\n        threshold: The z-score limit for an anomaly.\n        \n    Returns:\n        List of indices where outliers occur.",
+      "source": "def detect_outliers(data_stream: list[float], threshold: float = 2.5) -> list[int]:\n    \"\"\"\n    Scans a time-series data stream and identifies indices of anomalous data points\n    using a simple z-score thresholding mechanism.\n    \n    Args:\n        data_stream: A list of float values representing sensor readings.\n        threshold: The z-score limit for an anomaly.\n        \n    Returns:\n        List of indices where outliers occur.\n    \"\"\"\n    if not data_stream:\n        return []\n    \n    mean = sum(data_stream) / len(data_stream)\n    variance = sum((x - mean) ** 2 for x in data_stream) / len(data_stream)\n    std_dev = variance ** 0.5\n    \n    outliers = []\n    for i, val in enumerate(data_stream):\n        if std_dev > 0 and abs(val - mean) / std_dev > threshold:\n            outliers.append(i)\n            \n    return outliers",
+      "id": "server/sample_repository/backend/py_analytics/anomaly_detector.py[1-25]:detect_outliers"
+    },
+    {
+      "name": "mask_payload",
+      "language": "c",
+      "file": "server/sample_repository/backend/core_engine/crypto_utils.c",
+      "start_line": 7,
+      "end_line": 14,
+      "docstring": null,
+      "source": "void mask_payload(const char* input, char* output, char key) {\n    int i = 0;\n    while (input[i] != '\\0') {\n        output[i] = input[i] ^ key;\n        i++;\n    }\n    output[i] = '\\0';\n}",
+      "id": "server/sample_repository/backend/core_engine/crypto_utils.c[7-14]:mask_payload"
+    },
+    {
+      "name": "compute_embeddings",
+      "language": "cpp",
+      "file": "server/sample_repository/backend/core_engine/fast_math.cpp",
+      "start_line": 12,
+      "end_line": 52,
+      "docstring": null,
+      "source": "std::vector<float> compute_embeddings(const std::vector<std::string>& texts) {\n    const int EMBEDDING_DIM = 768;\n    std::vector<float> embeddings(EMBEDDING_DIM, 0.0f);\n    \n    if (texts.empty()) {\n        return embeddings;\n    }\n\n    // Iterate through all provided texts to build a composite embedding\n    for (size_t t = 0; t < texts.size(); ++t) {\n        const std::string& text = texts[t];\n        \n        for (size_t i = 0; i < text.length(); ++i) {\n            // Distribute the ASCII value across the 768 dimensions using sine/cosine waves\n            // This creates a deterministic, non-uniform distribution of floats\n            int dim_index = (i * 31 + t) % EMBEDDING_DIM;\n            float char_weight = static_cast<float>(text[i]);\n            \n            if (i % 2 == 0) {\n                embeddings[dim_index] += std::sin(char_weight * 0.1f);\n            } else {\n                embeddings[dim_index] += std::cos(char_weight * 0.1f);\n            }\n        }\n    }\n\n    // Normalize the final embedding vector using L2 normalization\n    float sum_squares = 0.0f;\n    for (float val : embeddings) {\n        sum_squares += val * val;\n    }\n    \n    if (sum_squares > 0.0f) {\n        float magnitude = std::sqrt(sum_squares);\n        for (float& val : embeddings) {\n            val /= magnitude;\n        }\n    }\n\n    return embeddings;\n}",
+      "id": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings"
+    },
+    {
+      "name": "useState",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::useState"
+    },
+    {
+      "name": "useRef",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::useRef"
+    },
+    {
+      "name": "useEffect",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::useEffect"
+    },
+    {
+      "name": "setConnectionStatus",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::setConnectionStatus"
+    },
+    {
+      "name": "log",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::log"
+    },
+    {
+      "name": "parse",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::parse"
+    },
+    {
+      "name": "setEvents",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::setEvents"
+    },
+    {
+      "name": "slice",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::slice"
+    },
+    {
+      "name": "error",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::error"
+    },
+    {
+      "name": "close",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::close"
+    },
+    {
+      "name": "fetch",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::fetch"
+    },
+    {
+      "name": "json",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::json"
+    },
+    {
+      "name": "isEmpty",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::isEmpty"
+    },
+    {
+      "name": "warning",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::warning"
+    },
+    {
+      "name": "trim",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::trim"
+    },
+    {
+      "name": "startsWith",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::startsWith"
+    },
+    {
+      "name": "endsWith",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::endsWith"
+    },
+    {
+      "name": "IllegalArgumentException",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::IllegalArgumentException"
+    },
+    {
+      "name": "getMessage",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::getMessage"
+    },
+    {
+      "name": "matcher",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::matcher"
+    },
+    {
+      "name": "find",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::find"
+    },
+    {
+      "name": "replaceFirst",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::replaceFirst"
+    },
+    {
+      "name": "currentTimeMillis",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::currentTimeMillis"
+    },
+    {
+      "name": "replace",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::replace"
+    },
+    {
+      "name": "info",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::info"
+    },
+    {
+      "name": "format",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::format"
+    },
+    {
+      "name": "hashCode",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::hashCode"
+    },
+    {
+      "name": "sum",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::sum"
+    },
+    {
+      "name": "len",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::len"
+    },
+    {
+      "name": "enumerate",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::enumerate"
+    },
+    {
+      "name": "abs",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::abs"
+    },
+    {
+      "name": "append",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::append"
+    },
+    {
+      "name": "empty",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::empty"
+    },
+    {
+      "name": "size",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::size"
+    },
+    {
+      "name": "length",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::length"
+    },
+    {
+      "name": "sin",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::sin"
+    },
+    {
+      "name": "cos",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::cos"
+    },
+    {
+      "name": "sqrt",
+      "language": "external",
+      "file": "",
+      "start_line": 0,
+      "end_line": 0,
+      "docstring": null,
+      "source": "",
+      "embedding": null,
+      "id": "__external__::sqrt"
+    }
+  ],
+  "links": [
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::useState"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::useRef"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::useEffect"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::setConnectionStatus"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::log"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::parse"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::setEvents"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::slice"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::error"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+      "target": "__external__::close"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/legacy_portal/api_client.js[5-13]:fetchLegacyUserData",
+      "target": "__external__::fetch"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/legacy_portal/api_client.js[5-13]:fetchLegacyUserData",
+      "target": "__external__::json"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/frontend/legacy_portal/api_client.js[5-13]:fetchLegacyUserData",
+      "target": "__external__::error"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::isEmpty"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::warning"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::trim"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::startsWith"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::endsWith"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::IllegalArgumentException"
+    },
+    {
+      "weight": 0.9,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema"
+    },
+    {
+      "weight": 0.9,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[70-74]:StreamProcessor.routeToQueue"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::log"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+      "target": "__external__::getMessage"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema",
+      "target": "__external__::matcher"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema",
+      "target": "__external__::find"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema",
+      "target": "__external__::replaceFirst"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema",
+      "target": "__external__::currentTimeMillis"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[53-65]:StreamProcessor.normalizeSchema",
+      "target": "__external__::replace"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[70-74]:StreamProcessor.routeToQueue",
+      "target": "__external__::info"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[70-74]:StreamProcessor.routeToQueue",
+      "target": "__external__::format"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[70-74]:StreamProcessor.routeToQueue",
+      "target": "__external__::hashCode"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/py_analytics/anomaly_detector.py[1-25]:detect_outliers",
+      "target": "__external__::sum"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/py_analytics/anomaly_detector.py[1-25]:detect_outliers",
+      "target": "__external__::len"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/py_analytics/anomaly_detector.py[1-25]:detect_outliers",
+      "target": "__external__::enumerate"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/py_analytics/anomaly_detector.py[1-25]:detect_outliers",
+      "target": "__external__::abs"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/py_analytics/anomaly_detector.py[1-25]:detect_outliers",
+      "target": "__external__::append"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings",
+      "target": "__external__::empty"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings",
+      "target": "__external__::size"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings",
+      "target": "__external__::length"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings",
+      "target": "__external__::sin"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings",
+      "target": "__external__::cos"
+    },
+    {
+      "weight": 0.1,
+      "is_decorator": false,
+      "source": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings",
+      "target": "__external__::sqrt"
+    }
+  ]
+}

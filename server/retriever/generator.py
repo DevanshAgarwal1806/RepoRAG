@@ -18,7 +18,7 @@ def generate_rag_answer(output_dir: str) -> str:
     api_key = os.getenv("ANSWER_GENERATION_LLM_KEY") 
     
     if not api_key or not api_key.startswith("gsk_"):
-        raise ValueError("Valid Groq API Key (starting with 'gsk_') not found in .env file.")
+        raise ValueError("Valid Groq API Key (starting with 'gsk_') not found in server/.env.")
 
     # 3. Read the Prepared Context & Query
     if not payload_path.exists():

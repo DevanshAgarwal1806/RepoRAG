@@ -1,0 +1,23 @@
+{
+  "server/sample_repository/frontend/modern_dash/Dashboard.tsx": {
+    "React": "react",
+    "useState": "react",
+    "useEffect": "react",
+    "useRef": "react",
+    "TelemetryEvent": "./types"
+  },
+  "server/sample_repository/frontend/modern_dash/types.ts": {},
+  "server/sample_repository/frontend/legacy_portal/UserWidget.jsx": {
+    "React": "react"
+  },
+  "server/sample_repository/frontend/legacy_portal/api_client.js": {},
+  "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java": {
+    "Pattern": "java.util.regex",
+    "Logger": "java.util.logging",
+    "Level": "java.util.logging"
+  },
+  "server/sample_repository/backend/py_analytics/anomaly_detector.py": {},
+  "server/sample_repository/backend/core_engine/crypto_utils.c": {},
+  "server/sample_repository/backend/core_engine/fast_math.h": {},
+  "server/sample_repository/backend/core_engine/fast_math.cpp": {}
+}
