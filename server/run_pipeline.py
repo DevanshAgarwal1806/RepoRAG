@@ -4,8 +4,8 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 from pathlib import Path
 
 from retriever.generator import generate_rag_answer
-from indexer.pipeline import run_indexer_pipeline
-from retriever.hybrid_retrieval import run_hybrid_retrieval
+from server.indexer_pipeline import run_indexer_pipeline
+from server.hybrid_retrieval import run_hybrid_retrieval
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run complete RepoRAG pipeline: indexing, retrieval, and generation")

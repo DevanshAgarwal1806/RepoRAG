@@ -20,7 +20,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from rank_bm25 import BM25Okapi
 
-from indexer.pipeline import run_indexer_pipeline
+from server.indexer_pipeline import run_indexer_pipeline
 from retriever.bm25_basic import tokenize_code
 from retriever.generator import generate_rag_answer
 from retriever.graph_context import assemble_llm_context

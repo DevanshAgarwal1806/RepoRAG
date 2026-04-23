@@ -137,24 +137,6 @@ QUERIES = {
                         )
             body: (compound_statement) @body
         )
-        
-        (call_expression
-            function: (parenthesized_expression
-                            (pointer_expression
-                                (field_expression
-                                    field: (field_identifier) @callee
-                                )
-                            )
-                        )
-        )
-        
-        (call_expression
-            function: (parenthesized_expression
-                            (pointer_expression
-                                (identifier) @callee
-                            )
-                        )
-        )
     """,
     "cpp": """
         (function_definition
@@ -189,6 +171,7 @@ CALL_QUERIES = {
         (call 
             function: 
                 (attribute 
+                    object: (_) @receiver
                     attribute: (identifier) @callee
                 )
         )
@@ -200,6 +183,7 @@ CALL_QUERIES = {
         (call_expression 
             function: 
                 (member_expression 
+                    object: (_) @receiver
                     property: (property_identifier) @callee
                 )
         )
@@ -211,6 +195,7 @@ CALL_QUERIES = {
         (call_expression 
             function: 
                 (member_expression 
+                    object: (_) @receiver
                     property: (property_identifier) @callee
                 )
         )
@@ -222,12 +207,17 @@ CALL_QUERIES = {
         (call_expression 
             function: 
                 (member_expression 
+                    object: (_) @receiver
                     property: (property_identifier) @callee
                 )
         )
     """,
     "java": """
         (method_invocation
+            name: (identifier) @callee)
+        
+        (method_invocation
+            object: (_) @receiver
             name: (identifier) @callee)
 
         (object_creation_expression
@@ -239,7 +229,26 @@ CALL_QUERIES = {
 
         (call_expression
             function: (field_expression
+                argument: (_) @receiver
                 field: (field_identifier) @callee))
+                
+        (call_expression
+            function: (parenthesized_expression
+                            (pointer_expression
+                                (field_expression
+                                    field: (field_identifier) @callee
+                                )
+                            )
+                        )
+        )
+        
+        (call_expression
+            function: (parenthesized_expression
+                            (pointer_expression
+                                (identifier) @callee
+                            )
+                        )
+        )
     """,
     "cpp": """
         (call_expression
@@ -247,10 +256,12 @@ CALL_QUERIES = {
 
         (call_expression
             function: (field_expression
+                argument: (_) @receiver
                 field: (field_identifier) @callee))
 
         (call_expression
             function: (qualified_identifier
+                scope: (_) @receiver
                 name: (identifier) @callee))
     """,
 }
@@ -362,8 +373,9 @@ IMPORT_QUERIES = {
                 name: (identifier) @imported_symbol))
 
         (import_declaration
-            (scoped_identifier) @source_module
-            (asterisk) @wildcard)
+            (scoped_identifier
+                scope: (_) @source_module
+                name: (asterisk) @wildcard))
     """,
     "c": """
         (preproc_include

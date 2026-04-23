@@ -11,6 +11,7 @@ from indexer.languages import LANGUAGE_MAP, EXTENSION_MAP, QUERIES, CALL_QUERIES
 class FunctionNode:
     id: str # ID Format: "filepath[start_line:end_line]:funcname"
     name: str
+    is_method: bool = False
     language: str
     file_path: str
     start_line: int
@@ -229,15 +230,22 @@ def extract_calls(
                 is_method = True
             else:
                 is_method = False
+                
+            # Capture the receiver chain if present: a.b.someCall() -> "a.b"
+            receiver_text = None
+            if "receiver" in captures:
+                receiver_node = captures["receiver"][0]
+                receiver_text = get_node_text(receiver_node, source_code)
             
-            signature = f"{call_name}|{is_method}|{is_decorator}"
+            signature = f"{call_name}|{is_method}|{is_decorator}|{receiver_text}"
             if signature in seen_list:
                 continue
             seen_list.add(signature)
             calls_list.append({
                 "name": call_name,
                 "is_method": is_method,
-                "is_decorator": is_decorator
+                "is_decorator": is_decorator,
+                "receiver": receiver_text
             })
 
 def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
@@ -373,6 +381,7 @@ def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
         functions.append(FunctionNode(
             id=node_id,
             name=name_text,
+            is_method="." in name_text,
             language=language_name,
             file_path=file_path,
             start_line=func_node.start_point[0] + 1,
@@ -414,6 +423,7 @@ def extract_functions(file_path: str) -> tuple[List[FunctionNode], dict]:
                 source_code=get_node_text(child, source_bytes),
                 docstring=None,
                 calls=calls_list,
+                is_method=False
             ))
             break
 
@@ -482,6 +492,7 @@ def serialize_func_node(fn: FunctionNode) -> dict:
         "source_code": fn.source_code,
         "docstring": fn.docstring,
         "calls": fn.calls,
+        "is_method": fn.is_method
     }
     
 def save_functions_to_json(functions: list[FunctionNode], output_file: str) -> None:
