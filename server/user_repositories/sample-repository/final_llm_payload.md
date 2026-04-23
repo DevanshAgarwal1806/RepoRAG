@@ -1,55 +1,6 @@
-### USER QUERY: What does this codebase do?
+### USER QUERY: okay perfect
 
 ### CODEBASE CONTEXT
-
-PRIMARY MATCH: `compute_embeddings`
-
-File: `server/sample_repository/backend/core_engine/fast_math.cpp`
-
-Code:
-```
-std::vector<float> compute_embeddings(const std::vector<std::string>& texts) {
-    const int EMBEDDING_DIM = 768;
-    std::vector<float> embeddings(EMBEDDING_DIM, 0.0f);
-    
-    if (texts.empty()) {
-        return embeddings;
-    }
-
-    // Iterate through all provided texts to build a composite embedding
-    for (size_t t = 0; t < texts.size(); ++t) {
-        const std::string& text = texts[t];
-        
-        for (size_t i = 0; i < text.length(); ++i) {
-            // Distribute the ASCII value across the 768 dimensions using sine/cosine waves
-            // This creates a deterministic, non-uniform distribution of floats
-            int dim_index = (i * 31 + t) % EMBEDDING_DIM;
-            float char_weight = static_cast<float>(text[i]);
-            
-            if (i % 2 == 0) {
-                embeddings[dim_index] += std::sin(char_weight * 0.1f);
-            } else {
-                embeddings[dim_index] += std::cos(char_weight * 0.1f);
-            }
-        }
-    }
-
-    // Normalize the final embedding vector using L2 normalization
-    float sum_squares = 0.0f;
-    for (float val : embeddings) {
-        sum_squares += val * val;
-    }
-    
-    if (sum_squares > 0.0f) {
-        float magnitude = std::sqrt(sum_squares);
-        for (float& val : embeddings) {
-            val /= magnitude;
-        }
-    }
-
-    return embeddings;
-}
-```
 
 PRIMARY MATCH: `Dashboard`
 
@@ -141,5 +92,22 @@ const UserWidget = ({ username, avatarUrl }) => {
         </div>
     );
 };
+```
+
+PRIMARY MATCH: `fetchLegacyUserData`
+
+File: `server/sample_repository/frontend/legacy_portal/api_client.js`
+
+Code:
+```
+export async function fetchLegacyUserData(userId) {
+    try {
+        const response = await fetch(`/api/v1/users/${userId}`);
+        return await response.json();
+    } catch (error) {
+        console.error("Failed to fetch user:", error);
+        return null;
+    }
+}
 ```
 
