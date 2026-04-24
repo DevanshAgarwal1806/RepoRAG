@@ -35,6 +35,29 @@ def tokenize_code(text: str) -> list[str]:
     # Lowercase and split into a final list of tokens
     return text.lower().split()
 
+def bm25_search(query: str, corpus: list[dict], top_k: int = 3) -> list[dict]:
+    """Performs BM25 search on the corpus given a user query."""
+    # Tokenize the corpus
+    tokenized_corpus = [tokenize_code(doc["source_code"]) for doc in corpus]
+    
+    # Initialize BM25
+    bm25 = BM25Okapi(tokenized_corpus)
+    
+    # Expand the query to bridge the semantic gap
+    expanded_query = expand_query(query)
+    
+    # Tokenize the expanded query
+    tokenized_query = tokenize_code(expanded_query)
+    
+    # Get BM25 scores
+    scores = bm25.get_scores(tokenized_query)
+    
+    # Zip scores with documents and sort by score in descending order
+    results = sorted(zip(scores, corpus), key=lambda x: x[0], reverse=True)
+    
+    # Return top_k results
+    return [doc for score, doc in results[:top_k]]
+
 # 3. Main Search Pipeline
 if __name__ == "__main__":
     # 1. Load the codebase
@@ -46,33 +69,13 @@ if __name__ == "__main__":
     if not corpus:
         exit()
 
-    # 2. Tokenize the entire codebase
-    # We apply the tokenize_code function to the "source_code" field of every document
-    tokenized_corpus = [tokenize_code(doc["source_code"]) for doc in corpus]
-
-    # 3. Initialize the BM25 Index
-    bm25 = BM25Okapi(tokenized_corpus)
-    print(f"Successfully indexed {len(corpus)} functions.\n")
-
-    # 4. User Interaction
     user_query = "how to connect to the database"
     print(f"Original Query : {user_query}")
     
-    # 5. Expand the Query (Bridging the semantic gap)
-    expanded_query = expand_query(user_query)
-    print(f"Expanded Query : {expanded_query}\n")
-    
-    # 6. Tokenize the expanded query
-    tokenized_query = tokenize_code(expanded_query)
-    
-    # 7. Get BM25 scores
-    scores = bm25.get_scores(tokenized_query)
-    
-    # 8. Rank and Display Results
-    # Zip the scores with the original documents and sort them in descending order
-    results = sorted(zip(scores, corpus), key=lambda x: x[0], reverse=True)
+    # 2. Perform BM25 search
+    results = bm25_search(user_query, corpus, top_k=3)
     
     print("--- Top Ranked Search Results ---")
     # Display the top 3 results (Recall@3)
-    for rank, (score, doc) in enumerate(results[:3], start=1):
-        print(f"Rank {rank} | Score: {score:.4f} | Function: {doc['id']}")
+    for rank, doc in enumerate(results, start=1):
+        print(f"Rank {rank} | Function: {doc['id']}")

@@ -1,42 +1,43 @@
 import os
 import sys
 import json
-from pathlib import Path
-from rank_bm25 import BM25Okapi
-from dotenv import load_dotenv
 from groq import Groq
+from pathlib import Path
+from dotenv import load_dotenv
+
+BASELINE_DIR = Path(__file__).resolve().parent
+SERVER_DIR = BASELINE_DIR.parent.parent
+if str(SERVER_DIR) not in sys.path:
+    sys.path.insert(0, str(SERVER_DIR))
+
+for candidate in [SERVER_DIR / ".env"]:
+    if candidate.exists():
+        load_dotenv(dotenv_path=candidate)
+        break
+    
+from rank_bm25 import BM25Okapi
 from retriever.bm25_basic import tokenize_code
 from retriever.dense_retrieval import get_dense_rankings
 from retriever.query_expansion import expand_query
 from retriever.graph_context import load_data, get_neighborhood
 from hybrid_retrieval import calculate_rrf
 
-
-BASELINE_DIR = Path(__file__).resolve().parent          # Evaluation/Agentic AI Baseline/
-SERVER_DIR = BASELINE_DIR.parent.parent               # server/
-if str(SERVER_DIR) not in sys.path:
-    sys.path.insert(0, str(SERVER_DIR))
-
-# Load .env from server root (same convention as the rest of the system)
-for candidate in [SERVER_DIR / ".env"]:
-    if candidate.exists():
-        load_dotenv(dotenv_path=candidate)
-        break
-
 MAX_STEPS = 5 # max agent iterations before forcing generation
 TOP_K = 5 # results returned per hybrid_search call
 MIN_WEIGHT = 0.4 # graph edge weight threshold (matches graph_context defaults)
 MODEL_NAME = "llama-3.3-70b-versatile"
 
-# ── Groq client (same key/model as retriever/generator.py) ───────────────────
-groq = Groq(api_key=os.getenv("ANSWER_GENERATION_LLM_KEY"))
+groq_client = Groq(api_key=os.getenv("ANSWER_GENERATION_LLM_KEY"))
+
+def _serialize_context(ctx: list[dict]) -> str:
+    parts = []
+    for item in ctx:
+        header = f"[{item.get('type')}] {item.get('name')} ({item.get('file')})"
+        body   = item.get("source") or item.get("snippet") or ""
+        parts.append(f"{header}\n{body}")
+    return ("\n" + "=" * 60 + "\n").join(parts)
 
 class AgentTools:
-    """
-    Loads the indexed artifacts once, then exposes three tools the agent can call.
-    Every line of retrieval logic delegates to the existing retriever/ modules.
-    """
-
     def __init__(self, output_dir: Path):
         self.output_dir = output_dir
         self.G, self.fn_map = load_data(str(output_dir))
@@ -44,18 +45,10 @@ class AgentTools:
             self.corpus_embeddings = json.load(f)
             
         self.fn_ids = list(self.fn_map.keys())
-        tokenized = [
-            tokenize_code(self.fn_map[fid].get("source_code",
-                          self.fn_map[fid].get("source", "")))
-            for fid in self.fn_ids
-        ]
+        tokenized = [tokenize_code(self.fn_map[fid].get("source_code", "")) for fid in self.fn_ids]
         self.bm25 = BM25Okapi(tokenized)
 
     def hybrid_search(self, query: str, top_k: int = TOP_K) -> list[dict]:
-        """
-        Hybrid BM25 + Dense retrieval fused with RRF.
-        Uses: expand_query, tokenize_code, BM25Okapi, get_dense_rankings, calculate_rrf
-        """
         expanded = expand_query(query)
         bm25_scores = self.bm25.get_scores(tokenize_code(expanded))
         bm25_ranked = sorted(
@@ -64,12 +57,12 @@ class AgentTools:
         bm25_ranks = {fid: r for r, (fid, _) in enumerate(bm25_ranked, 1)}
         
         dense_results = get_dense_rankings(query, self.corpus_embeddings)
-        dense_ranks   = {fid: rank for fid, _score, rank in dense_results}
+        dense_ranks = {fid: rank for fid, _, rank in dense_results}
         fused = calculate_rrf(bm25_ranks, dense_ranks)
 
         results = []
         for fid, rrf_score in fused[:top_k]:
-            fn  = self.fn_map.get(fid, {})
+            fn = self.fn_map.get(fid, {})
             src = fn.get("source_code", fn.get("source", ""))
             results.append({
                 "id": fid,
@@ -81,10 +74,6 @@ class AgentTools:
         return results
 
     def get_function_source(self, function_id: str) -> dict:
-        """
-        Returns the full source code + metadata for one function.
-        Uses: fn_map populated by load_data() from retriever.graph_context
-        """
         fn = self.fn_map.get(function_id)
         if not fn:
             return {"error": f"Function ID '{function_id}' not found in index."}
@@ -96,10 +85,6 @@ class AgentTools:
         }
 
     def get_graph_neighbors(self, function_id: str) -> dict:
-        """
-        Returns callers and callees of a node using get_neighborhood() from
-        retriever.graph_context (same BFS + weight filtering as your pipeline).
-        """
         if not self.G.has_node(function_id):
             return {"error": f"Node '{function_id}' not found in dependency graph."}
 
@@ -212,10 +197,10 @@ def run_agentic_rag(query: str, output_dir: Path) -> dict:
 
     Returns:
         {
-          "query":             str,
+          "query": str,
           "retrieved_context": str,   # all code seen during the agent loop
-          "generated_answer":  str,   # final LLM answer
-          "steps":             int,
+          "generated_answer": str,   # final LLM answer
+          "steps": int,
         }
     """
     tools = AgentTools(output_dir)
@@ -223,13 +208,13 @@ def run_agentic_rag(query: str, output_dir: Path) -> dict:
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "user",   "content": f"Query: {query}"},
     ]
-    accumulated_context: list[str] = []
+    accumulated_context: list[dict[str, str]] = []
     steps = 0
 
     print(f"\n[Agentic RAG] Query: {query}")
 
     while steps < MAX_STEPS:
-        response = groq.chat.completions.create(
+        response = groq_client.chat.completions.create(
             model=MODEL_NAME,
             messages=messages,
             tools=TOOL_SPECS,
@@ -261,33 +246,45 @@ def run_agentic_rag(query: str, output_dir: Path) -> dict:
                     fn_args.get("top_k", TOP_K),
                 )
                 for r in result:
-                    accumulated_context.append(
-                        f"[hybrid_search] {r['name']} ({r['file']})\n{r['snippet']}"
-                    )
+                    accumulated_context.append({
+                        "type": "hybrid_search",
+                        "name": r['name'],
+                        "fn_id": r['id'],
+                        "file": r['file'],
+                        "snippet": r['snippet']
+                    })
 
             elif fn_name == "get_function_source":
                 result = tools.get_function_source(fn_args.get("function_id", ""))
                 if "source" in result:
-                    accumulated_context.append(
-                        f"[full source] {result['name']} ({result['file']})\n{result['source']}"
-                    )
+                    accumulated_context.append({
+                        "type": "full_source",
+                        "name": result['name'],
+                        "fn_id": result['id'],
+                        "file": result['file'],
+                        "source": result['source']
+                    })
 
             elif fn_name == "get_graph_neighbors":
                 result = tools.get_graph_neighbors(fn_args.get("function_id", ""))
                 for nb in (result.get("callees", []) + result.get("callers", []))[:3]:
                     src = tools.get_function_source(nb["id"])
                     if "source" in src:
-                        accumulated_context.append(
-                            f"[graph neighbor] {src['name']} ({src['file']})\n{src['source']}"
-                        )
+                        accumulated_context.append({
+                            "type": "graph_neighbor",
+                            "name": src['name'],
+                            "fn_id": src['id'],
+                            "file": src['file'],
+                            "source": src['source']
+                        })
 
             else:
                 result = {"error": f"Unknown tool: {fn_name}"}
 
             messages.append({
-                "role":         "tool",
+                "role": "tool",
                 "tool_call_id": tc.id,
-                "content":      json.dumps(result, indent=2),
+                "content": json.dumps(result, indent=2),
             })
 
         steps += 1
@@ -296,7 +293,7 @@ def run_agentic_rag(query: str, output_dir: Path) -> dict:
     last = messages[-1]
     last_role = last.role if hasattr(last, "role") else last.get("role")
     if last_role == "tool":
-        print("  [Post-loop] Requesting final answer…")
+        print("  Requesting final answer…")
         messages.append({
             "role": "user",
             "content": (
@@ -304,7 +301,7 @@ def run_agentic_rag(query: str, output_dir: Path) -> dict:
                 "and concise final answer to the original query."
             ),
         })
-        final = groq.chat.completions.create(
+        final = groq_client.chat.completions.create(
             model=MODEL_NAME,
             messages=messages,
             temperature=0.2,
@@ -316,20 +313,15 @@ def run_agentic_rag(query: str, output_dir: Path) -> dict:
             last.content if hasattr(last, "content") else last.get("content", "")
         ) or ""
 
-    retrieved_context = ("\n" + "=" * 60 + "\n").join(accumulated_context)
-    print(f"  → Done in {steps} step(s). Context: {len(retrieved_context)} chars.")
+    print(f"  → Done in {steps} step(s). Context: {len(accumulated_context)} items.")
 
     return {
-        "query":             query,
-        "retrieved_context": retrieved_context,
+        "query": query,
+        "retrieved_context": accumulated_context,
+        "retrieved_context_str": _serialize_context(accumulated_context),
         "generated_answer":  generated_answer,
-        "steps":             steps,
+        "steps": steps,
     }
-
-
-# ══════════════════════════════════════════════════════════════════════════════
-# BATCH RUNNER
-# ══════════════════════════════════════════════════════════════════════════════
 
 def run_batch(
     ground_truth_path: str,
@@ -369,8 +361,6 @@ def run_batch(
     print(f"\nDone. {len(results)} results saved to {results_path}")
     return results
 
-
-# ── CLI ───────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     import argparse
 
