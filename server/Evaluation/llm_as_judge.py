@@ -2,118 +2,225 @@ import json
 import time
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai
+from google import genai
+from google.genai import types
+from pathlib import Path
 
-load_dotenv()  # Load environment variables from .env file
+EVALUATION_DIR = Path(__file__).resolve().parent
+SERVER_DIR = EVALUATION_DIR.parent
+GROUND_TRUTH_DIR = EVALUATION_DIR / "ground_truth_construction"
+DEFAULT_OUTPUT_DIR = SERVER_DIR / "sample_repository_output"
+COMPLETE_SYSTEM_EVALUATION_DIR = EVALUATION_DIR / "complete_system_evaluation"
+AGENTIC_SYSTEM_OUTPUT_DIR = EVALUATION_DIR / "agentic_ai_baseline"
 
-# Configure your API key
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+load_dotenv()
 
-# Use Gemini 2.5 Pro for deep reasoning
-judge_model = genai.GenerativeModel(
-    'gemini-2.5-pro',
-    generation_config={"response_mime_type": "application/json"}
-)
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-def evaluate_pipeline_results(results_filepath: str, evaluation_type: str = "relevance"):
+JUDGE_MODEL = "gemma-4-31b-it"
+
+
+def _call_judge(prompt: str) -> dict:
+    """Calls Gemma 4 31B and returns parsed JSON. Raises on failure."""
+    response = client.models.generate_content(
+        model=JUDGE_MODEL,
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json",
+            temperature=0.0,
+            max_output_tokens=512,
+        ),
+    )
+    output = json.loads(response.text)
+
+    winner = output.get("winner", "").strip().upper()
+    if winner not in ("A", "B", "TIE"):
+        raise ValueError(f"Unexpected winner value: '{winner}'")
+
+    output["winner"] = winner
+    return output
+
+
+def judge_context_relevance(query: str, rag_context: str, agentic_context: str) -> dict:
     """
-    Reads pipeline results, calls the LLM Judge, and appends scores.
-    evaluation_type can be "relevance" (for retrieval) or "faithfulness" (for generation).
+    Head-to-head: which system retrieved more relevant code snippets for the query?
+    A = RAG system, B = Agentic system
     """
-    
-    # 1. Load the results of your pipeline
-    with open(results_filepath, "r", encoding="utf-8") as f:
-        pipeline_results = json.load(f)
+    prompt = f"""You are an expert code search evaluator. Your task is to judge which retrieved code context is MORE RELEVANT and USEFUL for answering the given user query.
 
-    print(f"Starting {evaluation_type.upper()} evaluation for {len(pipeline_results)} items...")
+    User Query:
+    {query}
 
-    for idx, item in enumerate(pipeline_results):
-        # Skip if already judged (allows resuming)
-        if f"{evaluation_type}_score" in item:
-            continue
-            
-        print(f"[{idx+1}/{len(pipeline_results)}] Judging Query: {item['query'][:50]}...")
+    --- Context A (RAG System) ---
+    {rag_context}
 
-        # 2. Select the correct rubric
-        if evaluation_type == "relevance":
-            prompt = f"""
-            You are an expert code reviewer evaluating a Code Search system.
-            Your task is to evaluate if the "Retrieved Code" contains the necessary information to completely answer the "User Query".
-            
-            User Query: {item['query']}
-            Retrieved Code:
-            {item['retrieved_context']}
-            
-            Evaluate the context using the following 0-2 scale:
-            0 (Irrelevant): The code does not contain any logic related to the query.
-            1 (Partial): The code contains some relevant variables or base logic, but is missing the core implementation needed to answer the query fully.
-            2 (Perfect): The code contains the exact functions and logic required to perfectly answer the query.
+    --- Context B (Agentic System) ---
+    {agentic_context}
 
-            Output your evaluation STRICTLY in JSON format:
-            {{
-            "score": <int>,
-            "reasoning": "<One concise sentence explaining the score>"
-            }}
-            
-            """
-        elif evaluation_type == "faithfulness":
-            prompt = f"""
-            You are an expert code reviewer evaluating an AI assistant.
-            Your task is to evaluate if the "Generated Answer" is faithful to the "Retrieved Code". The AI must NOT invent logic, functions, or libraries that do not exist in the retrieved code.
+    Evaluation Criteria:
+    1. Relevance     — Does the context directly contain code related to the query?
+    2. Completeness  — Does it capture the full logic needed (not just fragments)?
+    3. Precision     — Is the retrieved code focused, or does it contain a lot of noise/unrelated code?
 
-            User Query: {item['query']}
-            Retrieved Code:
-            {item['retrieved_context']}
+    Analyze Context A and Context B strictly against these criteria.
+    Output exactly one of: "A", "B", or "Tie".
 
-            Generated Answer:
-            {item['generated_answer']}
+    Respond ONLY in this JSON format with no extra text:
+    {{
+    "winner": "<A | B | Tie>",
+    "reasoning": "<One concise sentence explaining your decision>"
+    }}
+    """
+    return _call_judge(prompt)
 
-            Evaluate the faithfulness using the following 0-2 scale:
-            0 (Hallucination): The answer relies on logic, functions, or facts NOT present in the retrieved code.
-            1 (Unverifiable/Vague): The answer is too vague to verify against the code, or ignores the code entirely.
-            2 (Faithful): The answer is directly supported by the retrieved code and clearly references it.
 
-            Output your evaluation STRICTLY in JSON format:
-            {{
-            "score": <int>,
-            "reasoning": "<One concise sentence explaining the score>"
-            }}
-            """
+def judge_answer_quality(
+    query: str,
+    rag_context: str, rag_answer: str,
+    agentic_context: str, agentic_answer: str
+) -> dict:
+    """
+    Head-to-head: which system generated a better answer, grounded in its own retrieved context?
+    A = RAG system, B = Agentic system
+    """
+    prompt = f"""You are an expert code reviewer. Your task is to judge which AI system produced a BETTER answer to the user query.
+    Each system has its own retrieved code context and generated answer. Judge each answer against its own context — penalise any system that hallucinates logic not present in its retrieved code.
 
-        # 3. Call the LLM Judge
-        try:
-            response = judge_model.generate_content(prompt)
-            judge_output = json.loads(response.text)
-            
-            # 4. Save the score and reasoning back to the dictionary
-            item[f"{evaluation_type}_score"] = judge_output.get("score", 0)
-            item[f"{evaluation_type}_reasoning"] = judge_output.get("reasoning", "Parse error")
-            
-            # Incremental Save to disk
-            with open(results_filepath, "w", encoding="utf-8") as f:
-                json.dump(pipeline_results, f, indent=4)
-                
-            print(f"  -> Score: {judge_output.get('score')} | Reasoning: {judge_output.get('reasoning')}")
+    User Query:
+    {query}
 
-        except Exception as e:
-            print(f"  -> API/Parse Error: {e}")
+    === System A (RAG System) ===
+    Retrieved Context:
+    {rag_context}
 
-        # Rate Limit Protection (5 RPM)
-        time.sleep(12)
+    Generated Answer:
+    {rag_answer}
 
-    print("\nEvaluation Complete!")
-    return pipeline_results
+    === System B (Agentic System) ===
+    Retrieved Context:
+    {agentic_context}
 
-def calculate_average_scores(results_filepath):
-    with open(results_filepath, "r", encoding="utf-8") as f:
-        results = json.load(f)
+    Generated Answer:
+    {agentic_answer}
+
+    Evaluation Criteria (in order of priority):
+    1. Faithfulness   — Is the answer grounded in its own retrieved context? Does it hallucinate?
+    2. Correctness    — Is the answer technically accurate?
+    3. Completeness   — Does it fully address the query?
+    4. Clarity        — Is the explanation clear and easy to follow?
+    5. Code Quality   — Is any code snippet clean, idiomatic, and functional?
+
+    Analyze Answer A and Answer B strictly against these criteria.
+    Output exactly one of: "A", "B", or "Tie".
+
+    Respond ONLY in this JSON format with no extra text:
+    {{
+    "winner": "<A | B | Tie>",
+    "reasoning": "<One concise sentence explaining your decision>"
+    }}
+    """
+    return _call_judge(prompt)
+
+
+def run_comparison(
+    comparison_results_filepath: str,
+    agentic_results_filepath: str,
+    rag_results_filepath: str
+) -> list:
+    """
+    Main runner. Loads RAG and Agentic results, runs both judges on each item,
+    and saves incrementally to allow resuming if interrupted.
+    """
+    comparison_path = EVALUATION_DIR / comparison_results_filepath
+
+    with open(AGENTIC_SYSTEM_OUTPUT_DIR / agentic_results_filepath, "r", encoding="utf-8") as f:
+        agentic_results = json.load(f)
+
+    with open(COMPLETE_SYSTEM_EVALUATION_DIR / rag_results_filepath, "r", encoding="utf-8") as f:
+        rag_results = json.load(f)
+
+    total = len(rag_results)
+
+    if comparison_path.exists():
+        with open(comparison_path, "r", encoding="utf-8") as f:
+            comparison_results = json.load(f)
+    else:
+        comparison_results = []
+
+    while len(comparison_results) < total:
+        comparison_results.append({})
+
+    print(f"Starting RAG vs Agentic comparison for {total} items using {JUDGE_MODEL}...\n")
+
+    for idx, (rag, agentic) in enumerate(zip(rag_results, agentic_results)):
+        query = rag.get("query", "")
+        print(f"[{idx+1}/{total}] Query: {query[:70]}...")
+
+        comparison_results[idx]["query"] = query
         
-    total_relevance = sum(item.get("relevance_score", 0) for item in results)
-    total_faithfulness = sum(item.get("faithfulness_score", 0) for item in results)
-    
-    avg_relevance = total_relevance / len(results)
-    avg_faithfulness = total_faithfulness / len(results)
-    
-    print("--- Final Ablation Study Results ---")
-    print(f"Average Context Relevance (0-2): {avg_relevance:.2f}")
-    print(f"Average Answer Faithfulness (0-2): {avg_faithfulness:.2f}")
+        if comparison_results[idx].get("context_winner") in (None, "ERROR"):
+            try:
+                result = judge_context_relevance(
+                    query=query,
+                    rag_context=rag.get("retrieved_context", ""),
+                    agentic_context=agentic.get("retrieved_context_str", ""),
+                )
+                comparison_results[idx].update({
+                    "context_winner": result["winner"],
+                    "context_reasoning": result.get("reasoning", ""),
+                })
+                print(f"[Context] Winner: {result['winner']} | {result.get('reasoning', '')}")
+            except Exception as e:
+                print(f"[Context] ERROR: {e}")
+                # FIX 5: Save error state so it appears in output and is retried next run
+                comparison_results[idx].update({
+                    "context_winner": "ERROR",
+                    "context_reasoning": str(e),
+                })
+
+            time.sleep(3)
+        else:
+            print(f"[Context] Already judged → {comparison_results[idx]['context_winner']}. Skipping.")
+
+        # ── Round 2: Answer Quality ────────────────────────────────────────────
+        # FIX 4: Same retry logic for answer round
+        if comparison_results[idx].get("answer_winner") in (None, "ERROR"):
+            try:
+                result = judge_answer_quality(
+                    query=query,
+                    rag_context=rag.get("retrieved_context", ""),
+                    rag_answer=rag.get("generated_answer", ""),
+                    agentic_context=agentic.get("retrieved_context_str", ""),
+                    agentic_answer=agentic.get("generated_answer", ""),
+                )
+                comparison_results[idx].update({
+                    "answer_winner": result["winner"],
+                    "answer_reasoning": result.get("reasoning", ""),
+                })
+                print(f"[Answer] Winner: {result['winner']} | {result.get('reasoning', '')}")
+            except Exception as e:
+                print(f"[Answer] ERROR: {e}")
+                # FIX 5: Save error state
+                comparison_results[idx].update({
+                    "answer_winner": "ERROR",
+                    "answer_reasoning": str(e),
+                })
+        else:
+            print(f"[Answer] Already judged → {comparison_results[idx]['answer_winner']}. Skipping.")
+
+        # Incremental save after every item
+        with open(comparison_path, "w", encoding="utf-8") as f:
+            json.dump(comparison_results, f, indent=4)
+
+        print()
+        time.sleep(3)
+
+    print("Comparison complete!\n")
+    return comparison_results
+
+if __name__ == "__main__":
+    RESULTS_FILE = "comparison_results_single.json"
+    AGENTIC_SYSTEM_FILEPATH = "agentic_rag_results_single.json"
+    RAG_SYSTEM_FILEPATH = "rag_system_results_single.json"
+
+    run_comparison(RESULTS_FILE, AGENTIC_SYSTEM_FILEPATH, RAG_SYSTEM_FILEPATH)
