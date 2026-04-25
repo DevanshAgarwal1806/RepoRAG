@@ -219,8 +219,8 @@ def run_comparison(
     return comparison_results
 
 if __name__ == "__main__":
-    RESULTS_FILE = "comparison_results_single.json"
-    AGENTIC_SYSTEM_FILEPATH = "agentic_rag_results_single.json"
-    RAG_SYSTEM_FILEPATH = "rag_system_results_single.json"
+    RESULTS_FILE = "comparison_results_multi.json"
+    AGENTIC_SYSTEM_FILEPATH = "agentic_rag_results_multi.json"
+    RAG_SYSTEM_FILEPATH = "rag_system_results_multi.json"
 
     run_comparison(RESULTS_FILE, AGENTIC_SYSTEM_FILEPATH, RAG_SYSTEM_FILEPATH)

@@ -4,9 +4,22 @@ import networkx as nx
 from collections import deque
 from pathlib import Path
 import argparse
+import sys
+
+RETRIEVER_DIR = Path(__file__).resolve().parent
+SERVER_DIR = RETRIEVER_DIR.parent
+
+if str(SERVER_DIR) not in sys.path:
+    sys.path.insert(0, str(SERVER_DIR))
 
 from retriever.query_expansion import expand_query
 from retriever.hybrid_retrieval_dependency import hybrid_retrieval_with_dependency, load_data
+
+import tiktoken
+_enc = tiktoken.get_encoding("cl100k_base")
+
+def estimate_tokens(text: str) -> int:
+    return len(_enc.encode(text))
 
 def assemble_llm_context(functions_retrieved: list[tuple[str, str]], function_map: dict, output_dir: str, d: int = 1) -> str:
     # Format the payload
@@ -65,7 +78,7 @@ def llm_generation(output_dir: Path, query: str, save_prompt: bool = False) -> t
             print(f"Saved to: {prompt_file}")
         
     print(f"Successfully generated full RAG payload: {len(final_payload)} characters.")
-    
+    print(f"Tokens in payload: {estimate_tokens(final_payload)}")
     return functions_retrieved, final_payload
 
 if __name__ == "__main__":
@@ -77,4 +90,4 @@ if __name__ == "__main__":
     output_dir = Path(args.output)
     query = args.query
 
-    llm_generation(output_dir, query)
+    llm_generation(output_dir, query, save_prompt=True)

@@ -1,69 +1,117 @@
 import os
 from pathlib import Path
+import sys
 from dotenv import load_dotenv
 from groq import Groq
+import tiktoken
 import argparse
+import ollama
 
-def generate_rag_answer(output_dir: str, llm_payload: str = None) -> str:
+RETRIEVER_DIR = Path(__file__).resolve().parent
+SERVER_DIR = RETRIEVER_DIR.parent
+
+if str(SERVER_DIR) not in sys.path:
+    sys.path.insert(0, str(SERVER_DIR))
+
+def generate_rag_answer(
+    output_dir: str, 
+    llm_payload: str = None, 
+    provider: str = "groq", 
+    model_name: str = "llama-3.3-70b-versatile"
+) -> str:
+    """
+    Generates an answer using either the Groq API or a local Ollama instance.
+    
+    Args:
+        output_dir: Directory containing the context payload.
+        llm_payload: The actual text payload (optional, will read from file if None).
+        provider: "groq" or "ollama".
+        model_name: The specific model ID to use for the selected provider.
+    """
     current_dir = Path(__file__).resolve().parent
     server_dir = current_dir.parent  
     env_path = server_dir / ".env"
     
     output_dir = Path(output_dir)
     
-    # 2. Load Environment Variables
-    load_dotenv(dotenv_path=env_path)
-    
-    api_key = os.getenv("ANSWER_GENERATION_LLM_KEY") 
-    
-    if not api_key or not api_key.startswith("gsk_"):
-        raise ValueError("Valid Groq API Key (starting with 'gsk_') not found in server/.env.")
-
+    # 1. Read the Prepared Context & Query
     if llm_payload is None:
         payload_path = output_dir / "final_llm_payload.md"
-        # 3. Read the Prepared Context & Query
         if not payload_path.exists():
             raise FileNotFoundError(f"Could not find the LLM payload at {payload_path}.")
             
         with open(payload_path, "r", encoding="utf-8") as f:
             llm_payload = f.read()
 
-    # 4. Initialize the Groq Client
-    client = Groq(api_key=api_key)
-    
-    # 5. Generate the Answer
-    try:
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile", # Groq's fast Llama 3 70B model
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are an expert senior software engineer. "
-                        "You will be provided with a user query and a heavily filtered context from a codebase. "
-                        "The context includes specific functions and their neighboring dependency graph. "
-                        "Answer the user's question accurately using ONLY the provided codebase context. "
-                        "If the answer is not contained within the context, explicitly state that you cannot answer based on the provided code."
-                    )
-                },
-                {
-                    "role": "user",
-                    "content": llm_payload
-                }
-            ],
-            temperature=0.2, 
-            max_tokens=500
-        )
-        
-        final_answer = response.choices[0].message.content
-        
-        return final_answer
+    # 2. Define the Shared System Prompt
+    system_prompt = (
+        "You are an expert senior software engineer. "
+        "You will be provided with a user query and a heavily filtered context from a codebase. "
+        "The context includes specific functions and their neighboring dependency graph. "
+        "Answer the user's question accurately using ONLY the provided codebase context. "
+        "If the answer is not contained within the context, explicitly state that you cannot answer based on the provided code."
+    )
 
-    except Exception as e:
-        print(f"An error occurred during generation: {e}")
+    if provider == "ollama":
+        try:
+            print(f"Generating local answer using Ollama ({model_name})...")
+            response = ollama.chat(
+                model=model_name,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": llm_payload}
+                ],
+                options={
+                    "num_ctx": 10240,     # Bumped to 10K to ensure plenty of room for output
+                    "num_predict": -1,    # -1 = Infinite generation (don't stop artificially)
+                    "temperature": 0.1
+                }
+            )
+            return response['message']['content']
+        except Exception as e:
+            print(f"An error occurred during local Ollama generation: {e}")
+            return ""
+
+    elif provider == "groq":
+        load_dotenv(dotenv_path=env_path)
+        api_key = os.getenv("ANSWER_GENERATION_LLM_KEY") 
+        
+        if not api_key or not api_key.startswith("gsk_"):
+            raise ValueError("Valid Groq API Key (starting with 'gsk_') not found in server/.env.")
+
+        client = Groq(api_key=api_key)
+        
+        try:
+            print(f"Generating remote answer using Groq ({model_name})...")
+            response = client.chat.completions.create(
+                model=model_name, 
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": llm_payload}
+                ],
+                temperature=0.1, # Matched to Ollama for fair evaluation
+                max_tokens=1024  # Increased slightly to ensure full code explanations
+            )
+            
+            return response.choices[0].message.content
+        except Exception as e:
+            print(f"An error occurred during Groq generation: {e}")
+            return ""
+            
+    else:
+        raise ValueError(f"Unknown provider: {provider}. Use 'groq' or 'ollama'.")
+
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="LLM Generator ")
+    parser = argparse.ArgumentParser(description="RepoRAG LLM Generator")
     parser.add_argument("--output", "-o", required=True, help="Output directory for results")
+    parser.add_argument("--provider", "-p", choices=["groq", "ollama"], default="groq", help="Which LLM backend to use")
+    parser.add_argument("--model", "-m", default="llama-3.3-70b-versatile", help="The model tag (e.g., qwen2.5-coder:7b)")
+    
     args = parser.parse_args()
-    generate_rag_answer(args.output)
+    
+    # Run the generator and print the output
+    final_answer = generate_rag_answer(args.output, provider=args.provider, model_name=args.model)
+    
+    print("\n--- Final Generated Answer ---\n")
+    print(final_answer)
