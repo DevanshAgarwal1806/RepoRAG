@@ -1,0 +1,399 @@
+[
+    {
+        "query": "What happens when a task has already been attempted with all available tools and the select_tool function returns None, considering the overall state transition and the final output compilation?",
+        "retrieved_context": [
+            {
+                "type": "hybrid_search",
+                "name": "execute_task",
+                "fn_id": "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task",
+                "file": "server/sample_repository/server/src/graph/nodes/executor.py",
+                "snippet": "def execute_task(state: SynapseState) -> dict:\n    print(\"--- EXECUTING TASK ---\")\n\n    dag        = state.get(\"current_dag\", {})\n    scratchpad = state.get(\"reflexion_scratchpad\", [])\n\n    task = _get_pending_task(dag, scratchpad)\n\n    if task is None:\n        print(\"--- ALL TASKS COMPLETE ---\")\n  \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "ToolRetryFallbackTests.test_selector_excludes_previously_attempted_tools",
+                "fn_id": "server/sample_repository/server/test_tool_retry_fallback.py[35-56]:ToolRetryFallbackTests.test_selector_excludes_previously_attempted_tools",
+                "file": "server/sample_repository/server/test_tool_retry_fallback.py",
+                "snippet": "def test_selector_excludes_previously_attempted_tools(self) -> None:\n        tool_map = {\n            \"tool_a\": DummyTool(\"tool_a\"),\n            \"tool_b\": DummyTool(\"tool_b\"),\n        }\n        seen_candidate_sets: list[list[str]] = []\n\n        def fake_score_tools(description: str, candidate_map: d\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "select_tool",
+                "fn_id": "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
+                "file": "server/sample_repository/server/src/tools/tool_selector.py",
+                "snippet": "def select_tool(\n    task: dict,\n    tool_map: dict[str, object],\n    excluded_tool_names: set[str] | None = None,\n) -> tuple[object | None, str, list[dict]]:\n    \"\"\"\n    Given a task dict and a {name: tool} map, returns:\n      (tool_object, input_string, warnings)\n\n    If no confident match is foun\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "_fallback_tool",
+                "fn_id": "server/sample_repository/server/src/tools/tool_selector.py[216-218]:_fallback_tool",
+                "file": "server/sample_repository/server/src/tools/tool_selector.py",
+                "snippet": "def _fallback_tool(tool_map: dict[str, object]) -> str:\n    \"\"\"Returns the name of the first available tool as a last resort.\"\"\"\n    return next(iter(tool_map))"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "_score_tools",
+                "fn_id": "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
+                "file": "server/sample_repository/server/src/tools/tool_selector.py",
+                "snippet": "def _score_tools(\n    description: str,\n    tool_map: dict[str, object],\n) -> tuple[str, str, int]:\n    \"\"\"\n    Asks Groq to pick the best tool for the description and score its confidence.\n    Returns (tool_name, tool_input, score).\n    \"\"\"\n    tool_manifest = \"\\n\".join(\n        f\"- {name}: {tool.d\u2026 [truncated]"
+            }
+        ],
+        "retrieved_context_str": "[hybrid_search] execute_task (server/sample_repository/server/src/graph/nodes/executor.py)\ndef execute_task(state: SynapseState) -> dict:\n    print(\"--- EXECUTING TASK ---\")\n\n    dag        = state.get(\"current_dag\", {})\n    scratchpad = state.get(\"reflexion_scratchpad\", [])\n\n    task = _get_pending_task(dag, scratchpad)\n\n    if task is None:\n        print(\"--- ALL TASKS COMPLETE ---\")\n  \u2026 [truncated]\n============================================================\n[hybrid_search] ToolRetryFallbackTests.test_selector_excludes_previously_attempted_tools (server/sample_repository/server/test_tool_retry_fallback.py)\ndef test_selector_excludes_previously_attempted_tools(self) -> None:\n        tool_map = {\n            \"tool_a\": DummyTool(\"tool_a\"),\n            \"tool_b\": DummyTool(\"tool_b\"),\n        }\n        seen_candidate_sets: list[list[str]] = []\n\n        def fake_score_tools(description: str, candidate_map: d\u2026 [truncated]\n============================================================\n[hybrid_search] select_tool (server/sample_repository/server/src/tools/tool_selector.py)\ndef select_tool(\n    task: dict,\n    tool_map: dict[str, object],\n    excluded_tool_names: set[str] | None = None,\n) -> tuple[object | None, str, list[dict]]:\n    \"\"\"\n    Given a task dict and a {name: tool} map, returns:\n      (tool_object, input_string, warnings)\n\n    If no confident match is foun\u2026 [truncated]\n============================================================\n[hybrid_search] _fallback_tool (server/sample_repository/server/src/tools/tool_selector.py)\ndef _fallback_tool(tool_map: dict[str, object]) -> str:\n    \"\"\"Returns the name of the first available tool as a last resort.\"\"\"\n    return next(iter(tool_map))\n============================================================\n[hybrid_search] _score_tools (server/sample_repository/server/src/tools/tool_selector.py)\ndef _score_tools(\n    description: str,\n    tool_map: dict[str, object],\n) -> tuple[str, str, int]:\n    \"\"\"\n    Asks Groq to pick the best tool for the description and score its confidence.\n    Returns (tool_name, tool_input, score).\n    \"\"\"\n    tool_manifest = \"\\n\".join(\n        f\"- {name}: {tool.d\u2026 [truncated]",
+        "generated_answer": "When a task has already been attempted with all available tools and the `select_tool` function returns `None`, the state transition and final output compilation depend on the specific implementation of the `execute_task` function in the `executor.py` file. \n\nIn this case, if all tasks are complete, it prints \"--- ALL TASKS COMPLETE ---\". However, if there are still pending tasks, it will continue to the next task. \n\nThe `select_tool` function in `tool_selector.py` is responsible for selecting the best tool for a given task. If no confident match is found, it returns `None`. The `_fallback_tool` function is used as a last resort to return the name of the first available tool. \n\nThe `_score_tools` function is used to score the confidence of each tool for a given task description. \n\nIn summary, when `select_tool` returns `None`, the system will either move on to the next task or use a fallback tool, depending on the implementation of the `execute_task` function and the availability of tools. \n\nPlease note that the answer is based on the retrieved source code and might not be comprehensive or entirely accurate, as the codebase is not fully accessible.",
+        "steps": 1
+    },
+    {
+        "query": "How does the evaluate_dag function use the check_for_cycles function to validate the DAG structure before evaluating it based on the custom 15-point metric using Groq, and what are the implications of a cycle being detected in the task dependencies on the overall judge score and feedback?",
+        "retrieved_context": [
+            {
+                "type": "hybrid_search",
+                "name": "evaluate_dag",
+                "fn_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag",
+                "file": "server/sample_repository/server/src/graph/nodes/evaluator.py",
+                "snippet": "def evaluate_dag(state: SynapseState) -> dict:\n    \"\"\"\n    Phase 1: Evaluates the DAG based on a custom 15-point metric using Groq.\n    \"\"\"\n    print(\"--- EVALUATING DAG (Custom Metric via Groq) ---\")\n    \n    dag = state.get(\"current_dag\", {})\n    tasks = dag.get(\"tasks\", [])\n    user_prompt = stat\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "DagGraph",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[329-382]:DagGraph",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "snippet": "function DagGraph({ dag }) {\r\n  const containerRef = useRef(null);\r\n  const tasks = normalizeDagTasks(dag);\r\n  const hasData = tasks.length > 0;\r\n  const { orderedTasks, positions, width, height } = buildDagLayout(tasks);\r\n\r\n  if (!hasData) {\r\n    return (\r\n      <div className=\"dag-empty\">\r\n       \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "build_synapse_graph",
+                "fn_id": "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph",
+                "file": "server/sample_repository/server/src/graph/workflow.py",
+                "snippet": "def build_synapse_graph():\n    builder = StateGraph(SynapseState)\n\n    # Nodes\n    builder.add_node(\"generator\", generate_dag)\n    builder.add_node(\"evaluator\", evaluate_dag)\n    builder.add_node(\"executor\", execute_task)\n    builder.add_node(\"reflector\", reflect_on_execution)\n    builder.add_node(\"\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "test_generation_loop",
+                "fn_id": "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop",
+                "file": "server/sample_repository/server/test_phase1.py",
+                "snippet": "def test_generation_loop():\n    print(\"Initializing SynapseAI Phase 1 Test...\\n\")\n    \n    # 1. Compile the Orchestrator Graph\n    app = build_synapse_graph()\n    \n    # 2. Define the starting state with a test prompt\n    initial_state = {\n        \"user_prompt\": \"Create a 100 step DAG in which every\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "generate_dag",
+                "fn_id": "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag",
+                "file": "server/sample_repository/server/src/graph/nodes/generator.py",
+                "snippet": "def generate_dag(state: SynapseState) -> dict:\n    print(\"--- GENERATING DAG (Groq) ---\")\n\n    llm = ChatGroq(\n        model=\"llama-3.3-70b-versatile\",\n        temperature=0.2,\n        api_key=GROQ_API_KEY_GENERATOR\n    )\n\n    user_prompt = state.get(\"user_prompt\", \"\")\n    feedback = state.get(\"feed\u2026 [truncated]"
+            },
+            {
+                "type": "full_source",
+                "name": "evaluate_dag",
+                "fn_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag",
+                "file": "server/sample_repository/server/src/graph/nodes/evaluator.py",
+                "source": "def evaluate_dag(state: SynapseState) -> dict:\n    \"\"\"\n    Phase 1: Evaluates the DAG based on a custom 15-point metric using Groq.\n    \"\"\"\n    print(\"--- EVALUATING DAG (Custom Metric via Groq) ---\")\n    \n    dag = state.get(\"current_dag\", {})\n    tasks = dag.get(\"tasks\", [])\n    user_prompt = state.get(\"user_prompt\", \"\")\n    \n    total_score = 0\n    feedback_notes = []\n    \n    # --- METRIC 1: Cycle Detection (5 Marks) ---\n    if not tasks:\n        feedback_notes.append(\"CRITICAL: No tasks generated or JSON formatting failed.\")\n    elif check_for_cycles(tasks):\n        feedback_notes.append(\"CRITICAL: Cycle detected in DAG dependencies.\")\n    else:\n        total_score += 5  \n        \n    # --- METRICS 2 & 3: Relevance & Dependencies via Groq (10 Marks) ---\n    judge_llm = ChatGroq(\n        model=\"llama-3.3-70b-versatile\",\n        temperature=0.0, # Keep this at 0.0 so the judge is strict and deterministic\n        api_key=GROQ_API_KEY_EVALUATOR \n    )\n    \n    user_content = f\"Objective: {user_prompt}\\n\\nProposed DAG:\\n{json.dumps(dag, indent=2)}\"\n    \n    messages = [\n        SystemMessage(content=EVALUATOR_SYSTEM_PROMPT),\n        HumanMessage(content=user_content)\n    ]\n    \n    response = judge_llm.invoke(messages)\n    raw_response = response.content.strip()\n    \n    # Extract JSON from Groq's response\n    start_idx = raw_response.find('{')\n    end_idx = raw_response.rfind('}')\n    \n    if start_idx != -1 and end_idx != -1:\n        try:\n            eval_json = json.loads(raw_response[start_idx:end_idx+1])\n            \n            relevance_score = eval_json.get(\"relevance_score\", 0)\n            dependency_score = eval_json.get(\"dependency_score\", 0)\n            llm_feedback = eval_json.get(\"feedback\", \"No feedback provided.\")\n            \n            total_score += (relevance_score + dependency_score)\n            \n            if llm_feedback != \"APPROVED\":\n                feedback_notes.append(f\"Logic Feedback: {llm_feedback}\")\n                \n        except json.JSONDecodeError:\n            feedback_notes.append(\"Judge evaluation failed to parse correctly.\")\n    else:\n        feedback_notes.append(\"Judge evaluation failed to return JSON.\")\n    \n    final_feedback = \"\\n\".join(feedback_notes) if feedback_notes else \"APPROVED\"\n\n    return {\n        \"judge_score\": total_score,\n        \"feedback\": final_feedback\n    }"
+            }
+        ],
+        "retrieved_context_str": "[hybrid_search] evaluate_dag (server/sample_repository/server/src/graph/nodes/evaluator.py)\ndef evaluate_dag(state: SynapseState) -> dict:\n    \"\"\"\n    Phase 1: Evaluates the DAG based on a custom 15-point metric using Groq.\n    \"\"\"\n    print(\"--- EVALUATING DAG (Custom Metric via Groq) ---\")\n    \n    dag = state.get(\"current_dag\", {})\n    tasks = dag.get(\"tasks\", [])\n    user_prompt = stat\u2026 [truncated]\n============================================================\n[hybrid_search] DagGraph (server/sample_repository/client/src/Dashboard.jsx)\nfunction DagGraph({ dag }) {\r\n  const containerRef = useRef(null);\r\n  const tasks = normalizeDagTasks(dag);\r\n  const hasData = tasks.length > 0;\r\n  const { orderedTasks, positions, width, height } = buildDagLayout(tasks);\r\n\r\n  if (!hasData) {\r\n    return (\r\n      <div className=\"dag-empty\">\r\n       \u2026 [truncated]\n============================================================\n[hybrid_search] build_synapse_graph (server/sample_repository/server/src/graph/workflow.py)\ndef build_synapse_graph():\n    builder = StateGraph(SynapseState)\n\n    # Nodes\n    builder.add_node(\"generator\", generate_dag)\n    builder.add_node(\"evaluator\", evaluate_dag)\n    builder.add_node(\"executor\", execute_task)\n    builder.add_node(\"reflector\", reflect_on_execution)\n    builder.add_node(\"\u2026 [truncated]\n============================================================\n[hybrid_search] test_generation_loop (server/sample_repository/server/test_phase1.py)\ndef test_generation_loop():\n    print(\"Initializing SynapseAI Phase 1 Test...\\n\")\n    \n    # 1. Compile the Orchestrator Graph\n    app = build_synapse_graph()\n    \n    # 2. Define the starting state with a test prompt\n    initial_state = {\n        \"user_prompt\": \"Create a 100 step DAG in which every\u2026 [truncated]\n============================================================\n[hybrid_search] generate_dag (server/sample_repository/server/src/graph/nodes/generator.py)\ndef generate_dag(state: SynapseState) -> dict:\n    print(\"--- GENERATING DAG (Groq) ---\")\n\n    llm = ChatGroq(\n        model=\"llama-3.3-70b-versatile\",\n        temperature=0.2,\n        api_key=GROQ_API_KEY_GENERATOR\n    )\n\n    user_prompt = state.get(\"user_prompt\", \"\")\n    feedback = state.get(\"feed\u2026 [truncated]\n============================================================\n[full_source] evaluate_dag (server/sample_repository/server/src/graph/nodes/evaluator.py)\ndef evaluate_dag(state: SynapseState) -> dict:\n    \"\"\"\n    Phase 1: Evaluates the DAG based on a custom 15-point metric using Groq.\n    \"\"\"\n    print(\"--- EVALUATING DAG (Custom Metric via Groq) ---\")\n    \n    dag = state.get(\"current_dag\", {})\n    tasks = dag.get(\"tasks\", [])\n    user_prompt = state.get(\"user_prompt\", \"\")\n    \n    total_score = 0\n    feedback_notes = []\n    \n    # --- METRIC 1: Cycle Detection (5 Marks) ---\n    if not tasks:\n        feedback_notes.append(\"CRITICAL: No tasks generated or JSON formatting failed.\")\n    elif check_for_cycles(tasks):\n        feedback_notes.append(\"CRITICAL: Cycle detected in DAG dependencies.\")\n    else:\n        total_score += 5  \n        \n    # --- METRICS 2 & 3: Relevance & Dependencies via Groq (10 Marks) ---\n    judge_llm = ChatGroq(\n        model=\"llama-3.3-70b-versatile\",\n        temperature=0.0, # Keep this at 0.0 so the judge is strict and deterministic\n        api_key=GROQ_API_KEY_EVALUATOR \n    )\n    \n    user_content = f\"Objective: {user_prompt}\\n\\nProposed DAG:\\n{json.dumps(dag, indent=2)}\"\n    \n    messages = [\n        SystemMessage(content=EVALUATOR_SYSTEM_PROMPT),\n        HumanMessage(content=user_content)\n    ]\n    \n    response = judge_llm.invoke(messages)\n    raw_response = response.content.strip()\n    \n    # Extract JSON from Groq's response\n    start_idx = raw_response.find('{')\n    end_idx = raw_response.rfind('}')\n    \n    if start_idx != -1 and end_idx != -1:\n        try:\n            eval_json = json.loads(raw_response[start_idx:end_idx+1])\n            \n            relevance_score = eval_json.get(\"relevance_score\", 0)\n            dependency_score = eval_json.get(\"dependency_score\", 0)\n            llm_feedback = eval_json.get(\"feedback\", \"No feedback provided.\")\n            \n            total_score += (relevance_score + dependency_score)\n            \n            if llm_feedback != \"APPROVED\":\n                feedback_notes.append(f\"Logic Feedback: {llm_feedback}\")\n                \n        except json.JSONDecodeError:\n            feedback_notes.append(\"Judge evaluation failed to parse correctly.\")\n    else:\n        feedback_notes.append(\"Judge evaluation failed to return JSON.\")\n    \n    final_feedback = \"\\n\".join(feedback_notes) if feedback_notes else \"APPROVED\"\n\n    return {\n        \"judge_score\": total_score,\n        \"feedback\": final_feedback\n    }",
+        "generated_answer": "The `evaluate_dag` function uses the `check_for_cycles` function to validate the DAG structure before evaluating it based on a custom 15-point metric using Groq. If a cycle is detected in the task dependencies, the function appends a critical feedback note to the `feedback_notes` list and does not award the 5 marks for cycle detection. The function then proceeds to evaluate the DAG based on relevance and dependencies using Groq, and awards marks accordingly. The final feedback and judge score are returned as a dictionary.\n\nIn terms of implications, if a cycle is detected in the task dependencies, the judge score will be lower, and the feedback will include a critical note indicating the presence of a cycle. This suggests that the DAG structure is invalid, and the evaluation will not proceed as expected. The presence of a cycle in the task dependencies can have significant implications for the overall judge score and feedback, as it indicates a fundamental flaw in the DAG structure. \n\nThe `check_for_cycles` function is not defined in the provided source code, so its exact implementation is unknown. However, based on its usage in the `evaluate_dag` function, it appears to take a list of tasks as input and returns a boolean indicating whether a cycle is present in the task dependencies. \n\nThe `evaluate_dag` function is defined in the `server/sample_repository/server/src/graph/nodes/evaluator.py` file, and its source code is provided in the response. The function takes a `SynapseState` object as input and returns a dictionary containing the judge score and feedback. The function uses the `check_for_cycles` function to validate the DAG structure, and then evaluates the DAG based on relevance and dependencies using Groq. \n\nThe `get_function_source` function is used to retrieve the source code of the `evaluate_dag` function, which provides insight into its implementation and usage of the `check_for_cycles` function. \n\nOverall, the `evaluate_dag` function plays a critical role in evaluating the DAG structure and providing feedback based on a custom 15-point metric using Groq. The presence of a cycle in the task dependencies can have significant implications for the overall judge score and feedback, and the `check_for_cycles` function is used to detect such cycles.",
+        "steps": 2
+    },
+    {
+        "query": "If the system encounters a scenario where the 'tasks' within the current DAG do not contain any 'description', and the 'raw_results' dictionary does not have any matching task IDs, how does it handle the creation of the 'task_lookup' dictionary and the subsequent construction of 'successful_results', especially when the '_parse_success_payload' function might return a fallback due to an empty or malformed payload?",
+        "retrieved_context": [
+            {
+                "type": "hybrid_search",
+                "name": "_parse_success_payload",
+                "fn_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[94-113]:_parse_success_payload",
+                "file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+                "snippet": "def _parse_success_payload(payload: str) -> dict[str, str]:\n    fallback = {\n        \"headline\": payload,\n        \"detailed_summary\": payload,\n        \"reason\": \"\",\n    }\n\n    if not payload:\n        return fallback\n\n    try:\n        parsed = json.loads(payload)\n    except json.JSONDecodeError:\n    \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "aviationstack_flights_tool",
+                "fn_id": "server/sample_repository/server/src/tools/ecosystem.py[57-187]:aviationstack_flights_tool",
+                "file": "server/sample_repository/server/src/tools/ecosystem.py",
+                "snippet": "@tool\ndef aviationstack_flights_tool(\n    flight_iata: str = \"\",\n    flight_icao: str = \"\",\n    airline_iata: str = \"\",\n    airline_name: str = \"\",\n    flight_number: str = \"\",\n    flight_date: str = \"\",\n    dep_iata: str = \"\",\n    arr_iata: str = \"\",\n    limit: int = 5,\n) -> str:\n    \"\"\"\n    Query \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "reflect_on_execution",
+                "fn_id": "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution",
+                "file": "server/sample_repository/server/src/graph/nodes/reflector.py",
+                "snippet": "def reflect_on_execution(state: SynapseState) -> dict:\n    print(\"--- REFLECTING ON RESULT ---\")\n\n    scratchpad = state.get(\"reflexion_scratchpad\", [])\n    task_id    = state.get(\"current_step_id\", \"unknown\")\n    dag        = state.get(\"current_dag\", {})\n\n    # Find the most recent RAW_RESULT for t\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "SynthesisDepthTests.test_parse_success_payload_prefers_structured_details",
+                "fn_id": "server/sample_repository/server/test_synthesis_depth.py[14-25]:SynthesisDepthTests.test_parse_success_payload_prefers_structured_details",
+                "file": "server/sample_repository/server/test_synthesis_depth.py",
+                "snippet": "def test_parse_success_payload_prefers_structured_details(self) -> None:\n        payload = (\n            '{\"headline\": \"Best season is October to March.\", '\n            '\"detailed_summary\": \"Pleasant weather, festival season, and easier sightseeing.\", '\n            '\"reason\": \"Relevant and specific.\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "synthesize_output",
+                "fn_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output",
+                "file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+                "snippet": "def synthesize_output(state: SynapseState) -> dict:\n    print(\"--- SYNTHESIZING FINAL OUTPUT ---\")\n\n    scratchpad  = state.get(\"reflexion_scratchpad\", [])\n    user_prompt = state.get(\"user_prompt\", \"\")\n    dag         = state.get(\"current_dag\", {})\n\n    # Collect all successful results, labelled by\u2026 [truncated]"
+            }
+        ],
+        "retrieved_context_str": "[hybrid_search] _parse_success_payload (server/sample_repository/server/src/graph/nodes/synthesizer.py)\ndef _parse_success_payload(payload: str) -> dict[str, str]:\n    fallback = {\n        \"headline\": payload,\n        \"detailed_summary\": payload,\n        \"reason\": \"\",\n    }\n\n    if not payload:\n        return fallback\n\n    try:\n        parsed = json.loads(payload)\n    except json.JSONDecodeError:\n    \u2026 [truncated]\n============================================================\n[hybrid_search] aviationstack_flights_tool (server/sample_repository/server/src/tools/ecosystem.py)\n@tool\ndef aviationstack_flights_tool(\n    flight_iata: str = \"\",\n    flight_icao: str = \"\",\n    airline_iata: str = \"\",\n    airline_name: str = \"\",\n    flight_number: str = \"\",\n    flight_date: str = \"\",\n    dep_iata: str = \"\",\n    arr_iata: str = \"\",\n    limit: int = 5,\n) -> str:\n    \"\"\"\n    Query \u2026 [truncated]\n============================================================\n[hybrid_search] reflect_on_execution (server/sample_repository/server/src/graph/nodes/reflector.py)\ndef reflect_on_execution(state: SynapseState) -> dict:\n    print(\"--- REFLECTING ON RESULT ---\")\n\n    scratchpad = state.get(\"reflexion_scratchpad\", [])\n    task_id    = state.get(\"current_step_id\", \"unknown\")\n    dag        = state.get(\"current_dag\", {})\n\n    # Find the most recent RAW_RESULT for t\u2026 [truncated]\n============================================================\n[hybrid_search] SynthesisDepthTests.test_parse_success_payload_prefers_structured_details (server/sample_repository/server/test_synthesis_depth.py)\ndef test_parse_success_payload_prefers_structured_details(self) -> None:\n        payload = (\n            '{\"headline\": \"Best season is October to March.\", '\n            '\"detailed_summary\": \"Pleasant weather, festival season, and easier sightseeing.\", '\n            '\"reason\": \"Relevant and specific.\u2026 [truncated]\n============================================================\n[hybrid_search] synthesize_output (server/sample_repository/server/src/graph/nodes/synthesizer.py)\ndef synthesize_output(state: SynapseState) -> dict:\n    print(\"--- SYNTHESIZING FINAL OUTPUT ---\")\n\n    scratchpad  = state.get(\"reflexion_scratchpad\", [])\n    user_prompt = state.get(\"user_prompt\", \"\")\n    dag         = state.get(\"current_dag\", {})\n\n    # Collect all successful results, labelled by\u2026 [truncated]",
+        "generated_answer": "The provided functions and code snippets do not contain the specific information required to answer the user's question. The `_parse_success_payload` function returns a fallback when the payload is empty or malformed, but the exact handling of the 'task_lookup' dictionary and 'successful_results' construction is not specified in the given code. \n\nTo provide a more accurate answer, additional context or code snippets would be necessary. However, based on the available information, it appears that the system handles the creation of the 'task_lookup' dictionary and the construction of 'successful_results' by using the `_parse_success_payload` function to parse the payload and extract the necessary information. If the payload is empty or malformed, the function returns a fallback, which is then used to construct the 'task_lookup' dictionary and 'successful_results'. \n\nFor a more detailed explanation, please refer to the `synthesize_output` function in the \"server/sample_repository/server/src/graph/nodes/synthesizer.py\" file, which is responsible for synthesizing the final output. The `reflect_on_execution` function in the \"server/sample_repository/server/src/graph/nodes/reflector.py\" file also provides insight into how the system reflects on the execution and constructs the 'task_lookup' dictionary. \n\nIn summary, the system handles the creation of the 'task_lookup' dictionary and the construction of 'successful_results' by using the `_parse_success_payload` function to parse the payload and extract the necessary information, and then using this information to construct the 'task_lookup' dictionary and 'successful_results'. If the payload is empty or malformed, the function returns a fallback, which is then used to construct the 'task_lookup' dictionary and 'successful_results'.",
+        "steps": 1
+    },
+    {
+        "query": "How does the route execution handle the case when the scratchpad exceeds the maximum allowed entries, and what is the role of the parse_scratchpad function in determining the completion and failure of tasks in this scenario?",
+        "retrieved_context": [
+            {
+                "type": "hybrid_search",
+                "name": "print_scratchpad",
+                "fn_id": "server/sample_repository/server/main.py[100-106]:print_scratchpad",
+                "file": "server/sample_repository/server/main.py",
+                "snippet": "def print_scratchpad(scratchpad: list[str]) -> None:\n    print(\"\\n\u2500\u2500 Reflexion Scratchpad \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\")\n    for i, entry in enumerate(scratchpad, 1):\n        # Truncate long raw results so the terminal stays readable\n        display = entry if len(entry) < 200 else entry[:200]\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "route_execution",
+                "fn_id": "server/sample_repository/server/src/graph/edges/routers.py[25-75]:route_execution",
+                "file": "server/sample_repository/server/src/graph/edges/routers.py",
+                "snippet": "def route_execution(state: SynapseState) -> str:\n    task_id    = state.get(\"current_step_id\", \"\")\n    scratchpad = state.get(\"reflexion_scratchpad\", [])\n    dag        = state.get(\"current_dag\", {})\n\n    # Hard stop \u2014 prevent infinite loops\n    max_entries = len(dag.get(\"tasks\", [])) * 6\n    if len\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "reflect_on_execution",
+                "fn_id": "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution",
+                "file": "server/sample_repository/server/src/graph/nodes/reflector.py",
+                "snippet": "def reflect_on_execution(state: SynapseState) -> dict:\n    print(\"--- REFLECTING ON RESULT ---\")\n\n    scratchpad = state.get(\"reflexion_scratchpad\", [])\n    task_id    = state.get(\"current_step_id\", \"unknown\")\n    dag        = state.get(\"current_dag\", {})\n\n    # Find the most recent RAW_RESULT for t\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "route_evaluation",
+                "fn_id": "server/sample_repository/server/src/graph/edges/routers.py[10-22]:route_evaluation",
+                "file": "server/sample_repository/server/src/graph/edges/routers.py",
+                "snippet": "def route_evaluation(state: SynapseState) -> str:\n    score      = state.get(\"judge_score\", 0)\n    loop_count = state.get(\"loop_count\", 0)\n\n    if score >= DAG_PASSING_SCORE:\n        print(f\"--- DAG APPROVED (Score: {score}/15) -> PROCEEDING TO EXECUTION ---\")\n        return \"execute\"\n    elif loop_\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "parse_scratchpad",
+                "fn_id": "server/sample_repository/server/src/graph/scratchpad.py[6-25]:parse_scratchpad",
+                "file": "server/sample_repository/server/src/graph/scratchpad.py",
+                "snippet": "def parse_scratchpad(scratchpad: list[str]) -> tuple[set[str], set[str]]:\n    \"\"\"\n    Parses the reflexion scratchpad and returns (completed_ids, failed_ids).\n    Expects entries in the format: STATUS|task_id|content|Reason: ...\n    \"\"\"\n    completed = set()\n    failed    = set()\n\n    for entry in s\u2026 [truncated]"
+            }
+        ],
+        "retrieved_context_str": "[hybrid_search] print_scratchpad (server/sample_repository/server/main.py)\ndef print_scratchpad(scratchpad: list[str]) -> None:\n    print(\"\\n\u2500\u2500 Reflexion Scratchpad \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\")\n    for i, entry in enumerate(scratchpad, 1):\n        # Truncate long raw results so the terminal stays readable\n        display = entry if len(entry) < 200 else entry[:200]\u2026 [truncated]\n============================================================\n[hybrid_search] route_execution (server/sample_repository/server/src/graph/edges/routers.py)\ndef route_execution(state: SynapseState) -> str:\n    task_id    = state.get(\"current_step_id\", \"\")\n    scratchpad = state.get(\"reflexion_scratchpad\", [])\n    dag        = state.get(\"current_dag\", {})\n\n    # Hard stop \u2014 prevent infinite loops\n    max_entries = len(dag.get(\"tasks\", [])) * 6\n    if len\u2026 [truncated]\n============================================================\n[hybrid_search] reflect_on_execution (server/sample_repository/server/src/graph/nodes/reflector.py)\ndef reflect_on_execution(state: SynapseState) -> dict:\n    print(\"--- REFLECTING ON RESULT ---\")\n\n    scratchpad = state.get(\"reflexion_scratchpad\", [])\n    task_id    = state.get(\"current_step_id\", \"unknown\")\n    dag        = state.get(\"current_dag\", {})\n\n    # Find the most recent RAW_RESULT for t\u2026 [truncated]\n============================================================\n[hybrid_search] route_evaluation (server/sample_repository/server/src/graph/edges/routers.py)\ndef route_evaluation(state: SynapseState) -> str:\n    score      = state.get(\"judge_score\", 0)\n    loop_count = state.get(\"loop_count\", 0)\n\n    if score >= DAG_PASSING_SCORE:\n        print(f\"--- DAG APPROVED (Score: {score}/15) -> PROCEEDING TO EXECUTION ---\")\n        return \"execute\"\n    elif loop_\u2026 [truncated]\n============================================================\n[hybrid_search] parse_scratchpad (server/sample_repository/server/src/graph/scratchpad.py)\ndef parse_scratchpad(scratchpad: list[str]) -> tuple[set[str], set[str]]:\n    \"\"\"\n    Parses the reflexion scratchpad and returns (completed_ids, failed_ids).\n    Expects entries in the format: STATUS|task_id|content|Reason: ...\n    \"\"\"\n    completed = set()\n    failed    = set()\n\n    for entry in s\u2026 [truncated]",
+        "generated_answer": "The route execution handles the case when the scratchpad exceeds the maximum allowed entries by stopping the execution and preventing infinite loops. The `parse_scratchpad` function plays a role in determining the completion and failure of tasks by parsing the scratchpad and returning the completed and failed task IDs. \n\nThe `route_execution` function checks if the length of the scratchpad exceeds the maximum allowed entries, which is calculated as the number of tasks in the DAG multiplied by 6. If the scratchpad exceeds this limit, the function stops the execution.\n\nThe `parse_scratchpad` function parses the scratchpad and returns a tuple containing the completed and failed task IDs. It expects the scratchpad entries to be in a specific format, which includes the status, task ID, content, and reason. The function iterates over the scratchpad entries, extracts the task IDs, and adds them to the completed or failed sets based on the status.\n\nIn the context of the provided code, the `route_execution` function is responsible for executing the tasks in the DAG, and the `parse_scratchpad` function is used to determine the completion and failure of tasks based on the scratchpad entries. The `reflect_on_execution` function is also related to the execution of tasks and the reflection on the results.\n\nOverall, the code provides a mechanism for executing tasks, tracking the execution history in the scratchpad, and determining the completion and failure of tasks based on the scratchpad entries.",
+        "steps": 1
+    },
+    {
+        "query": "What sequence of events occurs when the 'Enter' key is pressed without the 'Shift' key, and how does the application handle the submission of a user's input, including any subsequent API calls, error handling, and updates to the chat history?",
+        "retrieved_context": [
+            {
+                "type": "hybrid_search",
+                "name": "handleKeyDown",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[526-526]:handleKeyDown",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "snippet": "const handleKeyDown = (e) => { if (e.key === \"Enter\" && !e.shiftKey) { e.preventDefault(); handleSubmit(); } };"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "KeyPool.next",
+                "fn_id": "server/sample_repository/server/src/config/keypool.py[16-20]:KeyPool.next",
+                "file": "server/sample_repository/server/src/config/keypool.py",
+                "snippet": "def next(self) -> str:\n        with self._lock:\n            key = self._keys[self._index % len(self._keys)]\n            self._index += 1\n            return key"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "parseInline",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[13-30]:parseInline",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "snippet": "const parseInline = (str) => {\r\n    // Bold+italic, bold, italic, inline code, strikethrough\r\n    const parts = [];\r\n    const regex = /(\\*\\*\\*(.+?)\\*\\*\\*|\\*\\*(.+?)\\*\\*|\\*(.+?)\\*|`(.+?)`|~~(.+?)~~)/g;\r\n    let last = 0;\r\n    let m;\r\n    while ((m = regex.exec(str)) !== null) {\r\n      if (m.index > l\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "renderMarkdown",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[6-133]:renderMarkdown",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "snippet": "function renderMarkdown(text) {\r\n  const lines = text.split(\"\\n\");\r\n  const elements = [];\r\n  let i = 0;\r\n  let keyCounter = 0;\r\n  const key = () => keyCounter++;\r\n\r\n  const parseInline = (str) => {\r\n    // Bold+italic, bold, italic, inline code, strikethrough\r\n    const parts = [];\r\n    const regex\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "LandingPage",
+                "fn_id": "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage",
+                "file": "server/sample_repository/client/src/LandingPage.jsx",
+                "snippet": "export default function LandingPage() {\r\n  const flowRef = useRef(null);\r\n\r\n  // null  = loading, false = signed out, object = signed-in user\r\n  const [user,        setUser]        = useState(null);\r\n  const [authLoading, setAuthLoading] = useState(true);\r\n\r\n  /* \u2500\u2500 Supabase auth listener \u2500\u2500 */\r\n  u\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "LandingPage",
+                "fn_id": "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage",
+                "file": "server/sample_repository/client/src/LandingPage.jsx",
+                "snippet": "export default function LandingPage() {\r\n  const flowRef = useRef(null);\r\n\r\n  // null  = loading, false = signed out, object = signed-in user\r\n  const [user,        setUser]        = useState(null);\r\n  const [authLoading, setAuthLoading] = useState(true);\r\n\r\n  /* \u2500\u2500 Supabase auth listener \u2500\u2500 */\r\n  u\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "run_prompt",
+                "fn_id": "server/sample_repository/server/src/api/server.py[34-44]:run_prompt",
+                "file": "server/sample_repository/server/src/api/server.py",
+                "snippet": "@app.post(\"/run\", response_model=PromptResponse)\r\nasync def run_prompt(payload: PromptRequest) -> PromptResponse:\r\n    try:\r\n        result = await run_in_threadpool(run, payload.user_prompt)\r\n    except Exception as exc:\r\n        raise HTTPException(status_code=500, detail=str(exc)) from exc\r\n\r\n   \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "App",
+                "fn_id": "server/sample_repository/client/src/App.jsx[6-29]:App",
+                "file": "server/sample_repository/client/src/App.jsx",
+                "snippet": "export default function App() {\n  const [user,        setUser]        = useState(null);\n  const [authLoading, setAuthLoading] = useState(true);\n\n  useEffect(() => {\n    supabase.auth.getSession().then(({ data: { session } }) => {\n      setUser(session?.user ?? null);\n      setAuthLoading(false);\n   \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "Dashboard",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[419-927]:Dashboard",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "snippet": "export default function Dashboard() {\r\n  const [user, setUser]               = useState(null);\r\n  const [chats, setChats]             = useState([]);\r\n  const [activeChat, setActiveChat]   = useState(null);\r\n  const [prompt, setPrompt]           = useState(\"\");\r\n  const [loading, setLoading]        \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "DAGVisualization",
+                "fn_id": "server/sample_repository/client/src/LandingPage.jsx[8-83]:DAGVisualization",
+                "file": "server/sample_repository/client/src/LandingPage.jsx",
+                "snippet": "const DAGVisualization = () => {\r\n  const [activeNode, setActiveNode] = useState(0);\r\n\r\n  const nodes = [\r\n    { id: 0, label: \"INPUT\",   text: \"user_prompt\",    top: \"8%\",  left: \"35%\", delay: \"0s\" },\r\n    { id: 1, label: \"PHASE 1\", text: \"dag_generator\",  top: \"28%\", left: \"10%\", delay: \"0.1s\" },\r\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "handleSubmit",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "snippet": "const handleSubmit = async () => {\r\n    const trimmed = prompt.trim();\r\n    if (!trimmed || loading || chatIsComplete) return;\r\n\r\n    const userMsg = { role: \"user\", text: trimmed };\r\n    setActiveChat((prev) => ({ id: prev?.id ?? null, messages: [...(prev?.messages ?? []), userMsg], dag: prev?.dag \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "run_prompt",
+                "fn_id": "server/sample_repository/server/src/api/server.py[34-44]:run_prompt",
+                "file": "server/sample_repository/server/src/api/server.py",
+                "snippet": "@app.post(\"/run\", response_model=PromptResponse)\r\nasync def run_prompt(payload: PromptRequest) -> PromptResponse:\r\n    try:\r\n        result = await run_in_threadpool(run, payload.user_prompt)\r\n    except Exception as exc:\r\n        raise HTTPException(status_code=500, detail=str(exc)) from exc\r\n\r\n   \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "aviationstack_flights_tool",
+                "fn_id": "server/sample_repository/server/src/tools/ecosystem.py[57-187]:aviationstack_flights_tool",
+                "file": "server/sample_repository/server/src/tools/ecosystem.py",
+                "snippet": "@tool\ndef aviationstack_flights_tool(\n    flight_iata: str = \"\",\n    flight_icao: str = \"\",\n    airline_iata: str = \"\",\n    airline_name: str = \"\",\n    flight_number: str = \"\",\n    flight_date: str = \"\",\n    dep_iata: str = \"\",\n    arr_iata: str = \"\",\n    limit: int = 5,\n) -> str:\n    \"\"\"\n    Query \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "LandingPage",
+                "fn_id": "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage",
+                "file": "server/sample_repository/client/src/LandingPage.jsx",
+                "snippet": "export default function LandingPage() {\r\n  const flowRef = useRef(null);\r\n\r\n  // null  = loading, false = signed out, object = signed-in user\r\n  const [user,        setUser]        = useState(null);\r\n  const [authLoading, setAuthLoading] = useState(true);\r\n\r\n  /* \u2500\u2500 Supabase auth listener \u2500\u2500 */\r\n  u\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "evaluate_dag",
+                "fn_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag",
+                "file": "server/sample_repository/server/src/graph/nodes/evaluator.py",
+                "snippet": "def evaluate_dag(state: SynapseState) -> dict:\n    \"\"\"\n    Phase 1: Evaluates the DAG based on a custom 15-point metric using Groq.\n    \"\"\"\n    print(\"--- EVALUATING DAG (Custom Metric via Groq) ---\")\n    \n    dag = state.get(\"current_dag\", {})\n    tasks = dag.get(\"tasks\", [])\n    user_prompt = stat\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "handleSubmit",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "snippet": "const handleSubmit = async () => {\r\n    const trimmed = prompt.trim();\r\n    if (!trimmed || loading || chatIsComplete) return;\r\n\r\n    const userMsg = { role: \"user\", text: trimmed };\r\n    setActiveChat((prev) => ({ id: prev?.id ?? null, messages: [...(prev?.messages ?? []), userMsg], dag: prev?.dag \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "run_prompt",
+                "fn_id": "server/sample_repository/server/src/api/server.py[34-44]:run_prompt",
+                "file": "server/sample_repository/server/src/api/server.py",
+                "snippet": "@app.post(\"/run\", response_model=PromptResponse)\r\nasync def run_prompt(payload: PromptRequest) -> PromptResponse:\r\n    try:\r\n        result = await run_in_threadpool(run, payload.user_prompt)\r\n    except Exception as exc:\r\n        raise HTTPException(status_code=500, detail=str(exc)) from exc\r\n\r\n   \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "_score_tools",
+                "fn_id": "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
+                "file": "server/sample_repository/server/src/tools/tool_selector.py",
+                "snippet": "def _score_tools(\n    description: str,\n    tool_map: dict[str, object],\n) -> tuple[str, str, int]:\n    \"\"\"\n    Asks Groq to pick the best tool for the description and score its confidence.\n    Returns (tool_name, tool_input, score).\n    \"\"\"\n    tool_manifest = \"\\n\".join(\n        f\"- {name}: {tool.d\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "_parse_success_payload",
+                "fn_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[94-113]:_parse_success_payload",
+                "file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+                "snippet": "def _parse_success_payload(payload: str) -> dict[str, str]:\n    fallback = {\n        \"headline\": payload,\n        \"detailed_summary\": payload,\n        \"reason\": \"\",\n    }\n\n    if not payload:\n        return fallback\n\n    try:\n        parsed = json.loads(payload)\n    except json.JSONDecodeError:\n    \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "execute_task",
+                "fn_id": "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task",
+                "file": "server/sample_repository/server/src/graph/nodes/executor.py",
+                "snippet": "def execute_task(state: SynapseState) -> dict:\n    print(\"--- EXECUTING TASK ---\")\n\n    dag        = state.get(\"current_dag\", {})\n    scratchpad = state.get(\"reflexion_scratchpad\", [])\n\n    task = _get_pending_task(dag, scratchpad)\n\n    if task is None:\n        print(\"--- ALL TASKS COMPLETE ---\")\n  \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "load",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[440-456]:load",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "snippet": "const load = async () => {\r\n      if (!user?.id) { setChats([]); setActiveChat(null); return; }\r\n      const { data, error: err } = await supabase\r\n        .from(\"chat_history\")\r\n        .select(\"id,user_prompt,final_output,current_dag,created_at\")\r\n        .eq(\"user_id\", user.id)\r\n        .order(\"c\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "handleSubmit",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "snippet": "const handleSubmit = async () => {\r\n    const trimmed = prompt.trim();\r\n    if (!trimmed || loading || chatIsComplete) return;\r\n\r\n    const userMsg = { role: \"user\", text: trimmed };\r\n    setActiveChat((prev) => ({ id: prev?.id ?? null, messages: [...(prev?.messages ?? []), userMsg], dag: prev?.dag \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "Dashboard",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[419-927]:Dashboard",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "snippet": "export default function Dashboard() {\r\n  const [user, setUser]               = useState(null);\r\n  const [chats, setChats]             = useState([]);\r\n  const [activeChat, setActiveChat]   = useState(null);\r\n  const [prompt, setPrompt]           = useState(\"\");\r\n  const [loading, setLoading]        \u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "openHistoryChat",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[461-471]:openHistoryChat",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "snippet": "const openHistoryChat = (row) => {\r\n    setActiveChat({\r\n      id: row.id,\r\n      messages: [\r\n        { role: \"user\",      text: row.prompt },\r\n        { role: \"assistant\", text: row.final_output || \"No output returned.\" },\r\n      ],\r\n      dag: row.current_dag || {},\r\n    });\r\n    setAnimateNew(fa\u2026 [truncated]"
+            },
+            {
+                "type": "hybrid_search",
+                "name": "handleDelete",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[478-486]:handleDelete",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "snippet": "const handleDelete = async (e, chatId) => {\r\n    e.stopPropagation();\r\n    setDeletingId(chatId);\r\n    const { error: delErr } = await supabase.from(\"chat_history\").delete().eq(\"id\", chatId);\r\n    if (delErr) { setError(\"Failed to delete chat\"); setDeletingId(null); return; }\r\n    setChats((prev) =>\u2026 [truncated]"
+            },
+            {
+                "type": "full_source",
+                "name": "handleSubmit",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "source": "const handleSubmit = async () => {\r\n    const trimmed = prompt.trim();\r\n    if (!trimmed || loading || chatIsComplete) return;\r\n\r\n    const userMsg = { role: \"user\", text: trimmed };\r\n    setActiveChat((prev) => ({ id: prev?.id ?? null, messages: [...(prev?.messages ?? []), userMsg], dag: prev?.dag ?? {} }));\r\n    setPrompt(\"\"); setLoading(true); setError(null); setAnimateNew(false);\r\n\r\n    try {\r\n      const res = await fetch(\"http://localhost:8000/run\", {\r\n        method: \"POST\", headers: { \"Content-Type\": \"application/json\" },\r\n        body: JSON.stringify({ user_prompt: trimmed }),\r\n      });\r\n      if (!res.ok) { const d = await res.json(); throw new Error(d.detail || \"Backend error\"); }\r\n\r\n      const data         = await res.json();\r\n      const assistantMsg = { role: \"assistant\", text: data.final_output || \"Done.\" };\r\n      const dag          = data.current_dag || {};\r\n\r\n      const { data: insertData, error: insertErr } = await supabase\r\n        .from(\"chat_history\")\r\n        .insert([{ user_id: user?.id ?? null, user_email: user?.email ?? null, user_prompt: trimmed, final_output: data.final_output ?? \"\", current_dag: dag }])\r\n        .select(\"id,user_prompt,final_output,current_dag,created_at\").single();\r\n\r\n      if (insertErr) setError(\"Saved but failed to persist history.\");\r\n\r\n      const newRow = { id: insertData?.id ?? Date.now(), prompt: trimmed, final_output: data.final_output || \"\", current_dag: dag, createdAt: insertData?.created_at ?? new Date().toISOString() };\r\n      setChats((prev) => [newRow, ...prev]);\r\n      setAnimateNew(true);\r\n      setActiveChat((prev) => ({ id: newRow.id, messages: [...(prev?.messages ?? [userMsg]), assistantMsg], dag }));\r\n    } catch (err) {\r\n      setError(err.message || \"Something went wrong.\");\r\n      setActiveChat((prev) => ({ ...prev, messages: [...(prev?.messages ?? []), { role: \"assistant\", text: \"\u26a0 \" + (err.message || \"Error\") }] }));\r\n    } finally {\r\n      setLoading(false);\r\n    }\r\n  };"
+            },
+            {
+                "type": "full_source",
+                "name": "run_prompt",
+                "fn_id": "server/sample_repository/server/src/api/server.py[34-44]:run_prompt",
+                "file": "server/sample_repository/server/src/api/server.py",
+                "source": "@app.post(\"/run\", response_model=PromptResponse)\r\nasync def run_prompt(payload: PromptRequest) -> PromptResponse:\r\n    try:\r\n        result = await run_in_threadpool(run, payload.user_prompt)\r\n    except Exception as exc:\r\n        raise HTTPException(status_code=500, detail=str(exc)) from exc\r\n\r\n    return PromptResponse(\r\n        current_dag=result.get(\"current_dag\", {}),\r\n        final_output=result.get(\"final_output\"),\r\n    )"
+            },
+            {
+                "type": "full_source",
+                "name": "load",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[440-456]:load",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "source": "const load = async () => {\r\n      if (!user?.id) { setChats([]); setActiveChat(null); return; }\r\n      const { data, error: err } = await supabase\r\n        .from(\"chat_history\")\r\n        .select(\"id,user_prompt,final_output,current_dag,created_at\")\r\n        .eq(\"user_id\", user.id)\r\n        .order(\"created_at\", { ascending: false });\r\n      if (err) { setError(\"Failed to load history\"); return; }\r\n      if (Array.isArray(data)) {\r\n        const mapped = data.map((r) => ({\r\n          id: r.id, prompt: r.user_prompt,\r\n          final_output: r.final_output, current_dag: r.current_dag, createdAt: r.created_at,\r\n        }));\r\n        setChats(mapped);\r\n        if (mapped.length > 0) openHistoryChat(mapped[0]);\r\n      }\r\n    };"
+            },
+            {
+                "type": "full_source",
+                "name": "openHistoryChat",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[461-471]:openHistoryChat",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "source": "const openHistoryChat = (row) => {\r\n    setActiveChat({\r\n      id: row.id,\r\n      messages: [\r\n        { role: \"user\",      text: row.prompt },\r\n        { role: \"assistant\", text: row.final_output || \"No output returned.\" },\r\n      ],\r\n      dag: row.current_dag || {},\r\n    });\r\n    setAnimateNew(false); setError(null);\r\n  };"
+            },
+            {
+                "type": "full_source",
+                "name": "handleDelete",
+                "fn_id": "server/sample_repository/client/src/Dashboard.jsx[478-486]:handleDelete",
+                "file": "server/sample_repository/client/src/Dashboard.jsx",
+                "source": "const handleDelete = async (e, chatId) => {\r\n    e.stopPropagation();\r\n    setDeletingId(chatId);\r\n    const { error: delErr } = await supabase.from(\"chat_history\").delete().eq(\"id\", chatId);\r\n    if (delErr) { setError(\"Failed to delete chat\"); setDeletingId(null); return; }\r\n    setChats((prev) => prev.filter((c) => c.id !== chatId));\r\n    if (activeChat?.id === chatId) { setActiveChat(null); setPrompt(\"\"); }\r\n    setDeletingId(null);\r\n  };"
+            }
+        ],
+        "retrieved_context_str": "[hybrid_search] handleKeyDown (server/sample_repository/client/src/Dashboard.jsx)\nconst handleKeyDown = (e) => { if (e.key === \"Enter\" && !e.shiftKey) { e.preventDefault(); handleSubmit(); } };\n============================================================\n[hybrid_search] KeyPool.next (server/sample_repository/server/src/config/keypool.py)\ndef next(self) -> str:\n        with self._lock:\n            key = self._keys[self._index % len(self._keys)]\n            self._index += 1\n            return key\n============================================================\n[hybrid_search] parseInline (server/sample_repository/client/src/Dashboard.jsx)\nconst parseInline = (str) => {\r\n    // Bold+italic, bold, italic, inline code, strikethrough\r\n    const parts = [];\r\n    const regex = /(\\*\\*\\*(.+?)\\*\\*\\*|\\*\\*(.+?)\\*\\*|\\*(.+?)\\*|`(.+?)`|~~(.+?)~~)/g;\r\n    let last = 0;\r\n    let m;\r\n    while ((m = regex.exec(str)) !== null) {\r\n      if (m.index > l\u2026 [truncated]\n============================================================\n[hybrid_search] renderMarkdown (server/sample_repository/client/src/Dashboard.jsx)\nfunction renderMarkdown(text) {\r\n  const lines = text.split(\"\\n\");\r\n  const elements = [];\r\n  let i = 0;\r\n  let keyCounter = 0;\r\n  const key = () => keyCounter++;\r\n\r\n  const parseInline = (str) => {\r\n    // Bold+italic, bold, italic, inline code, strikethrough\r\n    const parts = [];\r\n    const regex\u2026 [truncated]\n============================================================\n[hybrid_search] LandingPage (server/sample_repository/client/src/LandingPage.jsx)\nexport default function LandingPage() {\r\n  const flowRef = useRef(null);\r\n\r\n  // null  = loading, false = signed out, object = signed-in user\r\n  const [user,        setUser]        = useState(null);\r\n  const [authLoading, setAuthLoading] = useState(true);\r\n\r\n  /* \u2500\u2500 Supabase auth listener \u2500\u2500 */\r\n  u\u2026 [truncated]\n============================================================\n[hybrid_search] LandingPage (server/sample_repository/client/src/LandingPage.jsx)\nexport default function LandingPage() {\r\n  const flowRef = useRef(null);\r\n\r\n  // null  = loading, false = signed out, object = signed-in user\r\n  const [user,        setUser]        = useState(null);\r\n  const [authLoading, setAuthLoading] = useState(true);\r\n\r\n  /* \u2500\u2500 Supabase auth listener \u2500\u2500 */\r\n  u\u2026 [truncated]\n============================================================\n[hybrid_search] run_prompt (server/sample_repository/server/src/api/server.py)\n@app.post(\"/run\", response_model=PromptResponse)\r\nasync def run_prompt(payload: PromptRequest) -> PromptResponse:\r\n    try:\r\n        result = await run_in_threadpool(run, payload.user_prompt)\r\n    except Exception as exc:\r\n        raise HTTPException(status_code=500, detail=str(exc)) from exc\r\n\r\n   \u2026 [truncated]\n============================================================\n[hybrid_search] App (server/sample_repository/client/src/App.jsx)\nexport default function App() {\n  const [user,        setUser]        = useState(null);\n  const [authLoading, setAuthLoading] = useState(true);\n\n  useEffect(() => {\n    supabase.auth.getSession().then(({ data: { session } }) => {\n      setUser(session?.user ?? null);\n      setAuthLoading(false);\n   \u2026 [truncated]\n============================================================\n[hybrid_search] Dashboard (server/sample_repository/client/src/Dashboard.jsx)\nexport default function Dashboard() {\r\n  const [user, setUser]               = useState(null);\r\n  const [chats, setChats]             = useState([]);\r\n  const [activeChat, setActiveChat]   = useState(null);\r\n  const [prompt, setPrompt]           = useState(\"\");\r\n  const [loading, setLoading]        \u2026 [truncated]\n============================================================\n[hybrid_search] DAGVisualization (server/sample_repository/client/src/LandingPage.jsx)\nconst DAGVisualization = () => {\r\n  const [activeNode, setActiveNode] = useState(0);\r\n\r\n  const nodes = [\r\n    { id: 0, label: \"INPUT\",   text: \"user_prompt\",    top: \"8%\",  left: \"35%\", delay: \"0s\" },\r\n    { id: 1, label: \"PHASE 1\", text: \"dag_generator\",  top: \"28%\", left: \"10%\", delay: \"0.1s\" },\r\u2026 [truncated]\n============================================================\n[hybrid_search] handleSubmit (server/sample_repository/client/src/Dashboard.jsx)\nconst handleSubmit = async () => {\r\n    const trimmed = prompt.trim();\r\n    if (!trimmed || loading || chatIsComplete) return;\r\n\r\n    const userMsg = { role: \"user\", text: trimmed };\r\n    setActiveChat((prev) => ({ id: prev?.id ?? null, messages: [...(prev?.messages ?? []), userMsg], dag: prev?.dag \u2026 [truncated]\n============================================================\n[hybrid_search] run_prompt (server/sample_repository/server/src/api/server.py)\n@app.post(\"/run\", response_model=PromptResponse)\r\nasync def run_prompt(payload: PromptRequest) -> PromptResponse:\r\n    try:\r\n        result = await run_in_threadpool(run, payload.user_prompt)\r\n    except Exception as exc:\r\n        raise HTTPException(status_code=500, detail=str(exc)) from exc\r\n\r\n   \u2026 [truncated]\n============================================================\n[hybrid_search] aviationstack_flights_tool (server/sample_repository/server/src/tools/ecosystem.py)\n@tool\ndef aviationstack_flights_tool(\n    flight_iata: str = \"\",\n    flight_icao: str = \"\",\n    airline_iata: str = \"\",\n    airline_name: str = \"\",\n    flight_number: str = \"\",\n    flight_date: str = \"\",\n    dep_iata: str = \"\",\n    arr_iata: str = \"\",\n    limit: int = 5,\n) -> str:\n    \"\"\"\n    Query \u2026 [truncated]\n============================================================\n[hybrid_search] LandingPage (server/sample_repository/client/src/LandingPage.jsx)\nexport default function LandingPage() {\r\n  const flowRef = useRef(null);\r\n\r\n  // null  = loading, false = signed out, object = signed-in user\r\n  const [user,        setUser]        = useState(null);\r\n  const [authLoading, setAuthLoading] = useState(true);\r\n\r\n  /* \u2500\u2500 Supabase auth listener \u2500\u2500 */\r\n  u\u2026 [truncated]\n============================================================\n[hybrid_search] evaluate_dag (server/sample_repository/server/src/graph/nodes/evaluator.py)\ndef evaluate_dag(state: SynapseState) -> dict:\n    \"\"\"\n    Phase 1: Evaluates the DAG based on a custom 15-point metric using Groq.\n    \"\"\"\n    print(\"--- EVALUATING DAG (Custom Metric via Groq) ---\")\n    \n    dag = state.get(\"current_dag\", {})\n    tasks = dag.get(\"tasks\", [])\n    user_prompt = stat\u2026 [truncated]\n============================================================\n[hybrid_search] handleSubmit (server/sample_repository/client/src/Dashboard.jsx)\nconst handleSubmit = async () => {\r\n    const trimmed = prompt.trim();\r\n    if (!trimmed || loading || chatIsComplete) return;\r\n\r\n    const userMsg = { role: \"user\", text: trimmed };\r\n    setActiveChat((prev) => ({ id: prev?.id ?? null, messages: [...(prev?.messages ?? []), userMsg], dag: prev?.dag \u2026 [truncated]\n============================================================\n[hybrid_search] run_prompt (server/sample_repository/server/src/api/server.py)\n@app.post(\"/run\", response_model=PromptResponse)\r\nasync def run_prompt(payload: PromptRequest) -> PromptResponse:\r\n    try:\r\n        result = await run_in_threadpool(run, payload.user_prompt)\r\n    except Exception as exc:\r\n        raise HTTPException(status_code=500, detail=str(exc)) from exc\r\n\r\n   \u2026 [truncated]\n============================================================\n[hybrid_search] _score_tools (server/sample_repository/server/src/tools/tool_selector.py)\ndef _score_tools(\n    description: str,\n    tool_map: dict[str, object],\n) -> tuple[str, str, int]:\n    \"\"\"\n    Asks Groq to pick the best tool for the description and score its confidence.\n    Returns (tool_name, tool_input, score).\n    \"\"\"\n    tool_manifest = \"\\n\".join(\n        f\"- {name}: {tool.d\u2026 [truncated]\n============================================================\n[hybrid_search] _parse_success_payload (server/sample_repository/server/src/graph/nodes/synthesizer.py)\ndef _parse_success_payload(payload: str) -> dict[str, str]:\n    fallback = {\n        \"headline\": payload,\n        \"detailed_summary\": payload,\n        \"reason\": \"\",\n    }\n\n    if not payload:\n        return fallback\n\n    try:\n        parsed = json.loads(payload)\n    except json.JSONDecodeError:\n    \u2026 [truncated]\n============================================================\n[hybrid_search] execute_task (server/sample_repository/server/src/graph/nodes/executor.py)\ndef execute_task(state: SynapseState) -> dict:\n    print(\"--- EXECUTING TASK ---\")\n\n    dag        = state.get(\"current_dag\", {})\n    scratchpad = state.get(\"reflexion_scratchpad\", [])\n\n    task = _get_pending_task(dag, scratchpad)\n\n    if task is None:\n        print(\"--- ALL TASKS COMPLETE ---\")\n  \u2026 [truncated]\n============================================================\n[hybrid_search] load (server/sample_repository/client/src/Dashboard.jsx)\nconst load = async () => {\r\n      if (!user?.id) { setChats([]); setActiveChat(null); return; }\r\n      const { data, error: err } = await supabase\r\n        .from(\"chat_history\")\r\n        .select(\"id,user_prompt,final_output,current_dag,created_at\")\r\n        .eq(\"user_id\", user.id)\r\n        .order(\"c\u2026 [truncated]\n============================================================\n[hybrid_search] handleSubmit (server/sample_repository/client/src/Dashboard.jsx)\nconst handleSubmit = async () => {\r\n    const trimmed = prompt.trim();\r\n    if (!trimmed || loading || chatIsComplete) return;\r\n\r\n    const userMsg = { role: \"user\", text: trimmed };\r\n    setActiveChat((prev) => ({ id: prev?.id ?? null, messages: [...(prev?.messages ?? []), userMsg], dag: prev?.dag \u2026 [truncated]\n============================================================\n[hybrid_search] Dashboard (server/sample_repository/client/src/Dashboard.jsx)\nexport default function Dashboard() {\r\n  const [user, setUser]               = useState(null);\r\n  const [chats, setChats]             = useState([]);\r\n  const [activeChat, setActiveChat]   = useState(null);\r\n  const [prompt, setPrompt]           = useState(\"\");\r\n  const [loading, setLoading]        \u2026 [truncated]\n============================================================\n[hybrid_search] openHistoryChat (server/sample_repository/client/src/Dashboard.jsx)\nconst openHistoryChat = (row) => {\r\n    setActiveChat({\r\n      id: row.id,\r\n      messages: [\r\n        { role: \"user\",      text: row.prompt },\r\n        { role: \"assistant\", text: row.final_output || \"No output returned.\" },\r\n      ],\r\n      dag: row.current_dag || {},\r\n    });\r\n    setAnimateNew(fa\u2026 [truncated]\n============================================================\n[hybrid_search] handleDelete (server/sample_repository/client/src/Dashboard.jsx)\nconst handleDelete = async (e, chatId) => {\r\n    e.stopPropagation();\r\n    setDeletingId(chatId);\r\n    const { error: delErr } = await supabase.from(\"chat_history\").delete().eq(\"id\", chatId);\r\n    if (delErr) { setError(\"Failed to delete chat\"); setDeletingId(null); return; }\r\n    setChats((prev) =>\u2026 [truncated]\n============================================================\n[full_source] handleSubmit (server/sample_repository/client/src/Dashboard.jsx)\nconst handleSubmit = async () => {\r\n    const trimmed = prompt.trim();\r\n    if (!trimmed || loading || chatIsComplete) return;\r\n\r\n    const userMsg = { role: \"user\", text: trimmed };\r\n    setActiveChat((prev) => ({ id: prev?.id ?? null, messages: [...(prev?.messages ?? []), userMsg], dag: prev?.dag ?? {} }));\r\n    setPrompt(\"\"); setLoading(true); setError(null); setAnimateNew(false);\r\n\r\n    try {\r\n      const res = await fetch(\"http://localhost:8000/run\", {\r\n        method: \"POST\", headers: { \"Content-Type\": \"application/json\" },\r\n        body: JSON.stringify({ user_prompt: trimmed }),\r\n      });\r\n      if (!res.ok) { const d = await res.json(); throw new Error(d.detail || \"Backend error\"); }\r\n\r\n      const data         = await res.json();\r\n      const assistantMsg = { role: \"assistant\", text: data.final_output || \"Done.\" };\r\n      const dag          = data.current_dag || {};\r\n\r\n      const { data: insertData, error: insertErr } = await supabase\r\n        .from(\"chat_history\")\r\n        .insert([{ user_id: user?.id ?? null, user_email: user?.email ?? null, user_prompt: trimmed, final_output: data.final_output ?? \"\", current_dag: dag }])\r\n        .select(\"id,user_prompt,final_output,current_dag,created_at\").single();\r\n\r\n      if (insertErr) setError(\"Saved but failed to persist history.\");\r\n\r\n      const newRow = { id: insertData?.id ?? Date.now(), prompt: trimmed, final_output: data.final_output || \"\", current_dag: dag, createdAt: insertData?.created_at ?? new Date().toISOString() };\r\n      setChats((prev) => [newRow, ...prev]);\r\n      setAnimateNew(true);\r\n      setActiveChat((prev) => ({ id: newRow.id, messages: [...(prev?.messages ?? [userMsg]), assistantMsg], dag }));\r\n    } catch (err) {\r\n      setError(err.message || \"Something went wrong.\");\r\n      setActiveChat((prev) => ({ ...prev, messages: [...(prev?.messages ?? []), { role: \"assistant\", text: \"\u26a0 \" + (err.message || \"Error\") }] }));\r\n    } finally {\r\n      setLoading(false);\r\n    }\r\n  };\n============================================================\n[full_source] run_prompt (server/sample_repository/server/src/api/server.py)\n@app.post(\"/run\", response_model=PromptResponse)\r\nasync def run_prompt(payload: PromptRequest) -> PromptResponse:\r\n    try:\r\n        result = await run_in_threadpool(run, payload.user_prompt)\r\n    except Exception as exc:\r\n        raise HTTPException(status_code=500, detail=str(exc)) from exc\r\n\r\n    return PromptResponse(\r\n        current_dag=result.get(\"current_dag\", {}),\r\n        final_output=result.get(\"final_output\"),\r\n    )\n============================================================\n[full_source] load (server/sample_repository/client/src/Dashboard.jsx)\nconst load = async () => {\r\n      if (!user?.id) { setChats([]); setActiveChat(null); return; }\r\n      const { data, error: err } = await supabase\r\n        .from(\"chat_history\")\r\n        .select(\"id,user_prompt,final_output,current_dag,created_at\")\r\n        .eq(\"user_id\", user.id)\r\n        .order(\"created_at\", { ascending: false });\r\n      if (err) { setError(\"Failed to load history\"); return; }\r\n      if (Array.isArray(data)) {\r\n        const mapped = data.map((r) => ({\r\n          id: r.id, prompt: r.user_prompt,\r\n          final_output: r.final_output, current_dag: r.current_dag, createdAt: r.created_at,\r\n        }));\r\n        setChats(mapped);\r\n        if (mapped.length > 0) openHistoryChat(mapped[0]);\r\n      }\r\n    };\n============================================================\n[full_source] openHistoryChat (server/sample_repository/client/src/Dashboard.jsx)\nconst openHistoryChat = (row) => {\r\n    setActiveChat({\r\n      id: row.id,\r\n      messages: [\r\n        { role: \"user\",      text: row.prompt },\r\n        { role: \"assistant\", text: row.final_output || \"No output returned.\" },\r\n      ],\r\n      dag: row.current_dag || {},\r\n    });\r\n    setAnimateNew(false); setError(null);\r\n  };\n============================================================\n[full_source] handleDelete (server/sample_repository/client/src/Dashboard.jsx)\nconst handleDelete = async (e, chatId) => {\r\n    e.stopPropagation();\r\n    setDeletingId(chatId);\r\n    const { error: delErr } = await supabase.from(\"chat_history\").delete().eq(\"id\", chatId);\r\n    if (delErr) { setError(\"Failed to delete chat\"); setDeletingId(null); return; }\r\n    setChats((prev) => prev.filter((c) => c.id !== chatId));\r\n    if (activeChat?.id === chatId) { setActiveChat(null); setPrompt(\"\"); }\r\n    setDeletingId(null);\r\n  };",
+        "generated_answer": "When the 'Enter' key is pressed without the 'Shift' key, the application handles the submission of a user's input by calling the `handleSubmit` function. This function trims the user's input, checks if it's not empty and if the chat is not complete, and then sends a POST request to the `/run` endpoint with the user's input as a JSON payload.\n\nThe `/run` endpoint is handled by the `run_prompt` function, which runs the user's input in a thread pool and returns a response with the final output and the current DAG.\n\nThe application then updates the chat history by inserting a new row into the `chat_history` table with the user's input, the final output, and the current DAG. It also updates the active chat by setting the `id` to the new row's `id`, the `messages` to an array containing the user's input and the final output, and the `dag` to the current DAG.\n\nIf an error occurs during the submission process, the application catches the error and sets an error message. If the chat is deleted, the application removes the chat from the chat history and sets the active chat to null.\n\nThe sequence of events is as follows:\n\n1. The user presses the 'Enter' key without the 'Shift' key.\n2. The `handleSubmit` function is called.\n3. The `handleSubmit` function sends a POST request to the `/run` endpoint with the user's input as a JSON payload.\n4. The `run_prompt` function handles the POST request and runs the user's input in a thread pool.\n5. The `run_prompt` function returns a response with the final output and the current DAG.\n6. The application updates the chat history by inserting a new row into the `chat_history` table.\n7. The application updates the active chat by setting the `id` to the new row's `id`, the `messages` to an array containing the user's input and the final output, and the `dag` to the current DAG.\n\nThe application uses the following functions and endpoints:\n\n* `handleSubmit`: handles the submission of the user's input\n* `run_prompt`: handles the POST request to the `/run` endpoint and runs the user's input in a thread pool\n* `/run`: the endpoint that handles the POST request with the user's input as a JSON payload\n* `chat_history`: the table that stores the chat history\n* `activeChat`: the object that stores the active chat's `id`, `messages`, and `dag`",
+        "steps": 2
+    }
+]

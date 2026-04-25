@@ -19,7 +19,7 @@ from rank_bm25 import BM25Okapi
 from retriever.bm25_basic import tokenize_code
 from retriever.dense_retrieval import get_dense_rankings
 from retriever.query_expansion import expand_query
-from retriever.graph_context import load_data, get_neighborhood
+from retriever.hybrid_retrieval_dependency import load_data, get_neighborhood
 from retriever.hybrid_retrieval import calculate_rrf
 
 MAX_STEPS = 5 # max agent iterations before forcing generation
@@ -56,7 +56,7 @@ class AgentTools:
         )
         bm25_ranks = {fid: r for r, (fid, _) in enumerate(bm25_ranked, 1)}
         
-        dense_results = get_dense_rankings(query, self.corpus_embeddings)
+        dense_results = get_dense_rankings(expanded, self.corpus_embeddings)
         dense_ranks = {fid: rank for fid, _, rank in dense_results}
         fused = calculate_rrf(bm25_ranks, dense_ranks)
 
@@ -214,14 +214,47 @@ def run_agentic_rag(query: str, output_dir: Path) -> dict:
     print(f"\n[Agentic RAG] Query: {query}")
 
     while steps < MAX_STEPS:
-        response = groq_client.chat.completions.create(
-            model=MODEL_NAME,
-            messages=messages,
-            tools=TOOL_SPECS,
-            tool_choice="auto",
-            temperature=0.1,
-            max_tokens=1500,
-        )
+        MAX_RETRIES = 2
+        response = None
+
+        for attempt in range(MAX_RETRIES):
+            try:
+                response = groq_client.chat.completions.create(
+                    model=MODEL_NAME,
+                    messages=messages,
+                    tools=TOOL_SPECS,
+                    tool_choice="auto",
+                    temperature=0.1,
+                    max_tokens=1500,
+                )
+                break
+
+            except Exception as e:
+                err_msg = str(e)
+                print(f"  [Step {steps+1}] LLM call failed (attempt {attempt+1}): {err_msg}")
+
+                if "tool call validation failed" in err_msg:
+                    feedback = (
+                        "Your previous tool call had invalid argument types. "
+                        "Ensure that:\n"
+                        "- `top_k` must be an integer (e.g., 5, NOT \"5\")\n"
+                        "- All arguments must match the JSON schema exactly.\n"
+                        "Please try the tool call again with correct types."
+                    )
+                else:
+                    feedback = (
+                        f"The previous request failed with error: {err_msg}. "
+                        "Please try again and fix the issue."
+                    )
+
+                messages.append({
+                    "role": "user",
+                    "content": feedback
+                })
+
+        if response is None:
+            print("  LLM failed after retries. Skipping step.")
+            break
 
         msg = response.choices[0].message
         finish_reason = response.choices[0].finish_reason
@@ -240,46 +273,64 @@ def run_agentic_rag(query: str, output_dir: Path) -> dict:
 
             print(f"  [Step {steps+1}] {fn_name}({fn_args})")
 
-            if fn_name == "hybrid_search":
-                result = tools.hybrid_search(
-                    fn_args.get("query", query),
-                    fn_args.get("top_k", TOP_K),
-                )
-                for r in result:
-                    accumulated_context.append({
-                        "type": "hybrid_search",
-                        "name": r['name'],
-                        "fn_id": r['id'],
-                        "file": r['file'],
-                        "snippet": r['snippet']
-                    })
-
-            elif fn_name == "get_function_source":
-                result = tools.get_function_source(fn_args.get("function_id", ""))
-                if "source" in result:
-                    accumulated_context.append({
-                        "type": "full_source",
-                        "name": result['name'],
-                        "fn_id": result['id'],
-                        "file": result['file'],
-                        "source": result['source']
-                    })
-
-            elif fn_name == "get_graph_neighbors":
-                result = tools.get_graph_neighbors(fn_args.get("function_id", ""))
-                for nb in (result.get("callees", []) + result.get("callers", []))[:3]:
-                    src = tools.get_function_source(nb["id"])
-                    if "source" in src:
+            try:
+                if fn_name == "hybrid_search":
+                    result = tools.hybrid_search(
+                        fn_args.get("query", query),
+                        fn_args.get("top_k", TOP_K),
+                    )
+                    for r in result:
                         accumulated_context.append({
-                            "type": "graph_neighbor",
-                            "name": src['name'],
-                            "fn_id": src['id'],
-                            "file": src['file'],
-                            "source": src['source']
+                            "type": "hybrid_search",
+                            "name": r['name'],
+                            "fn_id": r['id'],
+                            "file": r['file'],
+                            "snippet": r['snippet']
                         })
 
-            else:
-                result = {"error": f"Unknown tool: {fn_name}"}
+                elif fn_name == "get_function_source":
+                    result = tools.get_function_source(fn_args.get("function_id", ""))
+                    if "source" in result:
+                        accumulated_context.append({
+                            "type": "full_source",
+                            "name": result['name'],
+                            "fn_id": result['id'],
+                            "file": result['file'],
+                            "source": result['source']
+                        })
+
+                elif fn_name == "get_graph_neighbors":
+                    result = tools.get_graph_neighbors(fn_args.get("function_id", ""))
+                    for nb in (result.get("callees", []) + result.get("callers", []))[:3]:
+                        src = tools.get_function_source(nb["id"])
+                        if "source" in src:
+                            accumulated_context.append({
+                                "type": "graph_neighbor",
+                                "name": src['name'],
+                                "fn_id": src['id'],
+                                "file": src['file'],
+                                "source": src['source']
+                            })
+
+                else:
+                    result = {"error": f"Unknown tool: {fn_name}"}
+            except Exception as e:
+                result = {"error": f"Tool execution failed: {str(e)}"}
+                messages.append({
+                    "role": "tool",
+                    "tool_call_id": tc.id,
+                    "content": json.dumps(result),
+                })
+                feedback = (
+                    "The previous tool call failed.\n"
+                    f"Error: {str(e)}\n"
+                    "Fix your arguments and call the tool again.\n"
+                )
+                messages.append({
+                    "role": "user",
+                    "content": feedback
+                })
+                continue
 
             messages.append({
                 "role": "tool",
