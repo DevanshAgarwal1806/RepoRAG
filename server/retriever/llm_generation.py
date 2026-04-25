@@ -29,7 +29,7 @@ def assemble_llm_context(functions_retrieved: list[tuple[str, str]], function_ma
         
     return llm_prompt_context
 
-def llm_generation(output_dir: Path, query: str):
+def llm_generation(output_dir: Path, query: str, save_prompt: bool = False) -> tuple[list[tuple[str, str]], str]:
     # 1. Load the fully embedded data
     corpus_path_embeddings = output_dir / "embeddings.json"
     corpus_path_functions = output_dir / "extracted_functions.json"
@@ -52,18 +52,21 @@ def llm_generation(output_dir: Path, query: str):
         corpus_functions,
         corpus_embeddings,
         G,
-        top_k=3,
+        top_k=7,
     )
 
     llm_prompt_context = assemble_llm_context(functions_retrieved, function_map, str(output_dir), d=1)
+    final_payload = f"### USER QUERY: {original_query}\n\n{llm_prompt_context}"
     
-    prompt_file = output_dir / "final_llm_payload.md"
-    with open(prompt_file, "w", encoding="utf-8") as f:
-        f.write(f"### USER QUERY: {original_query}\n\n")
-        f.write(llm_prompt_context)
+    if save_prompt:
+        prompt_file = output_dir / "final_llm_payload.md"
+        with open(prompt_file, "w", encoding="utf-8") as f:
+            f.write(final_payload)
+            print(f"Saved to: {prompt_file}")
         
-    print(f"Successfully generated full RAG payload: {len(llm_prompt_context)} characters.")
-    print(f"Saved to: {prompt_file}")
+    print(f"Successfully generated full RAG payload: {len(final_payload)} characters.")
+    
+    return functions_retrieved, final_payload
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Hybrid Retrieval with RRF and Graph Context")

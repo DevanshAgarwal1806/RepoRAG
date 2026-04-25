@@ -4,13 +4,12 @@ from dotenv import load_dotenv
 from groq import Groq
 import argparse
 
-def generate_rag_answer(output_dir: str) -> str:
+def generate_rag_answer(output_dir: str, llm_payload: str = None) -> str:
     current_dir = Path(__file__).resolve().parent
     server_dir = current_dir.parent  
     env_path = server_dir / ".env"
     
     output_dir = Path(output_dir)
-    payload_path = output_dir / "final_llm_payload.md"
     
     # 2. Load Environment Variables
     load_dotenv(dotenv_path=env_path)
@@ -20,17 +19,17 @@ def generate_rag_answer(output_dir: str) -> str:
     if not api_key or not api_key.startswith("gsk_"):
         raise ValueError("Valid Groq API Key (starting with 'gsk_') not found in server/.env.")
 
-    # 3. Read the Prepared Context & Query
-    if not payload_path.exists():
-        raise FileNotFoundError(f"Could not find the LLM payload at {payload_path}.")
-        
-    with open(payload_path, "r", encoding="utf-8") as f:
-        llm_payload = f.read()
+    if llm_payload is None:
+        payload_path = output_dir / "final_llm_payload.md"
+        # 3. Read the Prepared Context & Query
+        if not payload_path.exists():
+            raise FileNotFoundError(f"Could not find the LLM payload at {payload_path}.")
+            
+        with open(payload_path, "r", encoding="utf-8") as f:
+            llm_payload = f.read()
 
     # 4. Initialize the Groq Client
     client = Groq(api_key=api_key)
-
-    print("--- Sending Context to Groq LLM ---")
     
     # 5. Generate the Answer
     try:
@@ -57,9 +56,6 @@ def generate_rag_answer(output_dir: str) -> str:
         )
         
         final_answer = response.choices[0].message.content
-        
-        print("\n--- Final Generated Answer ---")
-        print(final_answer)
         
         return final_answer
 
