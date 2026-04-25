@@ -18,11 +18,13 @@ tree-sitter-php
 tree-sitter-kotlin
 tree-sitter-swift
 matplotlib
-sentence-transformers==2.7.0
-transformers==4.41.2
 torch
 numpy
 networkx
+
+transformers==4.41.2
+sentence-transformers==2.7.0
 optimum
-huggingface_hub==0.23.2
+
+huggingface-hub>=0.34.0,<1.0
 groq

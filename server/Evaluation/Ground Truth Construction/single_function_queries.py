@@ -1,19 +1,40 @@
+import sys
+from pathlib import Path
+from urllib import response
 import networkx as nx
 import os
 import json
 import time
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from dotenv import load_dotenv
 
-load_dotenv()  # Load environment variables from .env file
+import tiktoken
 
-# Configure your API key
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+# Llama models are close enough to cl100k
+enc = tiktoken.get_encoding("cl100k_base")
 
-# Updated to the current stable Pro model
-llm_model = genai.GenerativeModel(
-    'gemini-2.5-pro', 
-    generation_config={"response_mime_type": "application/json"}
+def count_tokens(text: str) -> int:
+    return len(enc.encode(text))
+
+BASELINE_DIR = Path(__file__).resolve().parent
+SERVER_DIR = BASELINE_DIR.parent.parent
+if str(SERVER_DIR) not in sys.path:
+    sys.path.insert(0, str(SERVER_DIR))
+
+for candidate in [SERVER_DIR / ".env"]:
+    if candidate.exists():
+        load_dotenv(dotenv_path=candidate)
+        break
+
+from retriever.graph_context import load_data
+
+from openai import OpenAI
+
+# Initialize the Client using Groq
+client = OpenAI(
+    api_key=os.getenv("GROQ_API_KEY"),
+    base_url="https://api.groq.com/openai/v1",
 )
 
 def extract_single_node_context(G: nx.DiGraph, node_id: str) -> str:
@@ -86,52 +107,80 @@ def build_single_hop_ground_truth(G: nx.DiGraph, output_file: str = "singlehop_g
         {single_payload}
 
         Output your response strictly as a JSON array of objects. Do not include markdown formatting or extra text.
-        [
-          {{
-            "query_type": "exact",
-            "query": "<your exact match question>",
-            "target_file": "<file_path>"
-          }},
-          {{
-            "query_type": "semantic",
-            "query": "<your semantic question>",
-            "target_file": "<file_path>"
-          }},
-          {{
-            "query_type": "structural",
-            "query": "<your structural question>",
-            "target_file": "<file_path>"
-          }}
-        ]
+        {{
+            "queries": [
+                {{
+                    "query_type": "exact",
+                    "query": "<your exact match question>",
+                    "target_file": "<file_path>"
+                }},
+                {{
+                    "query_type": "semantic",
+                    "query": "<your semantic question>",
+                    "target_file": "<file_path>"
+                }},
+                {{
+                    "query_type": "structural",
+                    "query": "<your structural question>",
+                    "target_file": "<file_path>"
+                }}
+            ]
+        }}
         """
         
-        try:
-            response = llm_model.generate_content(prompt)
-            response_json = json.loads(response.text)
-            
-            if isinstance(response_json, list):
-                # INJECT NODE ID: Tag each question with its exact AST node origin
-                for item in response_json:
-                    item["node_id"] = node_id
-                
-                ground_truth_dataset.extend(response_json)
-                
-                # INCREMENTAL SAVE
-                with open(output_file, "w", encoding="utf-8") as f:
-                    json.dump(ground_truth_dataset, f, indent=4)
-                
-                print(f"  -> Success! Total 1:1 queries saved: {len(ground_truth_dataset)}")
-                
-            else:
-                print(f"  -> Warning: Expected a JSON array, but got {type(response_json)}. Skipping.")
-                
-        except json.JSONDecodeError as e:
-            print(f"  -> JSON Parsing Error: {e}")
-        except Exception as e:
-            print(f"  -> API Error for {node_id}: {e}")
+        max_retries = 3
+        retry_delay = 60 # Groq limits reset every minute
+        print(f"  -> Prompt token count: {count_tokens(prompt)}")
         
-        # 12 seconds ensures you stay under the 5 Requests-Per-Minute free tier limit
-        time.sleep(12) 
-
-    print("\nExtraction Complete! All single-hop data saved to", output_file)
+        for attempt in range(max_retries):
+            try:
+                response = client.chat.completions.create(
+                    model="llama-3.3-70b-versatile", # The 70B Reasoning Engine
+                    messages=[
+                        {"role": "system", "content": "You are a senior software engineer. Output strictly valid JSON arrays. Do not wrap in markdown."},
+                        {"role": "user", "content": prompt}
+                    ],
+                    response_format={"type": "json_object"} 
+                )
+                
+                # 1. Parse the text into a Python dictionary
+                response_text = response.choices[0].message.content.replace("```json", "").replace("```", "").strip()
+                response_json = json.loads(response_text)
+                
+                # 2. Extract the array using the exact key we prompted for
+                extracted_array = response_json.get("queries")
+                
+                # 3. Process the array
+                if isinstance(extracted_array, list):
+                    for item in extracted_array:
+                        item["node_id"] = node_id
+                    
+                    ground_truth_dataset.extend(extracted_array)
+                    
+                    with open(output_file, "w", encoding="utf-8") as f:
+                        json.dump(ground_truth_dataset, f, indent=4)
+                        
+                    print(f"  -> Success! Total 1:1 queries saved: {len(ground_truth_dataset)}")
+                    break 
+                else:
+                    print("  -> Warning: The model did not return a 'queries' array.")
+                    break
+                    
+            except Exception as e:
+                error_msg = str(e)
+                if "429" in error_msg:
+                    print(f"  -> TPM Limit Hit (Attempt {attempt + 1}/{max_retries}). Sleeping for 60s...")
+                    time.sleep(retry_delay)
+                else:
+                    print(f"  -> API/Parse Error: {e}")
+                    break
+        
+        # The mathematically safe sleep for 12K TPM
+        time.sleep(6)
+        
     return ground_truth_dataset
+
+if __name__ == "__main__":
+    G, function_map = load_data(str(SERVER_DIR / "sample_repository_output"))
+    
+    build_single_hop_ground_truth(G, output_file=str(BASELINE_DIR / "singlehop_ground_truth.json"))

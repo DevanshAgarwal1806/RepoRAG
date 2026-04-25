@@ -11,7 +11,7 @@ from indexer.languages import LANGUAGE_MAP, EXTENSION_MAP, QUERIES, CALL_QUERIES
 class FunctionNode:
     id: str # ID Format: "filepath[start_line:end_line]:funcname"
     name: str
-    is_method: bool = False
+    is_method: bool
     language: str
     file_path: str
     start_line: int

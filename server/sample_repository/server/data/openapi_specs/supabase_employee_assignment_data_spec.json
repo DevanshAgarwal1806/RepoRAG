@@ -1,0 +1,857 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "title": "Database schema containing employee profiles, current project requirements, and historical project performance metrics for AI-driven task assignment.",
+    "version": "14.4"
+  },
+  "host": "tzwingddspdptmneenxd.supabase.co:443",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json",
+    "application/vnd.pgrst.object+json;nulls=stripped",
+    "application/vnd.pgrst.object+json",
+    "text/csv"
+  ],
+  "produces": [
+    "application/json",
+    "application/vnd.pgrst.object+json;nulls=stripped",
+    "application/vnd.pgrst.object+json",
+    "text/csv"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "produces": [
+          "application/openapi+json",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "summary": "OpenAPI description (this document)",
+        "tags": [
+          "Introspection"
+        ]
+      }
+    },
+    "/neurax_project_history_dataset": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.history_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.project_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.project_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.team_size"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.tools_used"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.completion_days"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.success_score"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/neurax_project_history_dataset"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "summary": "Logs historical project execution data, tracking team sizes, tools utilized, completion times, and overall success scores.",
+        "tags": [
+          "neurax_project_history_dataset"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.neurax_project_history_dataset"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "summary": "Logs historical project execution data, tracking team sizes, tools utilized, completion times, and overall success scores.",
+        "tags": [
+          "neurax_project_history_dataset"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.history_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.project_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.project_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.team_size"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.tools_used"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.completion_days"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.success_score"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "summary": "Logs historical project execution data, tracking team sizes, tools utilized, completion times, and overall success scores.",
+        "tags": [
+          "neurax_project_history_dataset"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.history_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.project_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.project_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.team_size"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.tools_used"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.completion_days"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_project_history_dataset.success_score"
+          },
+          {
+            "$ref": "#/parameters/body.neurax_project_history_dataset"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "summary": "Logs historical project execution data, tracking team sizes, tools utilized, completion times, and overall success scores.",
+        "tags": [
+          "neurax_project_history_dataset"
+        ]
+      }
+    },
+    "/neurax_projects_dataset": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.project_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.project_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.required_skills"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.deadline_days"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.priority"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/neurax_projects_dataset"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "summary": "Lists active and upcoming projects, including their objectives, required technical skills, deadlines in days, and priority levels.",
+        "tags": [
+          "neurax_projects_dataset"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.neurax_projects_dataset"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "summary": "Lists active and upcoming projects, including their objectives, required technical skills, deadlines in days, and priority levels.",
+        "tags": [
+          "neurax_projects_dataset"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.project_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.project_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.required_skills"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.deadline_days"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.priority"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "summary": "Lists active and upcoming projects, including their objectives, required technical skills, deadlines in days, and priority levels.",
+        "tags": [
+          "neurax_projects_dataset"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.project_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.project_name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.description"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.required_skills"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.deadline_days"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_projects_dataset.priority"
+          },
+          {
+            "$ref": "#/parameters/body.neurax_projects_dataset"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "summary": "Lists active and upcoming projects, including their objectives, required technical skills, deadlines in days, and priority levels.",
+        "tags": [
+          "neurax_projects_dataset"
+        ]
+      }
+    },
+    "/neurax_employees_dataset": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.employee_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.role"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.skills"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.experience_years"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.current_workload_percent"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/range"
+          },
+          {
+            "$ref": "#/parameters/rangeUnit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/preferCount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/neurax_employees_dataset"
+              },
+              "type": "array"
+            }
+          },
+          "206": {
+            "description": "Partial Content"
+          }
+        },
+        "summary": "Contains employee details including their roles, technical skills, years of experience, and current workload percentages.",
+        "tags": [
+          "neurax_employees_dataset"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/body.neurax_employees_dataset"
+          },
+          {
+            "$ref": "#/parameters/select"
+          },
+          {
+            "$ref": "#/parameters/preferPost"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "summary": "Contains employee details including their roles, technical skills, years of experience, and current workload percentages.",
+        "tags": [
+          "neurax_employees_dataset"
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.employee_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.role"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.skills"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.experience_years"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.current_workload_percent"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "summary": "Contains employee details including their roles, technical skills, years of experience, and current workload percentages.",
+        "tags": [
+          "neurax_employees_dataset"
+        ]
+      },
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.employee_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.name"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.role"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.skills"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.experience_years"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.neurax_employees_dataset.current_workload_percent"
+          },
+          {
+            "$ref": "#/parameters/body.neurax_employees_dataset"
+          },
+          {
+            "$ref": "#/parameters/preferReturn"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "summary": "Contains employee details including their roles, technical skills, years of experience, and current workload percentages.",
+        "tags": [
+          "neurax_employees_dataset"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "neurax_project_history_dataset": {
+      "description": "Logs historical project execution data, tracking team sizes, tools utilized, completion times, and overall success scores.",
+      "properties": {
+        "history_id": {
+          "format": "text",
+          "type": "string"
+        },
+        "project_id": {
+          "format": "text",
+          "type": "string"
+        },
+        "project_name": {
+          "format": "text",
+          "type": "string"
+        },
+        "team_size": {
+          "format": "bigint",
+          "type": "integer"
+        },
+        "tools_used": {
+          "format": "text",
+          "type": "string"
+        },
+        "completion_days": {
+          "format": "bigint",
+          "type": "integer"
+        },
+        "success_score": {
+          "format": "double precision",
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "neurax_projects_dataset": {
+      "description": "Lists active and upcoming projects, including their objectives, required technical skills, deadlines in days, and priority levels.",
+      "properties": {
+        "project_id": {
+          "format": "text",
+          "type": "string"
+        },
+        "project_name": {
+          "format": "text",
+          "type": "string"
+        },
+        "description": {
+          "format": "text",
+          "type": "string"
+        },
+        "required_skills": {
+          "format": "text",
+          "type": "string"
+        },
+        "deadline_days": {
+          "format": "bigint",
+          "type": "integer"
+        },
+        "priority": {
+          "format": "text",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "neurax_employees_dataset": {
+      "description": "Contains employee details including their roles, technical skills, years of experience, and current workload percentages.",
+      "properties": {
+        "employee_id": {
+          "format": "text",
+          "type": "string"
+        },
+        "name": {
+          "format": "text",
+          "type": "string"
+        },
+        "role": {
+          "format": "text",
+          "type": "string"
+        },
+        "skills": {
+          "format": "text",
+          "type": "string"
+        },
+        "experience_years": {
+          "format": "bigint",
+          "type": "integer"
+        },
+        "current_workload_percent": {
+          "format": "bigint",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "parameters": {
+    "preferParams": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "in": "header",
+      "type": "string"
+    },
+    "preferReturn": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "enum": [
+        "return=representation",
+        "return=minimal",
+        "return=none"
+      ],
+      "in": "header",
+      "type": "string"
+    },
+    "preferCount": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "enum": [
+        "count=none"
+      ],
+      "in": "header",
+      "type": "string"
+    },
+    "preferPost": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "enum": [
+        "return=representation",
+        "return=minimal",
+        "return=none",
+        "resolution=ignore-duplicates",
+        "resolution=merge-duplicates"
+      ],
+      "in": "header",
+      "type": "string"
+    },
+    "select": {
+      "name": "select",
+      "description": "Filtering Columns",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "on_conflict": {
+      "name": "on_conflict",
+      "description": "On Conflict",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "order": {
+      "name": "order",
+      "description": "Ordering",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "range": {
+      "name": "Range",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "in": "header",
+      "type": "string"
+    },
+    "rangeUnit": {
+      "name": "Range-Unit",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "default": "items",
+      "in": "header",
+      "type": "string"
+    },
+    "offset": {
+      "name": "offset",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "limit": {
+      "name": "limit",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.neurax_project_history_dataset": {
+      "name": "neurax_project_history_dataset",
+      "description": "neurax_project_history_dataset",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/neurax_project_history_dataset"
+      }
+    },
+    "rowFilter.neurax_project_history_dataset.history_id": {
+      "name": "history_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_project_history_dataset.project_id": {
+      "name": "project_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_project_history_dataset.project_name": {
+      "name": "project_name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_project_history_dataset.team_size": {
+      "name": "team_size",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_project_history_dataset.tools_used": {
+      "name": "tools_used",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_project_history_dataset.completion_days": {
+      "name": "completion_days",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_project_history_dataset.success_score": {
+      "name": "success_score",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.neurax_projects_dataset": {
+      "name": "neurax_projects_dataset",
+      "description": "neurax_projects_dataset",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/neurax_projects_dataset"
+      }
+    },
+    "rowFilter.neurax_projects_dataset.project_id": {
+      "name": "project_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_projects_dataset.project_name": {
+      "name": "project_name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_projects_dataset.description": {
+      "name": "description",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_projects_dataset.required_skills": {
+      "name": "required_skills",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_projects_dataset.deadline_days": {
+      "name": "deadline_days",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_projects_dataset.priority": {
+      "name": "priority",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.neurax_employees_dataset": {
+      "name": "neurax_employees_dataset",
+      "description": "neurax_employees_dataset",
+      "required": false,
+      "in": "body",
+      "schema": {
+        "$ref": "#/definitions/neurax_employees_dataset"
+      }
+    },
+    "rowFilter.neurax_employees_dataset.employee_id": {
+      "name": "employee_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_employees_dataset.name": {
+      "name": "name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_employees_dataset.role": {
+      "name": "role",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_employees_dataset.skills": {
+      "name": "skills",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_employees_dataset.experience_years": {
+      "name": "experience_years",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.neurax_employees_dataset.current_workload_percent": {
+      "name": "current_workload_percent",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    }
+  },
+  "externalDocs": {
+    "description": "PostgREST Documentation",
+    "url": "https://postgrest.org/en/v14/references/api.html"
+  }
+}

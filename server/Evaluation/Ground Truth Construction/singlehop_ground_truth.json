@@ -1,0 +1,1712 @@
+[
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the __init__ method in the DummyTool class in server/sample_repository/server/test_tool_retry_fallback.py?",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[13-15]:DummyTool.__init__"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How is a tool instance initialized with a name and description in the test tool retry fallback module?",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[13-15]:DummyTool.__init__"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component in the server/sample_repository/server module is responsible for creating a new tool with a given name?",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[13-15]:DummyTool.__init__"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the test_failed_task_is_retried_until_exhausted function in test_tool_retry_fallback.py",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[19-33]:ToolRetryFallbackTests.test_failed_task_is_retried_until_exhausted"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How can I verify that failed tasks are retried until exhausted in a workflow",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[19-33]:ToolRetryFallbackTests.test_failed_task_is_retried_until_exhausted"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for testing the retry mechanism of tasks in the server repository",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[19-33]:ToolRetryFallbackTests.test_failed_task_is_retried_until_exhausted"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the fake_score_tools method in the ToolRetryFallbackTests class",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[42-44]:ToolRetryFallbackTests.fake_score_tools"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system handle tool scoring with fallback queries for candidates",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[42-44]:ToolRetryFallbackTests.fake_score_tools"
+    },
+    {
+        "query_type": "structural",
+        "query": "What module is responsible for testing retry and fallback logic in the server sample repository",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[42-44]:ToolRetryFallbackTests.fake_score_tools"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the code for the test_selector_excludes_previously_attempted_tools function in the ToolRetryFallbackTests class",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[35-56]:ToolRetryFallbackTests.test_selector_excludes_previously_attempted_tools"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system prevent a tool from being selected multiple times when attempting to find the best tool for a task",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[35-56]:ToolRetryFallbackTests.test_selector_excludes_previously_attempted_tools"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for ensuring that the tool selection process ignores tools that have already been tried",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[35-56]:ToolRetryFallbackTests.test_selector_excludes_previously_attempted_tools"
+    },
+    {
+        "query_type": "exact",
+        "query": "What does the SynthesisDepthTests.test_parse_success_payload_prefers_structured_details function do in server/sample_repository/server/test_synthesis_depth.py",
+        "target_file": "server/sample_repository/server/test_synthesis_depth.py",
+        "node_id": "server/sample_repository/server/test_synthesis_depth.py[14-25]:SynthesisDepthTests.test_parse_success_payload_prefers_structured_details"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system validate a JSON payload containing headline, detailed summary, and reason",
+        "target_file": "server/sample_repository/server/test_synthesis_depth.py",
+        "node_id": "server/sample_repository/server/test_synthesis_depth.py[14-25]:SynthesisDepthTests.test_parse_success_payload_prefers_structured_details"
+    },
+    {
+        "query_type": "structural",
+        "query": "What is the purpose of the test_synthesis_depth module within the server/sample_repository/server directory",
+        "target_file": "server/sample_repository/server/test_synthesis_depth.py",
+        "node_id": "server/sample_repository/server/test_synthesis_depth.py[14-25]:SynthesisDepthTests.test_parse_success_payload_prefers_structured_details"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the test_collect_latest_raw_results_keeps_latest_entry_per_task method in the SynthesisDepthTests class",
+        "target_file": "server/sample_repository/server/test_synthesis_depth.py",
+        "node_id": "server/sample_repository/server/test_synthesis_depth.py[27-37]:SynthesisDepthTests.test_collect_latest_raw_results_keeps_latest_entry_per_task"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How can we implement a function to keep track of the latest raw results per task",
+        "target_file": "server/sample_repository/server/test_synthesis_depth.py",
+        "node_id": "server/sample_repository/server/test_synthesis_depth.py[27-37]:SynthesisDepthTests.test_collect_latest_raw_results_keeps_latest_entry_per_task"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for ensuring that only the latest results are collected and stored for each task in our data processing pipeline",
+        "target_file": "server/sample_repository/server/test_synthesis_depth.py",
+        "node_id": "server/sample_repository/server/test_synthesis_depth.py[27-37]:SynthesisDepthTests.test_collect_latest_raw_results_keeps_latest_entry_per_task"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the run_agent function in server/sample_repository/server/test_phase1.py?",
+        "target_file": "server/sample_repository/server/test_phase1.py",
+        "node_id": "server/sample_repository/server/test_phase1.py[11-35]:run_agent"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system process user input and handle potential warnings during execution?",
+        "target_file": "server/sample_repository/server/test_phase1.py",
+        "node_id": "server/sample_repository/server/test_phase1.py[11-35]:run_agent"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for invoking the synapse graph and handling execution warnings in the system?",
+        "target_file": "server/sample_repository/server/test_phase1.py",
+        "node_id": "server/sample_repository/server/test_phase1.py[11-35]:run_agent"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the test_generation_loop function in server/sample_repository/server/test_phase1.py",
+        "target_file": "server/sample_repository/server/test_phase1.py",
+        "node_id": "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system generate and test a decision-based dag for a user's life goals",
+        "target_file": "server/sample_repository/server/test_phase1.py",
+        "node_id": "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for initializing and testing the SynapseAI phase 1 workflow",
+        "target_file": "server/sample_repository/server/test_phase1.py",
+        "node_id": "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the if __name__ == __main__ block in the test_phase1.py file",
+        "target_file": "server/sample_repository/server/test_phase1.py",
+        "node_id": "server/sample_repository/server/test_phase1.py[69-70]:__main__"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the application determine when to execute the test generation loop",
+        "target_file": "server/sample_repository/server/test_phase1.py",
+        "node_id": "server/sample_repository/server/test_phase1.py[69-70]:__main__"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for initiating the test generation process in the server",
+        "target_file": "server/sample_repository/server/test_phase1.py",
+        "node_id": "server/sample_repository/server/test_phase1.py[69-70]:__main__"
+    },
+    {
+        "queryType": "exact",
+        "query": "What does the build_initial_state function do in server/main.py",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[10-22]:build_initial_state"
+    },
+    {
+        "queryType": "semantic",
+        "query": "How do you initialize the state of a conversation in the application",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[10-22]:build_initial_state"
+    },
+    {
+        "queryType": "structural",
+        "query": "What component in the conversation workflow is responsible for setting up the starting point of a conversation",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[10-22]:build_initial_state"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the print_final_output function in main.py",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[84-90]:print_final_output"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system display the final result of a process in a formatted way",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[84-90]:print_final_output"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for rendering the final output of the server",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[84-90]:print_final_output"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the function signature of the print_dag function in main.py",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[93-97]:print_dag"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How can I pretty-print a dictionary representing a directed acyclic graph to the console",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[93-97]:print_dag"
+    },
+    {
+        "query_type": "structural",
+        "query": "Where is the component responsible for displaying the approved workflow configuration located",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[93-97]:print_dag"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the run function in the server sample repository main.py file?",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[111-132]:run"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system handle the execution of a graph based on a provided prompt and optional debug mode?",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[111-132]:run"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for initiating the execution of a synapse graph and handling its output in the server application?",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[111-132]:run"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the sanitize_identifier function in the csv_to_db module",
+        "target_file": "server/sample_repository/server/data/csv_to_db.py",
+        "node_id": "server/sample_repository/server/data/csv_to_db.py[23-32]:sanitize_identifier"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we convert a string to be a valid PostgreSQL identifier in our data import process",
+        "target_file": "server/sample_repository/server/data/csv_to_db.py",
+        "node_id": "server/sample_repository/server/data/csv_to_db.py[23-32]:sanitize_identifier"
+    },
+    {
+        "query_type": "structural",
+        "query": "In the data pipeline, what component is responsible for transforming input names to comply with PostgreSQL naming conventions",
+        "target_file": "server/sample_repository/server/data/csv_to_db.py",
+        "node_id": "server/sample_repository/server/data/csv_to_db.py[23-32]:sanitize_identifier"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the main entry point in the csv_to_db.py script and what function does it call?",
+        "target_file": "server/sample_repository/server/data/csv_to_db.py",
+        "node_id": "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How is data ingestion initiated in the application?",
+        "target_file": "server/sample_repository/server/data/csv_to_db.py",
+        "node_id": "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for kicking off the data ingestion pipeline when the application starts?",
+        "target_file": "server/sample_repository/server/data/csv_to_db.py",
+        "node_id": "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the download_all_specs function in generate_supabase_specs.py?",
+        "target_file": "server/sample_repository/server/data/generate_supabase_specs.py",
+        "node_id": "server/sample_repository/server/data/generate_supabase_specs.py[13-43]:download_all_specs"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do you implement automatic OpenAPI spec fetching from a Supabase instance with multiple schemas?",
+        "target_file": "server/sample_repository/server/data/generate_supabase_specs.py",
+        "node_id": "server/sample_repository/server/data/generate_supabase_specs.py[13-43]:download_all_specs"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for fetching and saving OpenAPI specifications for various database schemas in the data ingestion pipeline?",
+        "target_file": "server/sample_repository/server/data/generate_supabase_specs.py",
+        "node_id": "server/sample_repository/server/data/generate_supabase_specs.py[13-43]:download_all_specs"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the select_tool function in the tool_selector module?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system decide which tool to use for a given task based on a set of available tools and their descriptions?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for mapping tasks to the most suitable tools within the system?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the _generalize function in the tool_selector module",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do you simplify a task description to match available tools",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for generating a more general task description",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the function in tool_selector.py that returns the name of the first available tool as a last resort?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[216-218]:_fallback_tool"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we determine the default tool when all else fails in our system?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[216-218]:_fallback_tool"
+    },
+    {
+        "query_type": "structural",
+        "query": "In the server repository, which module is responsible for selecting a fallback tool when no other options are available?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[216-218]:_fallback_tool"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the _build_warning function in the tool_selector module of the server repository responsible for?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[221-234]:_build_warning"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system construct warnings when simplifying tasks and selecting appropriate tools?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[221-234]:_build_warning"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component within the server's tools module is responsible for generating warning metadata for task simplification?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[221-234]:_build_warning"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the _print_warning function in the tool_selector module?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[237-255]:_print_warning"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system notify users when it cannot find an exact tool match and has to simplify the task?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[237-255]:_print_warning"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for displaying warnings when tasks are simplified or skipped during tool selection?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[237-255]:_print_warning"
+    },
+    {
+        "query_type": "exact",
+        "query": "What function in the server/sample_repository/server/src/tools/search.py file is responsible for scraping a webpage and returning markdown content using the firecrawl_scrape function?",
+        "target_file": "server/sample_repository/server/src/tools/search.py",
+        "node_id": "server/sample_repository/server/src/tools/search.py[10-23]:firecrawl_scrape"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system retrieve and clean the full content of a webpage in markdown format?",
+        "target_file": "server/sample_repository/server/src/tools/search.py",
+        "node_id": "server/sample_repository/server/src/tools/search.py[10-23]:firecrawl_scrape"
+    },
+    {
+        "query_type": "structural",
+        "query": "Within the server sample repository, what tool is used to scrape webpages for markdown content in the src/tools/search.py module?",
+        "target_file": "server/sample_repository/server/src/tools/search.py",
+        "node_id": "server/sample_repository/server/src/tools/search.py[10-23]:firecrawl_scrape"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the get_search_tools function in the Tavily Search integration?",
+        "target_file": "server/sample_repository/server/src/tools/search.py",
+        "node_id": "server/sample_repository/server/src/tools/search.py[25-33]:get_search_tools"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How is real-time web data fetched and optimized for an AI model?",
+        "target_file": "server/sample_repository/server/src/tools/search.py",
+        "node_id": "server/sample_repository/server/src/tools/search.py[25-33]:get_search_tools"
+    },
+    {
+        "query_type": "structural",
+        "query": "What role does the search.py module play in the agent-optimized web intelligence system?",
+        "target_file": "server/sample_repository/server/src/tools/search.py",
+        "node_id": "server/sample_repository/server/src/tools/search.py[25-33]:get_search_tools"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the code for the arxiv_full_read_tool function in the ecosystem.py file?",
+        "target_file": "server/sample_repository/server/src/tools/ecosystem.py",
+        "node_id": "server/sample_repository/server/src/tools/ecosystem.py[41-55]:arxiv_full_read_tool"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do I retrieve the full text of a specific academic paper from Arxiv using its unique identifier?",
+        "target_file": "server/sample_repository/server/src/tools/ecosystem.py",
+        "node_id": "server/sample_repository/server/src/tools/ecosystem.py[41-55]:arxiv_full_read_tool"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component of the system is responsible for fetching and returning the content of academic papers from external repositories?",
+        "target_file": "server/sample_repository/server/src/tools/ecosystem.py",
+        "node_id": "server/sample_repository/server/src/tools/ecosystem.py[41-55]:arxiv_full_read_tool"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the get_research_tools function in the ecosystem module of the server codebase?",
+        "target_file": "server/sample_repository/server/src/tools/ecosystem.py",
+        "node_id": "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system aggregate and provide access to various academic research tools for retrieving information from sources like Wikipedia and Arxiv?",
+        "target_file": "server/sample_repository/server/src/tools/ecosystem.py",
+        "node_id": "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools"
+    },
+    {
+        "query_type": "structural",
+        "query": "Within the overall architecture of the research platform, what component is responsible for gathering and returning a collection of tools used for academic research purposes?",
+        "target_file": "server/sample_repository/server/src/tools/ecosystem.py",
+        "node_id": "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the test_tavily_tool function in the tools directory of the server repository?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[29-44]:test_tavily_tool"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do you test the integration of a web search API in a Python application using environment variables for authentication?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[29-44]:test_tavily_tool"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for verifying the functionality of external search tools in the server's test suite?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[29-44]:test_tavily_tool"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the test_wikipedia_and_arxiv_tools function in the test_tools module of the server repository?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How can I write tests for integrating Wikipedia and Arxiv research tools using a unified interface to invoke skimmer and deep read operations?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component in the server's tools directory is responsible for testing and validating the functionality of the research tools integration with external knowledge bases?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the test_openapi_tool function in server/sample_repository/server/src/tools/test_tools.py?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system validate the availability of OpenAPI tools and reports the outcome?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for testing and validating OpenAPI tools within the server repository?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the test_firecrawl_tool function in the test_tools.py file?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[108-116]:test_firecrawl_tool"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How can I test a web scraping tool to verify its functionality and save the results to a file?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[108-116]:test_firecrawl_tool"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for verifying the Firecrawl Scrape Tool's functionality within the server's testing framework?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[108-116]:test_firecrawl_tool"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the KeyPool.__init__ method in server/sample_repository/server/src/config/keypool.py",
+        "target_file": "server/sample_repository/server/src/config/keypool.py",
+        "node_id": "server/sample_repository/server/src/config/keypool.py[11-14]:KeyPool.__init__"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do you initialize a pool of keys with thread safety in the keypool module",
+        "target_file": "server/sample_repository/server/src/config/keypool.py",
+        "node_id": "server/sample_repository/server/src/config/keypool.py[11-14]:KeyPool.__init__"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for managing a list of keys in a thread-safe manner within the server configuration",
+        "target_file": "server/sample_repository/server/src/config/keypool.py",
+        "node_id": "server/sample_repository/server/src/config/keypool.py[11-14]:KeyPool.__init__"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the __len__ method in KeyPool class in server/sample_repository/server/src/config/keypool.py",
+        "target_file": "server/sample_repository/server/src/config/keypool.py",
+        "node_id": "server/sample_repository/server/src/config/keypool.py[22-23]:KeyPool.__len__"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do I determine the number of keys stored in a pool",
+        "target_file": "server/sample_repository/server/src/config/keypool.py",
+        "node_id": "server/sample_repository/server/src/config/keypool.py[22-23]:KeyPool.__len__"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for tracking the quantity of keys available in the server's key management system",
+        "target_file": "server/sample_repository/server/src/config/keypool.py",
+        "node_id": "server/sample_repository/server/src/config/keypool.py[22-23]:KeyPool.__len__"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the build_synapse_graph function in the workflow.py file",
+        "target_file": "server/sample_repository/server/src/graph/workflow.py",
+        "node_id": "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system construct and manage the workflow for data processing and task execution",
+        "target_file": "server/sample_repository/server/src/graph/workflow.py",
+        "node_id": "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for defining the state graph and node transitions in the workflow management system",
+        "target_file": "server/sample_repository/server/src/graph/workflow.py",
+        "node_id": "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph"
+    },
+    {
+        "query_type": "exact",
+        "query": "What does the reflect_on_execution function in reflector.py do?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/reflector.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system handle post-execution analysis of task results?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/reflector.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for generating a human-readable summary of task execution results in the workflow pipeline?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/reflector.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution"
+    },
+    {
+        "query_type": "exact",
+        "query": "What function generates a DAG using the Groq model and user input prompt?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/generator.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system create a directed acyclic graph based on user feedback and prompt input?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/generator.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag"
+    },
+    {
+        "query_type": "structural",
+        "query": "Where is the logic that creates the initial or updated workflow graph located within the system architecture?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/generator.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the _truncate_text function in the synthesizer module used for?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[132-135]:_truncate_text"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we shorten text strings to fit within a certain character limit while indicating truncation?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[132-135]:_truncate_text"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for handling text length limitations in our graph node system?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[132-135]:_truncate_text"
+    },
+    {
+        "query_type": "exact",
+        "query": "How does the check_for_cycles function in evaluator.py work?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/evaluator.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[8-35]:check_for_cycles"
+    },
+    {
+        "query_type": "semantic",
+        "query": "What algorithm can be used to detect circular dependencies between tasks in a workflow?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/evaluator.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[8-35]:check_for_cycles"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for validating the task dependency graph to prevent infinite loops in the system?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/evaluator.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[8-35]:check_for_cycles"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the if __name__ == __main__ block in server/sample_repository/server/test_tool_retry_fallback.py?",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[59-60]:__main__"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do you ensure that unit tests are run when a script is executed directly in Python?",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[59-60]:__main__"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for initiating the execution of unit tests in the server/sample_repository/server module?",
+        "target_file": "server/sample_repository/server/test_tool_retry_fallback.py",
+        "node_id": "server/sample_repository/server/test_tool_retry_fallback.py[59-60]:__main__"
+    },
+    {
+        "query_type": "exact",
+        "query": "What code runs when the test_synthesis_depth.py file is executed directly?",
+        "target_file": "server/sample_repository/server/test_synthesis_depth.py",
+        "node_id": "server/sample_repository/server/test_synthesis_depth.py[40-41]:__main__"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we initiate unit testing for our application from a specific module?",
+        "target_file": "server/sample_repository/server/test_synthesis_depth.py",
+        "node_id": "server/sample_repository/server/test_synthesis_depth.py[40-41]:__main__"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for triggering the main test suite in our server codebase?",
+        "target_file": "server/sample_repository/server/test_synthesis_depth.py",
+        "node_id": "server/sample_repository/server/test_synthesis_depth.py[40-41]:__main__"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the print_warnings function in server/main.py?",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[27-51]:print_warnings"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system handle and display warnings for tasks that require simplification due to the lack of appropriate tools?",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[27-51]:print_warnings"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for printing execution warnings and skipped tasks in the server's sample repository?",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[27-51]:print_warnings"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the print_scratchpad function in main.py",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[100-106]:print_scratchpad"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the application display a list of strings to the user in a readable format",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[100-106]:print_scratchpad"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for rendering the scratchpad output in the server",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[100-106]:print_scratchpad"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the if __name__ == __main__ block in server/sample_repository/server/main.py?",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[137-149]:__main__"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the application handle command line arguments for user input and debugging?",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[137-149]:__main__"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for parsing command line arguments and initiating the application run in the server repository?",
+        "target_file": "server/sample_repository/server/main.py",
+        "node_id": "server/sample_repository/server/main.py[137-149]:__main__"
+    },
+    {
+        "query_type": "exact",
+        "query": "What does the get_metadata function in csv_to_db.py do?",
+        "target_file": "server/sample_repository/server/data/csv_to_db.py",
+        "node_id": "server/sample_repository/server/data/csv_to_db.py[34-48]:get_metadata"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system extract metadata for applying database comments?",
+        "target_file": "server/sample_repository/server/data/csv_to_db.py",
+        "node_id": "server/sample_repository/server/data/csv_to_db.py[34-48]:get_metadata"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for retrieving JSON metadata for schema comments in the database setup process?",
+        "target_file": "server/sample_repository/server/data/csv_to_db.py",
+        "node_id": "server/sample_repository/server/data/csv_to_db.py[34-48]:get_metadata"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the run_ingestion_pipeline function in the csv_to_db module?",
+        "target_file": "server/sample_repository/server/data/csv_to_db.py",
+        "node_id": "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system ingest CSV files into a database, handling schema creation and table population?",
+        "target_file": "server/sample_repository/server/data/csv_to_db.py",
+        "node_id": "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for transferring data from CSV files to the Supabase database, and where is it located in the system architecture?",
+        "target_file": "server/sample_repository/server/data/csv_to_db.py",
+        "node_id": "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the __main__ function in the generate_supabase_specs.py file?",
+        "target_file": "server/sample_repository/server/data/generate_supabase_specs.py",
+        "node_id": "server/sample_repository/server/data/generate_supabase_specs.py[45-46]:__main__"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we automate the initial data download process in our supabase project?",
+        "target_file": "server/sample_repository/server/data/generate_supabase_specs.py",
+        "node_id": "server/sample_repository/server/data/generate_supabase_specs.py[45-46]:__main__"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for initiating the download of all specifications when the application starts?",
+        "target_file": "server/sample_repository/server/data/generate_supabase_specs.py",
+        "node_id": "server/sample_repository/server/data/generate_supabase_specs.py[45-46]:__main__"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the function name that returns all available tools in the server/sample_repository/server/src/tools/registry.py file?",
+        "target_file": "server/sample_repository/server/src/tools/registry.py",
+        "node_id": "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we retrieve a list of all tools available in the system for potential usage?",
+        "target_file": "server/sample_repository/server/src/tools/registry.py",
+        "node_id": "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for acting as the central registry for all available tools within our system's architecture?",
+        "target_file": "server/sample_repository/server/src/tools/registry.py",
+        "node_id": "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the function of the build_tool_manifest() function in registry.py?",
+        "target_file": "server/sample_repository/server/src/tools/registry.py",
+        "node_id": "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we generate a string listing all available tools with their descriptions?",
+        "target_file": "server/sample_repository/server/src/tools/registry.py",
+        "node_id": "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest"
+    },
+    {
+        "query_type": "structural",
+        "query": "Which component is responsible for formatting tool data into a string for injection into the generator prompt?",
+        "target_file": "server/sample_repository/server/src/tools/registry.py",
+        "node_id": "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the _score_tools function in the tool_selector module?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system determine the most suitable tool for a given task description based on a dictionary of available tools?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for interacting with the Groq model to select the best tool and generate its input based on a task description and available tools?",
+        "target_file": "server/sample_repository/server/src/tools/tool_selector.py",
+        "node_id": "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose and implementation of the get_openapi_tools function in the openapi_parser module?",
+        "target_file": "server/sample_repository/server/src/tools/openapi_parser.py",
+        "node_id": "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How can we dynamically generate a combined list of tools from multiple OpenAPI specifications using a large language model?",
+        "target_file": "server/sample_repository/server/src/tools/openapi_parser.py",
+        "node_id": "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for reading OpenAPI specifications and generating a list of tools for use in the application?",
+        "target_file": "server/sample_repository/server/src/tools/openapi_parser.py",
+        "node_id": "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose and implementation of the wikipedia_full_read_tool function?",
+        "target_file": "server/sample_repository/server/src/tools/ecosystem.py",
+        "node_id": "server/sample_repository/server/src/tools/ecosystem.py[24-39]:wikipedia_full_read_tool"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How can I retrieve the full text of a Wikipedia article in my application?",
+        "target_file": "server/sample_repository/server/src/tools/ecosystem.py",
+        "node_id": "server/sample_repository/server/src/tools/ecosystem.py[24-39]:wikipedia_full_read_tool"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for fetching Wikipedia article content within our server's tools ecosystem?",
+        "target_file": "server/sample_repository/server/src/tools/ecosystem.py",
+        "node_id": "server/sample_repository/server/src/tools/ecosystem.py[24-39]:wikipedia_full_read_tool"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the aviationstack_flights_tool function in the ecosystem.py file?",
+        "target_file": "server/sample_repository/server/src/tools/ecosystem.py",
+        "node_id": "server/sample_repository/server/src/tools/ecosystem.py[57-187]:aviationstack_flights_tool"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How can I retrieve structured flight data such as live flight status, departure and arrival airports, or scheduled/estimated times from an external API?",
+        "target_file": "server/sample_repository/server/src/tools/ecosystem.py",
+        "node_id": "server/sample_repository/server/src/tools/ecosystem.py[57-187]:aviationstack_flights_tool"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component of the system is responsible for querying external flight data APIs and returning the results in a structured format?",
+        "target_file": "server/sample_repository/server/src/tools/ecosystem.py",
+        "node_id": "server/sample_repository/server/src/tools/ecosystem.py[57-187]:aviationstack_flights_tool"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the save_to_file function in the test_tools module?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[15-27]:save_to_file"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How can we persist large text outputs to disk for later analysis?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[15-27]:save_to_file"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for storing test result data in the test_results directory?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[15-27]:save_to_file"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the if __name__ == '__main__': block in the test_tools.py file?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[118-122]:__main__"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we typically structure the main entry point for a Python script to ensure it runs tests conditionally?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[118-122]:__main__"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for executing tests for various tools like firecrawl when the test_tools script is run directly?",
+        "target_file": "server/sample_repository/server/src/tools/test_tools.py",
+        "node_id": "server/sample_repository/server/src/tools/test_tools.py[118-122]:__main__"
+    },
+    {
+        "query_type": "exact",
+        "query": "How is the KeyPool.next method in server/sample_repository/server/src/config/keypool.py implemented?",
+        "target_file": "server/sample_repository/server/src/config/keypool.py",
+        "node_id": "server/sample_repository/server/src/config/keypool.py[16-20]:KeyPool.next"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system handle the retrieval of the next key from a pool of available keys in a thread-safe manner?",
+        "target_file": "server/sample_repository/server/src/config/keypool.py",
+        "node_id": "server/sample_repository/server/src/config/keypool.py[16-20]:KeyPool.next"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for managing and cycling through a set of keys in the server configuration?",
+        "target_file": "server/sample_repository/server/src/config/keypool.py",
+        "node_id": "server/sample_repository/server/src/config/keypool.py[16-20]:KeyPool.next"
+    },
+    {
+        "query_type": "exact",
+        "query": "What does the parse_scratchpad function in the scratchpad.py file do?",
+        "target_file": "server/sample_repository/server/src/graph/scratchpad.py",
+        "node_id": "server/sample_repository/server/src/graph/scratchpad.py[6-25]:parse_scratchpad"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we differentiate between successful and failed task IDs when parsing a list of task entries?",
+        "target_file": "server/sample_repository/server/src/graph/scratchpad.py",
+        "node_id": "server/sample_repository/server/src/graph/scratchpad.py[6-25]:parse_scratchpad"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for processing the scratchpad data to extract completed and failed task IDs in the server application?",
+        "target_file": "server/sample_repository/server/src/graph/scratchpad.py",
+        "node_id": "server/sample_repository/server/src/graph/scratchpad.py[6-25]:parse_scratchpad"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the get_exhausted_task_ids function in server/sample_repository/server/src/graph/scratchpad.py?",
+        "target_file": "server/sample_repository/server/src/graph/scratchpad.py",
+        "node_id": "server/sample_repository/server/src/graph/scratchpad.py[28-48]:get_exhausted_task_ids"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we determine which tasks have failed beyond a certain threshold and should be considered permanently failed?",
+        "target_file": "server/sample_repository/server/src/graph/scratchpad.py",
+        "node_id": "server/sample_repository/server/src/graph/scratchpad.py[28-48]:get_exhausted_task_ids"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for identifying and returning task IDs that have exceeded the allowed number of retries in the task management system?",
+        "target_file": "server/sample_repository/server/src/graph/scratchpad.py",
+        "node_id": "server/sample_repository/server/src/graph/scratchpad.py[28-48]:get_exhausted_task_ids"
+    },
+    {
+        "query_type": "exact",
+        "query": "How does the get_attempted_tools function in scratchpad.py extract unique tool names from a given scratchpad and task_id?",
+        "target_file": "server/sample_repository/server/src/graph/scratchpad.py",
+        "node_id": "server/sample_repository/server/src/graph/scratchpad.py[51-70]:get_attempted_tools"
+    },
+    {
+        "query_type": "semantic",
+        "query": "What approach should be used to retrieve an ordered list of distinct tool names that have been attempted for a specific task in a list of task attempts?",
+        "target_file": "server/sample_repository/server/src/graph/scratchpad.py",
+        "node_id": "server/sample_repository/server/src/graph/scratchpad.py[51-70]:get_attempted_tools"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component in the graph module is responsible for parsing and filtering the scratchpad to determine the sequence of tools that have been attempted for a task?",
+        "target_file": "server/sample_repository/server/src/graph/scratchpad.py",
+        "node_id": "server/sample_repository/server/src/graph/scratchpad.py[51-70]:get_attempted_tools"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the function responsible for gathering the final output in the synthesize_output method in the server/sample_repository/server/src/graph/nodes/synthesizer.py file?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system transform raw research results into a comprehensive and authoritative response that directly answers a user's question?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for processing the state and generating the final output in the graph nodes of the server?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the _parse_success_payload function in synthesizer.py?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[94-113]:_parse_success_payload"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system handle JSON payload parsing when integrating with external data sources?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[94-113]:_parse_success_payload"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for normalizing and extracting key information from API response payloads within the graph nodes module?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[94-113]:_parse_success_payload"
+    },
+    {
+        "query_type": "exact",
+        "query": "What does the _collect_latest_raw_results function in server/sample_repository/server/src/graph/nodes/synthesizer.py do?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[116-129]:_collect_latest_raw_results"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we extract key-value pairs from a list of strings that start with 'RAW_RESULT|' and contain at least two '|' characters?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[116-129]:_collect_latest_raw_results"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for processing scratchpad data and collecting raw results in the graph nodes module of our server?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/synthesizer.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[116-129]:_collect_latest_raw_results"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the dfs function in the evaluator module?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/evaluator.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[17-29]:dfs"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we detect cycles in a graph using a recursive approach?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/evaluator.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[17-29]:dfs"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for performing a depth-first search traversal in the graph nodes module?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/evaluator.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[17-29]:dfs"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose and implementation of the evaluate_dag function in the evaluator module of the server repository?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/evaluator.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system evaluate the quality of a directed acyclic graph based on a set of predefined metrics and a custom AI model?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/evaluator.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for assessing the validity and relevance of a proposed workflow or data processing pipeline within the overall system architecture?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/evaluator.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the _get_pending_task function in the executor module of our server's graph nodes package?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/executor.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/executor.py[14-25]:_get_pending_task"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we determine which task should be executed next based on the current state of the workflow and task dependencies?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/executor.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/executor.py[14-25]:_get_pending_task"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for identifying and returning the next task that is ready to be processed within our workflow DAG?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/executor.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/executor.py[14-25]:_get_pending_task"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the execute_task function in executor.py?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/executor.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system determine which tool to use for a given task and what data to pass to it?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/executor.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for running tasks in the workflow and tracking their progress?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/executor.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the _compile_final_output function in the executor module?",
+        "target_file": "server/sample_repository/server/src/graph/nodes/executor.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/executor.py[85-87]:_compile_final_output"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system generate a summary of successful execution outputs",
+        "target_file": "server/sample_repository/server/src/graph/nodes/executor.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/executor.py[85-87]:_compile_final_output"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for formatting the final output after execution in the graph nodes module",
+        "target_file": "server/sample_repository/server/src/graph/nodes/executor.py",
+        "node_id": "server/sample_repository/server/src/graph/nodes/executor.py[85-87]:_compile_final_output"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the route_evaluation function in the routers.py file?",
+        "target_file": "server/sample_repository/server/src/graph/edges/routers.py",
+        "node_id": "server/sample_repository/server/src/graph/edges/routers.py[10-22]:route_evaluation"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system determine whether to proceed with execution or retry based on a score and loop count?",
+        "target_file": "server/sample_repository/server/src/graph/edges/routers.py",
+        "node_id": "server/sample_repository/server/src/graph/edges/routers.py[10-22]:route_evaluation"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component in the system is responsible for evaluating the state of a directed acyclic graph and deciding the next course of action?",
+        "target_file": "server/sample_repository/server/src/graph/edges/routers.py",
+        "node_id": "server/sample_repository/server/src/graph/edges/routers.py[10-22]:route_evaluation"
+    },
+    {
+        "query_type": "exact",
+        "query": "What does the route_execution function in routers.py do?",
+        "target_file": "server/sample_repository/server/src/graph/edges/routers.py",
+        "node_id": "server/sample_repository/server/src/graph/edges/routers.py[25-75]:route_execution"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the system determine whether to continue, retry, or stop execution based on task status and history?",
+        "target_file": "server/sample_repository/server/src/graph/edges/routers.py",
+        "node_id": "server/sample_repository/server/src/graph/edges/routers.py[25-75]:route_execution"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for managing the workflow and decision-making process after each task execution in the system?",
+        "target_file": "server/sample_repository/server/src/graph/edges/routers.py",
+        "node_id": "server/sample_repository/server/src/graph/edges/routers.py[25-75]:route_execution"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the health_check function in server.py?",
+        "target_file": "server/sample_repository/server/src/api/server.py",
+        "node_id": "server/sample_repository/server/src/api/server.py[29-31]:health_check"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the application indicate its current status to external callers?",
+        "target_file": "server/sample_repository/server/src/api/server.py",
+        "node_id": "server/sample_repository/server/src/api/server.py[29-31]:health_check"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for handling the /health endpoint in the API?",
+        "target_file": "server/sample_repository/server/src/api/server.py",
+        "node_id": "server/sample_repository/server/src/api/server.py[29-31]:health_check"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the run_prompt function in the server.py file?",
+        "target_file": "server/sample_repository/server/src/api/server.py",
+        "node_id": "server/sample_repository/server/src/api/server.py[34-44]:run_prompt"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the server handle user prompts and return responses?",
+        "target_file": "server/sample_repository/server/src/api/server.py",
+        "node_id": "server/sample_repository/server/src/api/server.py[34-44]:run_prompt"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for processing and responding to POST requests to the /run endpoint?",
+        "target_file": "server/sample_repository/server/src/api/server.py",
+        "node_id": "server/sample_repository/server/src/api/server.py[34-44]:run_prompt"
+    },
+    {
+        "query_type": "exact",
+        "query": "How does the renderMarkdown function in Dashboard.jsx handle fenced code blocks?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[6-133]:renderMarkdown"
+    },
+    {
+        "query_type": "semantic",
+        "query": "What logic is used to parse and render markdown syntax in a React application?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[6-133]:renderMarkdown"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for rendering markdown text in the client-side dashboard of the sample repository application?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[6-133]:renderMarkdown"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the parseInline function in the Dashboard.jsx file?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[13-30]:parseInline"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How can I parse a string to apply formatting such as bold, italic, and strikethrough in a React application?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[13-30]:parseInline"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for rendering formatted text in the client-side dashboard of the application?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[13-30]:parseInline"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the TypingIndicator function in Dashboard.jsx?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[136-144]:TypingIndicator"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we visually indicate that a user is typing in the chat interface?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[136-144]:TypingIndicator"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for displaying the typing status of the assistant in the chat window?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[136-144]:TypingIndicator"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the useTypewriter function in the Dashboard.jsx file?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[147-174]:useTypewriter"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How can I create a typewriter effect in a React application that displays text based on a specific speed and activation state?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[147-174]:useTypewriter"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for managing the dynamic display of text in the client-side dashboard of the application?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[147-174]:useTypewriter"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the tick function in Dashboard.jsx?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[158-168]:tick"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the typewriter effect work in the client-side code?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[158-168]:tick"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for rendering the textual content in the client-side dashboard?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[158-168]:tick"
+    },
+    {
+        "query_type": "exact",
+        "query": "How is the AssistantBubble component implemented in the client codebase?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[177-194]:AssistantBubble"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we render dynamic markdown content with a typewriter effect in our React application?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[177-194]:AssistantBubble"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for displaying the SYNAPSE chat bubble in the dashboard interface?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[177-194]:AssistantBubble"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the normalizeDagTasks function in Dashboard.jsx?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[204-230]:normalizeDagTasks"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we handle inconsistent data structures when processing workflow tasks in our application?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[204-230]:normalizeDagTasks"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for transforming and standardizing workflow data in our client-side dashboard?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[204-230]:normalizeDagTasks"
+    },
+    {
+        "query_type": "exact",
+        "query": "How does the buildDagLayout function in Dashboard.jsx construct and position tasks in a DAG layout?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[232-326]:buildDagLayout"
+    },
+    {
+        "query_type": "semantic",
+        "query": "What logic is used to order and position nodes in a directed acyclic graph layout to minimize overlap and optimize visual clarity?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[232-326]:buildDagLayout"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for generating the layout of tasks in the dashboard, including their positions and ordering?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[232-326]:buildDagLayout"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the DagGraph function in Dashboard.jsx?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[329-382]:DagGraph"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we visualize and render Directed Acyclic Graphs in the application's dashboard?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[329-382]:DagGraph"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for displaying the execution graph of DAG tasks in the client-side dashboard?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[329-382]:DagGraph"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the ChatArea function in the Dashboard.jsx file?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[385-416]:ChatArea"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How is the chat interface rendered when there are no messages and the system is not loading?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[385-416]:ChatArea"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for displaying the conversation history and handling user input in the application?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[385-416]:ChatArea"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the Dashboard function in the client code?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[419-927]:Dashboard"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How is the user interface for a conversational AI model designed to handle user input and display responses?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[419-927]:Dashboard"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for rendering the chat interface and handling user interactions in the overall application architecture?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[419-927]:Dashboard"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the load function in Dashboard.jsx?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[440-456]:load"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the application retrieve and display a user's chat history?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[440-456]:load"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for initializing and populating the chat history in the client-side application?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[440-456]:load"
+    },
+    {
+        "query_type": "exact",
+        "query": "What does the openHistoryChat function in Dashboard.jsx do?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[461-471]:openHistoryChat"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How is a chat history initialized with user and assistant messages in the client-side code?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[461-471]:openHistoryChat"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for handling the initialization of a chat session in the client-side dashboard?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[461-471]:openHistoryChat"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the handleNewChat function in Dashboard.jsx?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[473-476]:handleNewChat"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the application reset the chat interface and focus on the text area after a new chat is initiated?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[473-476]:handleNewChat"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for managing the initialization of new chats within the client-side dashboard?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[473-476]:handleNewChat"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the handleDelete function in the Dashboard.jsx file?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[478-486]:handleDelete"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the application delete a specific chat history entry from the database and update the UI accordingly?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[478-486]:handleDelete"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for handling the deletion of chat history entries in the client-side application?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[478-486]:handleDelete"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the handleSubmit function in the Dashboard.jsx file?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the application handle user input and send it to the backend for processing?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for managing the chat interaction and handling user input in the application?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the function of the handleKeyDown function in the Dashboard.jsx file?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[526-526]:handleKeyDown"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the application prevent the default form submission when the enter key is pressed without the shift key being held down?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[526-526]:handleKeyDown"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component within the client-side codebase handles keydown events to trigger form submission?",
+        "target_file": "server/sample_repository/client/src/Dashboard.jsx",
+        "node_id": "server/sample_repository/client/src/Dashboard.jsx[526-526]:handleKeyDown"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the App function in the App.jsx file?",
+        "target_file": "server/sample_repository/client/src/App.jsx",
+        "node_id": "server/sample_repository/client/src/App.jsx[6-29]:App"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the application handle user authentication and routing based on the user's session?",
+        "target_file": "server/sample_repository/client/src/App.jsx",
+        "node_id": "server/sample_repository/client/src/App.jsx[6-29]:App"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for rendering the main application interface and determining whether to display the dashboard or landing page?",
+        "target_file": "server/sample_repository/client/src/App.jsx",
+        "node_id": "server/sample_repository/client/src/App.jsx[6-29]:App"
+    },
+    {
+        "query_type": "exact",
+        "query": "What does the DAGVisualization component do in the LandingPage.jsx file?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[8-83]:DAGVisualization"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How is the animation of nodes and edges implemented in the system to display a directed acyclic graph?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[8-83]:DAGVisualization"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for rendering the graphical representation of the workflow in the client-side application?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[8-83]:DAGVisualization"
+    },
+    {
+        "query_type": "exact",
+        "query": "What does the getNodeCenter function in LandingPage.jsx do?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[35-39]:getNodeCenter"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we calculate the coordinates of a node based on its relative position?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[35-39]:getNodeCenter"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for converting node positions to absolute coordinates in the client application?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[35-39]:getNodeCenter"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the GoogleSignInButton component in the LandingPage.jsx file?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[88-135]:GoogleSignInButton"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the application handle user authentication with Google using an OAuth flow?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[88-135]:GoogleSignInButton"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for rendering the Google sign-in button and handling the authentication workflow in the client-side application?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[88-135]:GoogleSignInButton"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the handleSignIn function in LandingPage.jsx?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[92-108]:handleSignIn"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we handle user authentication with Google OAuth in our application?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[92-108]:handleSignIn"
+    },
+    {
+        "query_type": "structural",
+        "query": "Which component is responsible for handling the sign-in functionality with external authentication providers in our client-side code?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[92-108]:handleSignIn"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the UserGreeting component in the LandingPage.jsx file?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[140-165]:UserGreeting"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do we display a personalized greeting to a user, including their name and avatar, in our application?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[140-165]:UserGreeting"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for rendering the user's profile information and sign-out button in the client-side application?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[140-165]:UserGreeting"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the implementation of the LandingPage component in the client/src directory?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the application handle user authentication and rendering of the landing page?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for rendering the main entry point of the application's UI?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the code for the handleSignOut function in LandingPage.jsx?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[274-277]:handleSignOut"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How do I implement a sign out feature that updates user state after authentication?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[274-277]:handleSignOut"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for handling sign out logic in the client-side application?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[274-277]:handleSignOut"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the function name responsible for drawing particles and lines between them in the LandingPage.jsx file?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[296-323]:draw"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the animation of particles moving and connecting to each other when close enough get implemented in the code?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[296-323]:draw"
+    },
+    {
+        "query_type": "structural",
+        "query": "What component is responsible for continuously updating the visual representation of the particle system in the client-side application?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[296-323]:draw"
+    },
+    {
+        "query_type": "exact",
+        "query": "What is the purpose of the resize function in LandingPage.jsx?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[327-330]:resize"
+    },
+    {
+        "query_type": "semantic",
+        "query": "How does the application handle window size changes to update the canvas dimensions?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[327-330]:resize"
+    },
+    {
+        "query_type": "structural",
+        "query": "Which component is responsible for adjusting the canvas size based on the client's window dimensions?",
+        "target_file": "server/sample_repository/client/src/LandingPage.jsx",
+        "node_id": "server/sample_repository/client/src/LandingPage.jsx[327-330]:resize"
+    }
+]
