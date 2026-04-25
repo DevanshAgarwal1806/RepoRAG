@@ -1,10 +1,17 @@
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from typing import Any
 
-_model = SentenceTransformer(
-    'jinaai/jina-embeddings-v2-base-code',
-    trust_remote_code=True
-)
+MODEL_NAME = "jinaai/jina-embeddings-v2-base-code"
+_model: Any | None = None
+
+
+def get_model() -> Any:
+    global _model
+    if _model is None:
+        from sentence_transformers import SentenceTransformer
+
+        _model = SentenceTransformer(MODEL_NAME, trust_remote_code=True)
+    return _model
 
 def cosine_similarity(vec1: list[float], vec2: list[float]) -> float:
     """Calculates the mathematical closeness of two vectors."""
@@ -17,7 +24,7 @@ def get_dense_rankings(user_query: str, embedded_corpus: list[dict]) -> list[tup
     Returns a list of tuples: (doc_id, score, rank)
     """
     # 1. Turn the user's query into a vector
-    query_vector = _model.encode(
+    query_vector = get_model().encode(
         [user_query],
         normalize_embeddings=True
     )[0].tolist()
@@ -26,7 +33,13 @@ def get_dense_rankings(user_query: str, embedded_corpus: list[dict]) -> list[tup
     
     # 2. Compare the query vector to every function's vector
     for doc in embedded_corpus:
-        score = cosine_similarity(query_vector, doc["embedding"])
+        embedding = doc.get("embedding")
+        if not isinstance(embedding, list):
+            raise ValueError(
+                f"Embedding for {doc.get('id', '<unknown>')} is not a vector. "
+                "Regenerate embeddings before dense retrieval."
+            )
+        score = cosine_similarity(query_vector, embedding)
         scores.append({"id": doc["id"], "score": score})
         
     # 3. Sort descending based on score

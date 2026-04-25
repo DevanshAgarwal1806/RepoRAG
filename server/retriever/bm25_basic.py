@@ -43,11 +43,8 @@ def bm25_search(query: str, corpus: list[dict], top_k: int = 3) -> list[dict]:
     # Initialize BM25
     bm25 = BM25Okapi(tokenized_corpus)
     
-    # Expand the query to bridge the semantic gap
-    expanded_query = expand_query(query)
-    
     # Tokenize the expanded query
-    tokenized_query = tokenize_code(expanded_query)
+    tokenized_query = tokenize_code(query)
     
     # Get BM25 scores
     scores = bm25.get_scores(tokenized_query)
@@ -56,7 +53,7 @@ def bm25_search(query: str, corpus: list[dict], top_k: int = 3) -> list[dict]:
     results = sorted(zip(scores, corpus), key=lambda x: x[0], reverse=True)
     
     # Return top_k results
-    return [doc for score, doc in results[:top_k]]
+    return [(doc, score) for score, doc in results[:top_k]]
 
 # 3. Main Search Pipeline
 if __name__ == "__main__":
@@ -72,10 +69,13 @@ if __name__ == "__main__":
     user_query = "how to connect to the database"
     print(f"Original Query : {user_query}")
     
+    # 2. Expand the query using an LLM (optional but can boost recall)
+    expanded_query = expand_query(user_query)
+    
     # 2. Perform BM25 search
-    results = bm25_search(user_query, corpus, top_k=3)
+    results = bm25_search(expanded_query, corpus, top_k=3)
     
     print("--- Top Ranked Search Results ---")
     # Display the top 3 results (Recall@3)
-    for rank, doc in enumerate(results, start=1):
-        print(f"Rank {rank} | Function: {doc['id']}")
+    for rank, (doc, score) in enumerate(results, start=1):
+        print(f"Rank {rank} | Function: {doc['id']} | Score: {score}")

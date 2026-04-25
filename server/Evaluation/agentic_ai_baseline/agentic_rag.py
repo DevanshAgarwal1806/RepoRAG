@@ -20,7 +20,7 @@ from retriever.bm25_basic import tokenize_code
 from retriever.dense_retrieval import get_dense_rankings
 from retriever.query_expansion import expand_query
 from retriever.graph_context import load_data, get_neighborhood
-from hybrid_retrieval import calculate_rrf
+from retriever.hybrid_retrieval import calculate_rrf
 
 MAX_STEPS = 5 # max agent iterations before forcing generation
 TOP_K = 5 # results returned per hybrid_search call

@@ -84,7 +84,7 @@ def embed_functions(
             # If it was only 1 chunk, it's already normalized
             combined_vec = chunk_vecs[0]
 
-        all_embeddings.extend(combined_vec.tolist())
+        all_embeddings.append(combined_vec.tolist())
         
     # Create output dictionary
     output: List[dict] = []

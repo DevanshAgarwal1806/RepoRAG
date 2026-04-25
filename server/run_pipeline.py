@@ -2,10 +2,15 @@ import argparse
 import os
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 from pathlib import Path
+import sys
 
+SERVER_DIR = Path(__file__).resolve().parent
+if str(SERVER_DIR) not in sys.path:
+    sys.path.insert(0, str(SERVER_DIR))
+
+from indexer_pipeline import run_indexer_pipeline
 from retriever.generator import generate_rag_answer
-from server.indexer_pipeline import run_indexer_pipeline
-from server.hybrid_retrieval import run_hybrid_retrieval
+from retriever.hybrid_retrieval import run_hybrid_retrieval
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run complete RepoRAG pipeline: indexing, retrieval, and generation")

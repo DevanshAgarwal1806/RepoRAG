@@ -1,8 +1,8 @@
 import json
 import time
-import google.generativeai as genai
 import os
 from dotenv import load_dotenv
+import google.generativeai as genai
 
 load_dotenv()  # Load environment variables from .env file
 

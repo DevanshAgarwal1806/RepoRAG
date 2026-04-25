@@ -8,12 +8,15 @@ import networkx as nx
 from dotenv import load_dotenv
 from openai import OpenAI
 
-load_dotenv()  # Load environment variables from .env file (only once)
-
 BASELINE_DIR = Path(__file__).resolve().parent
 SERVER_DIR = BASELINE_DIR.parent.parent
 if str(SERVER_DIR) not in sys.path:
     sys.path.insert(0, str(SERVER_DIR))
+    
+for candidate in [SERVER_DIR / ".env"]:
+    if candidate.exists():
+        load_dotenv(dotenv_path=candidate)
+        break
 
 client = OpenAI(
     api_key=os.getenv("GROQ_API_KEY2"),
@@ -37,7 +40,7 @@ def extract_neighborhood_context(
     of the functions it calls to build a multi-hop context payload.
     """
     if not G.has_node(root_node_id):
-        return ""
+        return None, 0, None
 
     # 1. Grab the root node's data
     root_data = G.nodes[root_node_id]
@@ -48,6 +51,7 @@ def extract_neighborhood_context(
             "name": root_data.get("name"),
             "file_path": root_data.get("file"),
             "source_code": root_data.get("source"),
+            "id": root_node_id
         }
     ]
 
@@ -66,7 +70,7 @@ def extract_neighborhood_context(
     )
     
     if (len(internal_neighbors[:max_neighbors]) == 0):
-        return None, 0
+        return None, 0, None
 
     for neighbor_id in internal_neighbors[:max_neighbors]:
         n_data = G.nodes[neighbor_id]
@@ -78,6 +82,7 @@ def extract_neighborhood_context(
                 "file_path": n_data.get("file"),
                 "source_code": n_data.get("source"),
                 "method": n_data.get("is_method", False),
+                "id": neighbor_id
             }
         )
 
@@ -87,12 +92,13 @@ def extract_neighborhood_context(
         payload += "==========\n"
         payload += f"Role: {node['role']}\n"
         payload += f"File: {node['file_path']}\n"
+        payload += f"Function ID: {node.get('id', 'N/A')}\n"
         payload += f"Function/Class Name: {node['name']}\n"
         payload += f"Is Method: {node.get('method', False)}\n"
         payload += f"Code:\n{node['source_code']}\n"
         payload += "==========\n\n"
 
-    return payload, len(context_nodes)
+    return payload, len(context_nodes), context_nodes
 
 
 def build_multi_hop_ground_truth(
@@ -136,7 +142,7 @@ def build_multi_hop_ground_truth(
         node_name = G.nodes[root_id].get("name", root_id)
         print(f"[{idx + 1}/{len(roots_to_process)}] Generating queries for: {node_name}")
 
-        neighborhood_payload, num_context_nodes = extract_neighborhood_context(
+        neighborhood_payload, num_context_nodes, context_nodes = extract_neighborhood_context(
             G, root_id, max_neighbors=max_neighbors
         )
         
@@ -156,14 +162,24 @@ def build_multi_hop_ground_truth(
         {neighborhood_payload}
 
         Output your response strictly as a JSON object with a single key named "queries".
-        The value must be the array of your generated questions.
+        The value must be an array of question objects. Each object in "required_chunks" must include
+        the fully qualified function name and its file path exactly as shown in the code neighborhood above.
         {{
-          "queries": [
+        "queries": [
             {{
-              "query": "<The complex multi-hop question>",
-              "required_files": ["<file_path_1>", "<file_path_2>", ...]
+            "query": "<The complex multi-hop question>",
+            "required_chunks": [
+                {{
+                "function_name": "<Exact_Function_Name_1>",
+                "file_path": "<Exact_File_Path_1>"
+                }},
+                {{
+                "function_name": "<Exact_Function_Name_2>",
+                "file_path": "<Exact_File_Path_2>"
+                }}
+            ]
             }}
-          ]
+        ]
         }}
         """
 
@@ -215,11 +231,31 @@ def build_multi_hop_ground_truth(
                 # FIX: deduplicate required_files per query item
                 for item in extracted_array:
                     item["root_id"] = root_id
-                    if "required_files" in item and isinstance(
-                        item["required_files"], list
-                    ):
-                        item["required_files"] = list(set(item["required_files"]))
-
+                    if "required_chunks" in item and isinstance(item["required_chunks"], list):
+                        seen = set()
+                        unique_chunks = []
+                        for chunk in item["required_chunks"]:
+                            identifier = (chunk.get("function_name"), chunk.get("file_path"))
+                            if identifier not in seen:
+                                seen.add(identifier)
+                                unique_chunks.append(chunk)
+                        item["required_chunks"] = unique_chunks
+                    
+                to_add = []
+                for idx, query in enumerate(extracted_array):
+                    for chunk in query.get("required_chunks", []):
+                        for nodes in context_nodes:
+                            if nodes["file_path"] == chunk["file_path"] and nodes["name"] == chunk["function_name"]:
+                                query.setdefault("required_functions", []).append(
+                                    nodes.get("id", "N/A")
+                                )
+                                break
+                    query.pop("required_chunks", None)  # Remove the original required_chunks key
+                    if len(query.get("required_functions", [])) != 0:
+                        to_add.append(idx)
+                        
+                # ground_truth_dataset.extend([extracted_array[i] for i in to_add])
+                
                 ground_truth_dataset.extend(extracted_array)
 
                 # 6. Persist to disk after every successful root

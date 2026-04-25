@@ -35,8 +35,8 @@ COMP_DIR   = Path(__file__).resolve().parent
 SERVER_DIR = COMP_DIR.parent.parent          # server/
 sys.path.insert(0, str(SERVER_DIR))
 
-from Evaluation.llm_as_judge import evaluate_pipeline_results, calculate_average_scores
-from Evaluation.Agentic_AI_Baseline.agentic_rag import run_agentic_rag  # noqa (renamed below)
+from evaluation.llm_as_judge import evaluate_pipeline_results, calculate_average_scores
+from evaluation.agentic_ai_baseline.agentic_rag import run_agentic_rag  # noqa (renamed below)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -48,7 +48,7 @@ def run_your_system(query: str, output_dir: Path) -> dict:
     Wraps your existing run_pipeline.py logic so it can be called per-query.
     Returns { query, retrieved_context, generated_answer }.
     """
-    from hybrid_retrieval import run_hybrid_retrieval
+    from retriever.hybrid_retrieval import run_hybrid_retrieval
     from retriever.generator import generate_rag_answer
 
     run_hybrid_retrieval(output_dir, query)          # writes final_llm_payload.md
@@ -106,7 +106,7 @@ def batch_agentic(
     query_key: str = "query",
 ):
     """Thin wrapper around agentic_rag.run_batch."""
-    from Evaluation.Agentic_AI_Baseline import agentic_rag
+    from evaluation.agentic_ai_baseline import agentic_rag
     agentic_rag.run_batch(ground_truth_path, output_dir, results_path, query_key)
 
 
@@ -223,7 +223,7 @@ if __name__ == "__main__":
             batch_your_system(args.ground_truth, args.output, args.your_system, args.query_key)
         if args.only != "yours":
             print("\n── Running Agentic RAG baseline ─────────────────")
-            from Evaluation.Agentic_AI_Baseline import agentic_rag
+            from evaluation.agentic_ai_baseline import agentic_rag
             agentic_rag.run_batch(args.ground_truth, args.output, args.baseline, args.query_key)
 
     elif args.cmd == "judge":

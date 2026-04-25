@@ -1,600 +1,656 @@
 [
     {
-        "query": "What are the conditions under which a task in the DAG is considered pending and how does the scratchpad influence this decision, in conjunction with the task's dependencies?",
-        "required_files": [
-            "server/sample_repository/server/test_tool_retry_fallback.py",
-            "server/sample_repository/server/src/graph/nodes/executor.py"
-        ],
-        "root_id": "server/sample_repository/server/test_tool_retry_fallback.py[19-33]:ToolRetryFallbackTests.test_failed_task_is_retried_until_exhausted"
+        "query": "What are the conditions under which a task is considered pending and can be retrieved using the _get_pending_task function, and how does the ToolRetryFallbackTests class utilize this function to test task retry fallback behavior?",
+        "root_id": "server/sample_repository/server/test_tool_retry_fallback.py[19-33]:ToolRetryFallbackTests.test_failed_task_is_retried_until_exhausted",
+        "required_functions": [
+            "server/sample_repository/server/test_tool_retry_fallback.py[19-33]:ToolRetryFallbackTests.test_failed_task_is_retried_until_exhausted",
+            "server/sample_repository/server/src/graph/nodes/executor.py[14-25]:_get_pending_task"
+        ]
     },
     {
-        "query": "Given a DAG with multiple tasks and their respective dependencies, how does the system determine the next task to be executed when some tasks have failed and have been retried until exhausted, considering the max retries limit and the scratchpad?",
-        "required_files": [
-            "server/sample_repository/server/test_tool_retry_fallback.py",
-            "server/sample_repository/server/src/graph/nodes/executor.py"
-        ],
-        "root_id": "server/sample_repository/server/test_tool_retry_fallback.py[19-33]:ToolRetryFallbackTests.test_failed_task_is_retried_until_exhausted"
+        "query": "How does the _get_pending_task function, used by the ToolRetryFallbackTests class, determine which tasks are pending based on the scratchpad and the task dependencies defined in the dag, and what specific task properties are used to make this determination?",
+        "root_id": "server/sample_repository/server/test_tool_retry_fallback.py[19-33]:ToolRetryFallbackTests.test_failed_task_is_retried_until_exhausted",
+        "required_functions": [
+            "server/sample_repository/server/test_tool_retry_fallback.py[19-33]:ToolRetryFallbackTests.test_failed_task_is_retried_until_exhausted",
+            "server/sample_repository/server/src/graph/nodes/executor.py[14-25]:_get_pending_task"
+        ]
     },
     {
-        "query": "How does the select_tool function in tool_selector.py handle tasks with no confident match after generalization, and what warnings are generated in this case, as tested by the test_selector_excludes_previously_attempted_tools test in test_tool_retry_fallback.py?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/tool_selector.py",
-            "server/sample_repository/server/test_tool_retry_fallback.py"
-        ],
-        "root_id": "server/sample_repository/server/test_tool_retry_fallback.py[35-56]:ToolRetryFallbackTests.test_selector_excludes_previously_attempted_tools"
+        "query": "How does the tool selection process in the select_tool function handle cases where no confident match is found after generalization, and what warnings are generated in this scenario, considering the test case where the selector excludes previously attempted tools?",
+        "root_id": "server/sample_repository/server/test_tool_retry_fallback.py[35-56]:ToolRetryFallbackTests.test_selector_excludes_previously_attempted_tools",
+        "required_functions": [
+            "server/sample_repository/server/test_tool_retry_fallback.py[35-56]:ToolRetryFallbackTests.test_selector_excludes_previously_attempted_tools",
+            "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool"
+        ]
     },
     {
-        "query": "What is the purpose of the fake_score_tools function in test_tool_retry_fallback.py, and how does it interact with the _score_tools function in tool_selector.py to test the select_tool function's behavior with excluded tool names?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/tool_selector.py",
-            "server/sample_repository/server/test_tool_retry_fallback.py"
-        ],
-        "root_id": "server/sample_repository/server/test_tool_retry_fallback.py[35-56]:ToolRetryFallbackTests.test_selector_excludes_previously_attempted_tools"
+        "query": "What is the role of the fake_score_tools function in the test_selector_excludes_previously_attempts_tools test case, and how does it affect the tool selection process in the select_tool function, particularly in terms of generalization steps and warning generation?",
+        "root_id": "server/sample_repository/server/test_tool_retry_fallback.py[35-56]:ToolRetryFallbackTests.test_selector_excludes_previously_attempted_tools",
+        "required_functions": [
+            "server/sample_repository/server/test_tool_retry_fallback.py[35-56]:ToolRetryFallbackTests.test_selector_excludes_previously_attempted_tools",
+            "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool"
+        ]
     },
     {
-        "query": "How does the system handle parsing of a success payload when the input JSON string contains a 'headline' but no 'detailed_summary', and what assertions would be made in the test case for such a scenario?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/synthesizer.py",
-            "server/sample_repository/server/test_synthesis_depth.py"
-        ],
-        "root_id": "server/sample_repository/server/test_synthesis_depth.py[14-25]:SynthesisDepthTests.test_parse_success_payload_prefers_structured_details"
+        "query": "What would be the expected output of the SynthesisDepthTests.test_parse_success_payload_prefers_structured_details function when the input payload contains a JSON string with missing 'detailed_summary' field, and how does the _parse_success_payload function handle such a scenario to ensure a fallback value is provided?",
+        "root_id": "server/sample_repository/server/test_synthesis_depth.py[14-25]:SynthesisDepthTests.test_parse_success_payload_prefers_structured_details",
+        "required_functions": [
+            "server/sample_repository/server/test_synthesis_depth.py[14-25]:SynthesisDepthTests.test_parse_success_payload_prefers_structured_details",
+            "server/sample_repository/server/src/graph/nodes/synthesizer.py[94-113]:_parse_success_payload"
+        ]
     },
     {
-        "query": "In the event of a JSON decode error during payload parsing, what fallback values are used for 'headline', 'detailed_summary', and 'reason', and how are these values asserted in the test case to verify the expected behavior?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/synthesizer.py",
-            "server/sample_repository/server/test_synthesis_depth.py"
-        ],
-        "root_id": "server/sample_repository/server/test_synthesis_depth.py[14-25]:SynthesisDepthTests.test_parse_success_payload_prefers_structured_details"
+        "query": "If the _parse_success_payload function encounters a JSONDecodeError while parsing the input payload, how would this affect the test case in SynthesisDepthTests.test_parse_success_payload_prefers_structured_details, and what fallback values would be used to ensure the test case does not fail?",
+        "root_id": "server/sample_repository/server/test_synthesis_depth.py[14-25]:SynthesisDepthTests.test_parse_success_payload_prefers_structured_details",
+        "required_functions": [
+            "server/sample_repository/server/test_synthesis_depth.py[14-25]:SynthesisDepthTests.test_parse_success_payload_prefers_structured_details",
+            "server/sample_repository/server/src/graph/nodes/synthesizer.py[94-113]:_parse_success_payload"
+        ]
     },
     {
-        "query": "What is the purpose of the `scratchpad` list in the `test_collect_latest_raw_results_keeps_latest_entry_per_task` function, and how does the `_collect_latest_raw_results` function handle entries in this list to ensure that only the latest result per task is retained?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/synthesizer.py",
-            "server/sample_repository/server/test_synthesis_depth.py"
-        ],
-        "root_id": "server/sample_repository/server/test_synthesis_depth.py[27-37]:SynthesisDepthTests.test_collect_latest_raw_results_keeps_latest_entry_per_task"
+        "query": "How does the test case 'test_collect_latest_raw_results_keeps_latest_entry_per_task' utilize the function '_collect_latest_raw_results' to ensure that only the latest raw result is kept for each task in the scratchpad, and what are the implications of this approach on the resulting 'raw_results' dictionary?",
+        "root_id": "server/sample_repository/server/test_synthesis_depth.py[27-37]:SynthesisDepthTests.test_collect_latest_raw_results_keeps_latest_entry_per_task",
+        "required_functions": [
+            "server/sample_repository/server/test_synthesis_depth.py[27-37]:SynthesisDepthTests.test_collect_latest_raw_results_keeps_latest_entry_per_task",
+            "server/sample_repository/server/src/graph/nodes/synthesizer.py[116-129]:_collect_latest_raw_results"
+        ]
     },
     {
-        "query": "How does the `_collect_latest_raw_results` function process a list of strings to extract task identifiers and corresponding results, and what assertion does the `test_collect_latest_raw_results_keeps_latest_entry_per_task` function make about the output of this processing to verify its correctness?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/synthesizer.py",
-            "server/sample_repository/server/test_synthesis_depth.py"
-        ],
-        "root_id": "server/sample_repository/server/test_synthesis_depth.py[27-37]:SynthesisDepthTests.test_collect_latest_raw_results_keeps_latest_entry_per_task"
+        "query": "What are the criteria used by the '_collect_latest_raw_results' function to filter and process entries from the 'scratchpad' list, and how does the 'test_collect_latest_raw_results_keeps_latest_entry_per_task' test case validate the correctness of these criteria in terms of keeping only the latest entry per task?",
+        "root_id": "server/sample_repository/server/test_synthesis_depth.py[27-37]:SynthesisDepthTests.test_collect_latest_raw_results_keeps_latest_entry_per_task",
+        "required_functions": [
+            "server/sample_repository/server/test_synthesis_depth.py[27-37]:SynthesisDepthTests.test_collect_latest_raw_results_keeps_latest_entry_per_task",
+            "server/sample_repository/server/src/graph/nodes/synthesizer.py[116-129]:_collect_latest_raw_results"
+        ]
     },
     {
-        "query": "Under what conditions will the 'run_agent' function in test_phase1.py print execution warnings for a given task, considering the conditional edges and nodes defined in the 'build_synapse_graph' function in workflow.py?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/workflow.py",
-            "server/sample_repository/server/test_phase1.py"
-        ],
-        "root_id": "server/sample_repository/server/test_phase1.py[11-35]:run_agent"
+        "query": "What are the possible edge cases in the synapse graph construction where the execution warnings are triggered and tasks are skipped, considering both the phase 1 and phase 3 loops?",
+        "root_id": "server/sample_repository/server/test_phase1.py[11-35]:run_agent",
+        "required_functions": [
+            "server/sample_repository/server/test_phase1.py[11-35]:run_agent",
+            "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph"
+        ]
     },
     {
-        "query": "How does the 'run_agent' function in test_phase1.py handle the case when no appropriate tool is found for a task, and what role does the 'build_synapse_graph' function in workflow.py play in this process, particularly in terms of the 'evaluator' and 'executor' nodes and their conditional edges?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/workflow.py",
-            "server/sample_repository/server/test_phase1.py"
-        ],
-        "root_id": "server/sample_repository/server/test_phase1.py[11-35]:run_agent"
+        "query": "Given a user prompt, how does the run_agent function interact with the synapse graph built by the build_synapse_graph function to surface any warnings that accumulated during execution, specifically in cases where no appropriate tool was found for a task?",
+        "root_id": "server/sample_repository/server/test_phase1.py[11-35]:run_agent",
+        "required_functions": [
+            "server/sample_repository/server/test_phase1.py[11-35]:run_agent",
+            "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph"
+        ]
     },
     {
-        "query": "What is the purpose of the conditional edges in the Synapse graph, particularly in the context of the test_generation_loop function, and how do they affect the final output of the DAG?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/workflow.py",
-            "server/sample_repository/server/test_phase1.py"
-        ],
-        "root_id": "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop"
+        "query": "What is the purpose of the conditional edges in the Synapse graph, and how do they affect the flow of the test generation loop in the test_phase1.py file?",
+        "root_id": "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph",
+            "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop"
+        ]
     },
     {
-        "query": "How does the initial state defined in the test_generation_loop function influence the workflow of the Synapse graph, and what role do the nodes and edges defined in the build_synapse_graph function play in processing this initial state to produce the final DAG?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/workflow.py",
-            "server/sample_repository/server/test_phase1.py"
-        ],
-        "root_id": "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop"
+        "query": "How does the initial state defined in the test_generation_loop function influence the behavior of the nodes and edges in the Synapse graph built by the build_synapse_graph function, and what impact does this have on the final output of the test generation loop?",
+        "root_id": "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph",
+            "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop"
+        ]
     },
     {
-        "query": "What is the purpose of the test_generation_loop function in relation to the overall objective defined in the initial_state, and how does it utilize the build_synapse_graph function to achieve this objective?",
-        "required_files": [
-            "server/sample_repository/server/test_phase1.py"
-        ],
-        "root_id": "server/sample_repository/server/test_phase1.py[69-70]:__main__"
+        "query": "How does the initialization of SynapseAI Phase 1 Test in the __main__ function trigger the test generation loop, and what is the role of the initial state defined in the test_generation_loop function in determining the final results?",
+        "root_id": "server/sample_repository/server/test_phase1.py[69-70]:__main__",
+        "required_functions": [
+            "server/sample_repository/server/test_phase1.py[69-70]:__main__",
+            "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop"
+        ]
     },
     {
-        "query": "How does the __main__ function initiate the test_generation_loop, and what specific components of the initial_state dictionary are used to guide the graph invocation process, as well as the final output and scoring?",
-        "required_files": [
-            "server/sample_repository/server/test_phase1.py"
-        ],
-        "root_id": "server/sample_repository/server/test_phase1.py[69-70]:__main__"
+        "query": "What is the relationship between the user prompt defined in the test_generation_loop function and the final judge score printed at the end of the test generation loop, and how does the __main__ function contribute to the invocation of the graph that produces the final results?",
+        "root_id": "server/sample_repository/server/test_phase1.py[69-70]:__main__",
+        "required_functions": [
+            "server/sample_repository/server/test_phase1.py[69-70]:__main__",
+            "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop"
+        ]
     },
     {
-        "query": "How does the loop_count in the initial state affect the number of times the graph is invoked in the run function, and what is the role of the synthesizer node in the synapse graph?",
-        "required_files": [
-            "server/sample_repository/server/main.py",
-            "server/sample_repository/server/src/graph/workflow.py"
-        ],
-        "root_id": "server/sample_repository/server/main.py[111-132]:run"
+        "query": "How does the system determine when to transition from the 'executor' node to the 'reflector' node in the graph, and what is the role of the 'build_initial_state' function in this process?",
+        "root_id": "server/sample_repository/server/main.py[111-132]:run",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph",
+            "server/sample_repository/server/main.py[10-22]:build_initial_state",
+            "server/sample_repository/server/main.py[111-132]:run"
+        ]
     },
     {
-        "query": "What happens when the reflector node in the synapse graph determines that the execution should be retried, and how does this impact the execution_warnings list in the result returned by the run function?",
-        "required_files": [
-            "server/sample_repository/server/main.py",
-            "server/sample_repository/server/src/graph/workflow.py"
-        ],
-        "root_id": "server/sample_repository/server/main.py[111-132]:run"
+        "query": "What information is included in the initial state built by the 'build_initial_state' function, and how is this state used by the 'run' function to invoke the graph and print the final output, including any warnings or debug information?",
+        "root_id": "server/sample_repository/server/main.py[111-132]:run",
+        "required_functions": [
+            "server/sample_repository/server/main.py[10-22]:build_initial_state",
+            "server/sample_repository/server/main.py[111-132]:run",
+            "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph"
+        ]
     },
     {
-        "query": "What is the purpose of the --debug flag when invoking the python main.py script, and how does it influence the execution flow and output of the run function?",
-        "required_files": [
-            "server/sample_repository/server/main.py"
-        ],
-        "root_id": "server/sample_repository/server/main.py[137-149]:__main__"
+        "query": "What is the process by which the system handles user input and how does it utilize the debug mode?",
+        "root_id": "server/sample_repository/server/main.py[137-149]:__main__",
+        "required_functions": [
+            "server/sample_repository/server/main.py[137-149]:__main__",
+            "server/sample_repository/server/main.py[111-132]:run"
+        ]
     },
     {
-        "query": "How does the user-provided prompt passed to the main.py script affect the construction of the initial state and the resulting graph execution in the run function, and what are the potential error scenarios that can occur during this process?",
-        "required_files": [
-            "server/sample_repository/server/main.py"
-        ],
-        "root_id": "server/sample_repository/server/main.py[137-149]:__main__"
+        "query": "How does the system validate user input and handle potential errors during the execution of the graph, and what information is provided to the user during debug mode?",
+        "root_id": "server/sample_repository/server/main.py[137-149]:__main__",
+        "required_functions": [
+            "server/sample_repository/server/main.py[137-149]:__main__",
+            "server/sample_repository/server/main.py[111-132]:run"
+        ]
     },
     {
-        "query": "How does the system handle the sanitization of identifiers and the extraction of metadata from JSON files when creating a schema and tables in the Supabase database using the run_ingestion_pipeline function?",
-        "required_files": [
-            "server/sample_repository/server/data/csv_to_db.py"
-        ],
-        "root_id": "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline"
+        "query": "How does the system prevent SQL injection when applying schema and table descriptions, and what is the role of the sanitize_identifier function in ensuring valid PostgreSQL identifiers?",
+        "root_id": "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline",
+        "required_functions": [
+            "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline",
+            "server/sample_repository/server/data/csv_to_db.py[23-32]:sanitize_identifier"
+        ]
     },
     {
-        "query": "What are the key steps involved in the run_ingestion_pipeline function, including the roles of the sanitize_identifier and get_metadata functions, in terms of handling errors, creating database schemas and tables, and applying descriptions to them?",
-        "required_files": [
-            "server/sample_repository/server/data/csv_to_db.py"
-        ],
-        "root_id": "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline"
+        "query": "What is the process for extracting metadata from a JSON file in the target directory, and how are schema and table descriptions applied using the information extracted by the get_metadata function?",
+        "root_id": "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline",
+        "required_functions": [
+            "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline",
+            "server/sample_repository/server/data/csv_to_db.py[34-48]:get_metadata"
+        ]
     },
     {
-        "query": "What would be the outcome if the SUPABASE_URL environment variable is not set and the DATA_DIR directory does not exist, and how would this affect the ingestion pipeline when run from the __main__ function?",
-        "required_files": [
-            "server/sample_repository/server/data/csv_to_db.py"
-        ],
-        "root_id": "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__"
+        "query": "What are the possible error messages that can occur during the data ingestion pipeline, and how are schema and table descriptions applied after creating the schema and tables?",
+        "root_id": "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__",
+        "required_functions": [
+            "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__",
+            "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline"
+        ]
     },
     {
-        "query": "How does the system ensure that the schema name is sanitized, and what is the role of the sanitize_identifier function in preventing SQL syntax errors when creating tables and applying descriptions from the JSON metadata, and how does this process relate to the data pipeline execution in the __main__ function?",
-        "required_files": [
-            "server/sample_repository/server/data/csv_to_db.py"
-        ],
-        "root_id": "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__"
+        "query": "How does the data ingestion pipeline handle CSV files and table descriptions, and what is the purpose of the `sanitize_identifier` function in the context of schema and table names?",
+        "root_id": "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__",
+        "required_functions": [
+            "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__",
+            "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline"
+        ]
     },
     {
-        "query": "What is the condition under which the download_all_specs function will not proceed with fetching specs from Supabase, and what directory will it attempt to create if the condition is met?",
-        "required_files": [
-            "server/sample_repository/server/data/generate_supabase_specs.py"
-        ],
-        "root_id": "server/sample_repository/server/data/generate_supabase_specs.py[45-46]:__main__"
+        "query": "How does the main execution of the script ensure that the Supabase specifications are downloaded and saved to the correct directory, and what happens if the credentials are missing?",
+        "root_id": "server/sample_repository/server/data/generate_supabase_specs.py[45-46]:__main__",
+        "required_functions": [
+            "server/sample_repository/server/data/generate_supabase_specs.py[45-46]:__main__",
+            "server/sample_repository/server/data/generate_supabase_specs.py[13-43]:download_all_specs"
+        ]
     },
     {
-        "query": "If an error occurs during the fetching of a spec for a particular schema in the download_all_specs function, what information will be printed to the console, and what is the name of the main function that initiates the download_all_specs function?",
-        "required_files": [
-            "server/sample_repository/server/data/generate_supabase_specs.py"
-        ],
-        "root_id": "server/sample_repository/server/data/generate_supabase_specs.py[45-46]:__main__"
+        "query": "What is the process for fetching and saving Supabase specifications for multiple schemas, and how is the main execution of the script triggered to initiate this process?",
+        "root_id": "server/sample_repository/server/data/generate_supabase_specs.py[45-46]:__main__",
+        "required_functions": [
+            "server/sample_repository/server/data/generate_supabase_specs.py[45-46]:__main__",
+            "server/sample_repository/server/data/generate_supabase_specs.py[13-43]:download_all_specs"
+        ]
     },
     {
-        "query": "What types of tools are included in the list of all available tools returned by the get_all_tools function, and how do the TavilySearch and WikipediaQueryRun tools initialized in get_search_tools and get_research_tools respectively contribute to this list?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/search.py",
-            "server/sample_repository/server/src/tools/ecosystem.py",
-            "server/sample_repository/server/src/tools/registry.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools"
+        "query": "How does the get_all_tools function utilize both search and research tools to provide a comprehensive list of tools for the Tavily Search tool and academic research, and what is the maximum number of results each tool can return?",
+        "root_id": "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
+            "server/sample_repository/server/src/tools/search.py[25-33]:get_search_tools",
+            "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools"
+        ]
     },
     {
-        "query": "How do the parameters of the TavilySearch tool in get_search_tools, such as max_results, interact with the list of research tools returned by get_research_tools, and what is the overall impact on the output of the get_all_tools function in terms of the variety and limitations of the tools provided?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/search.py",
-            "server/sample_repository/server/src/tools/ecosystem.py",
-            "server/sample_repository/server/src/tools/registry.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools"
+        "query": "What types of tools are returned by the get_all_tools function and how do they utilize external APIs such as Tavily and Wikipedia, and what are the limitations of these tools in terms of the number of results they can return?",
+        "root_id": "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
+            "server/sample_repository/server/src/tools/search.py[25-33]:get_search_tools",
+            "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools"
+        ]
     },
     {
-        "query": "What is the description of the first tool included in the tool manifest built by the build_tool_manifest function, assuming get_all_tools only returns tools from get_search_tools?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/registry.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest"
+        "query": "How does the build_tool_manifest function utilize the get_all_tools function to generate the tool listing, and what is the expected format of the output?",
+        "root_id": "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest",
+            "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools"
+        ]
     },
     {
-        "query": "If get_all_tools returns an empty list, what would be the return value of the build_tool_manifest function and why?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/registry.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest"
+        "query": "If the get_all_tools function calls other functions like get_search_tools and get_research_tools to retrieve tools, how would the build_tool_manifest function be affected if get_all_tools is modified to include get_openapi_tools, and what would be the resulting tool listing format?",
+        "root_id": "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest",
+            "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools"
+        ]
     },
     {
-        "query": "Given a task with a high level of complexity, requiring multiple steps of generalization, what are the potential warnings that may be generated, and how do they differ in terms of the simplified task description and the number of steps taken to reach a match, considering the tool selection process and the conditions under which warnings are printed?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/tool_selector.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool"
+        "query": "What happens when the tool selection process fails to find a matching tool after the maximum allowed generalization steps, and how does the system notify the user about this failure?",
+        "root_id": "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
+            "server/sample_repository/server/src/tools/tool_selector.py[237-255]:_print_warning",
+            "server/sample_repository/server/src/tools/tool_selector.py[221-234]:_build_warning"
+        ]
     },
     {
-        "query": "How does the score of a tool, as determined by the _score_tools function, influence the selection process in the select_tool function, and under what conditions would the _build_warning function be called with a tool_name of None, considering the threshold for a confident match and the maximum number of generalization steps?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/tool_selector.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool"
+        "query": "How does the system determine the best tool for a given task description, and what factors influence the scoring of tools during the selection process?",
+        "root_id": "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
+            "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
+            "server/sample_repository/server/src/tools/tool_selector.py[221-234]:_build_warning"
+        ]
     },
     {
-        "query": "What would be the response from the Groq model when the task description is 'data analysis' and the available tools in the tool_map are 'pandas', 'numpy', and 'matplotlib', and the KeyPool has a single key that is returned from the next method, considering the fallback tool mechanism when the Groq response is not in the expected JSON format?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/tool_selector.py",
-            "server/sample_repository/server/src/config/keypool.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools"
+        "query": "What are the implications of an empty tool_map on the _score_tools function's output, considering the fallback tool selection mechanism and how KeyPool.next handles its internal state?",
+        "root_id": "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
+            "server/sample_repository/server/src/tools/tool_selector.py[216-218]:_fallback_tool"
+        ]
     },
     {
-        "query": "How would the _score_tools function handle a situation where the Groq model returns a response with an invalid JSON format, and the fallback tool is selected, and then subsequently, a new key is requested from the KeyPool using the next method to make another attempt to invoke the Groq model with a different task description and available tools in the tool_map?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/tool_selector.py",
-            "server/sample_repository/server/src/config/keypool.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools"
+        "query": "If the KeyPool.next method were to return a key that is not valid for the ChatGroq model used in _score_tools, how would this affect the overall tool selection process, including the potential fallback to the first available tool and the JSON parsing of the response?",
+        "root_id": "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
+            "server/sample_repository/server/src/tools/tool_selector.py[216-218]:_fallback_tool"
+        ]
     },
     {
-        "query": "How does the tool selection process in the _generalize function handle the case when no suitable tool is found in the tool_map, and what role does the KeyPool class play in this process?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/tool_selector.py",
-            "server/sample_repository/server/src/config/keypool.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize"
+        "query": "Given a task description that requires a very specific tool, how would the system generalize the task to make it more likely to match an available tool, and what API key would be used to invoke the language model for this generalization process?",
+        "root_id": "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
+            "server/sample_repository/server/src/config/keypool.py[16-20]:KeyPool.next"
+        ]
     },
     {
-        "query": "Describe the interaction between the _generalize function and the KeyPool class, specifically how the _generalize function utilizes the KeyPool's next method to obtain an API key, and how this API key is used to create a ChatGroq instance for task description generalization.",
-        "required_files": [
-            "server/sample_repository/server/src/tools/tool_selector.py",
-            "server/sample_repository/server/src/config/keypool.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize"
+        "query": "If the system is unable to find a suitable tool for a task and needs to iteratively generalize the task description, how would it manage the available API keys to ensure that the language model invocation is successful and what would be the role of the tool selector in this process?",
+        "root_id": "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
+            "server/sample_repository/server/src/config/keypool.py[16-20]:KeyPool.next"
+        ]
     },
     {
-        "query": "How would you modify the _fallback_tool function to return the first available tool that has not been recently used, with 'recently used' defined as a tool that has been selected by the KeyPool.next method within the last 10 iterations?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/tool_selector.py",
-            "server/sample_repository/server/src/config/keypool.py"
-        ],
+        "query": "In a scenario where the tool map is empty, how would the system retrieve an alternative tool, considering the KeyPool's current index and the tool_selector's fallback mechanism?",
         "root_id": "server/sample_repository/server/src/tools/tool_selector.py[216-218]:_fallback_tool"
     },
     {
-        "query": "Assuming the KeyPool.next method is used to generate unique identifiers for tools in the tool_map dictionary, how would you optimize the _fallback_tool function to return a tool that is not only available but also has the highest chance of being selected by the KeyPool.next method based on the current index and the size of the key pool?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/tool_selector.py",
-            "server/sample_repository/server/src/config/keypool.py"
-        ],
+        "query": "Suppose the KeyPool is exhausted and its index is reset, how would this affect the _fallback_tool function's ability to find an available tool, given that the tool map is populated based on the KeyPool's output?",
         "root_id": "server/sample_repository/server/src/tools/tool_selector.py[216-218]:_fallback_tool"
     },
     {
-        "query": "Explain how the test_tavily_tool function is designed to save the search results from the Tavily web search, including the filename and file format used for storing the results, and describe the handling of exceptions during the search process.",
-        "required_files": [
-            "server/sample_repository/server/src/tools/test_tools.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/test_tools.py[29-44]:test_tavily_tool"
+        "query": "How does the system handle exceptions during the Tavily web search, and in what format are the search results saved to a file?",
+        "root_id": "server/sample_repository/server/src/tools/test_tools.py[29-44]:test_tavily_tool",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/test_tools.py[29-44]:test_tavily_tool",
+            "server/sample_repository/server/src/tools/test_tools.py[15-27]:save_to_file"
+        ]
     },
     {
-        "query": "What are the key conditions under which the test_tavily_tool function will skip the Tavily web search, and how does it leverage the save_to_file helper function to store the outcome of a successful search, including the directory where the results are saved?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/test_tools.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/test_tools.py[29-44]:test_tavily_tool"
+        "query": "What environmental variable is required for the Tavily web search to proceed, and where are the results of this search saved if the operation is successful?",
+        "root_id": "server/sample_repository/server/src/tools/test_tools.py[29-44]:test_tavily_tool",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/test_tools.py[29-44]:test_tavily_tool",
+            "server/sample_repository/server/src/tools/test_tools.py[15-27]:save_to_file"
+        ]
     },
     {
-        "query": "What steps and tools are required to search for a Wikipedia page, then use the page title to read the full page content, and finally save the retrieved content to a file?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/test_tools.py",
-            "server/sample_repository/server/src/tools/ecosystem.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools"
+        "query": "How does the test_wikipedia_and_arxiv_tools function utilize the get_research_tools function to fetch Wikipedia and Arxiv research tools, and what role does the save_to_file function play in storing the results of these tools?",
+        "root_id": "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools",
+            "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools",
+            "server/sample_repository/server/src/tools/test_tools.py[15-27]:save_to_file"
+        ]
     },
     {
-        "query": "How does the system use the get_research_tools function to fetch tools for searching Wikipedia and Arxiv, and what would be the expected output and file save operations for a successful test case using the test_wikipedia_and_arxiv_tools function?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/test_tools.py",
-            "server/sample_repository/server/src/tools/ecosystem.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools"
+        "query": "What is the mechanism by which the Wikipedia and Arxiv search and deep read tools, retrieved by the get_research_tools function, are invoked and their results saved using the save_to_file function within the test_wikipedia_and_arxiv_tools function?",
+        "root_id": "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools",
+            "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools",
+            "server/sample_repository/server/src/tools/test_tools.py[15-27]:save_to_file"
+        ]
     },
     {
-        "query": "Given a scenario where the OpenAPI specification files are stored in the data/openapi_specs/ directory, how would you troubleshoot the issue when the test_openapi_tool function prints 'No OpenAPI tools generated. Please add a valid OpenAPI spec to data/openapi_specs/ and try again.' while the get_openapi_tools function is able to parse and generate tools from the specifications?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/openapi_parser.py",
-            "server/sample_repository/server/src/tools/test_tools.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool"
+        "query": "How does the system handle OpenAPI specifications that are not in JSON or YAML format, and what message is printed to the user if no OpenAPI tools are generated?",
+        "root_id": "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool",
+            "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools"
+        ]
     },
     {
-        "query": "Suppose the get_openapi_tools function is modified to support only JSON-formatted OpenAPI specifications, and the test_openapi_tool function is still able to print the names and descriptions of the generated tools. What changes would you make to the get_openapi_tools function to handle YAML-formatted specifications again, and how would you update the test_openapi_tool function to handle any potential errors that may occur during the parsing of these YAML specifications?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/openapi_parser.py",
-            "server/sample_repository/server/src/tools/test_tools.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool"
+        "query": "If an exception occurs while parsing an OpenAPI specification, how does the system handle the error and what information is printed to the user about the number of tools generated?",
+        "root_id": "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools",
+            "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool"
+        ]
     },
     {
-        "query": "What is the error handling mechanism in the firecrawl_scrape tool and how does it affect the file saving process in the save_to_file function?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/test_tools.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/test_tools.py[108-116]:test_firecrawl_tool"
+        "query": "What is the maximum allowed length of the scraped content from the firecrawl tool before it needs to be saved to a file using the provided helper function, considering the default encoding of the file?",
+        "root_id": "server/sample_repository/server/src/tools/test_tools.py[108-116]:test_firecrawl_tool",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/test_tools.py[108-116]:test_firecrawl_tool",
+            "server/sample_repository/server/src/tools/test_tools.py[15-27]:save_to_file"
+        ]
     },
     {
-        "query": "When the firecrawl_scrape tool successfully scrapes content from a given URL, what is the file path where this content is saved by the save_to_file function and what are the different parameters that can be used when calling this function?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/test_tools.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/test_tools.py[108-116]:test_firecrawl_tool"
+        "query": "Under what circumstances would the firecrawl_scrape tool invoke the save_to_file helper function, considering the exception handling and the specific url being scraped, and what directory would the scraped content be saved to?",
+        "root_id": "server/sample_repository/server/src/tools/test_tools.py[108-116]:test_firecrawl_tool",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/test_tools.py[108-116]:test_firecrawl_tool",
+            "server/sample_repository/server/src/tools/test_tools.py[15-27]:save_to_file"
+        ]
     },
     {
-        "query": "How does the code in test_tools.py ensure that the firecrawl_scrape tool invocation is properly handled in case of exceptions, and what kind of content is expected to be scraped when testing this tool?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/test_tools.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/test_tools.py[118-122]:__main__"
+        "query": "What is the purpose of the __main__ function in relation to testing the firecrawl tool, and how does it handle exceptions that may occur during the scraping process?",
+        "root_id": "server/sample_repository/server/src/tools/test_tools.py[118-122]:__main__",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/test_tools.py[118-122]:__main__",
+            "server/sample_repository/server/src/tools/test_tools.py[108-116]:test_firecrawl_tool"
+        ]
     },
     {
-        "query": "What is the purpose of saving the scraped content to a file named firecrawl_wikipedia_ai.md during the execution of the test_firecrawl_tool function in the test_tools.py script, and how does this relate to the primary function's role in testing various tools?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/test_tools.py"
-        ],
-        "root_id": "server/sample_repository/server/src/tools/test_tools.py[118-122]:__main__"
+        "query": "How does the __main__ function determine which test to run, and what URL does the test_firecrawl_tool function use to test the firecrawl scrape tool?",
+        "root_id": "server/sample_repository/server/src/tools/test_tools.py[118-122]:__main__",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/test_tools.py[118-122]:__main__",
+            "server/sample_repository/server/src/tools/test_tools.py[108-116]:test_firecrawl_tool"
+        ]
     },
     {
-        "query": "What are the key factors that determine the success of the reflect_on_execution function in handling task execution results, and how does the KeyPool class contribute to this process through its next method?",
-        "required_files": [
-            "server/sample_repository/server/src/config/keypool.py",
-            "server/sample_repository/server/src/graph/nodes/reflector.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution"
+        "query": "What is the sequence of API keys returned by the KeyPool when the reflect_on_execution function is called multiple times to handle different tasks, considering that each call involves initializing a ChatGroq model which requires an API key from the KeyPool?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution",
+            "server/sample_repository/server/src/config/keypool.py[16-20]:KeyPool.next"
+        ]
     },
     {
-        "query": "Given a specific task ID and a raw result from the scratchpad, how does the reflect_on_execution function utilize the KeyPool class to generate a reflection verdict, and what role does the next method play in this process?",
-        "required_files": [
-            "server/sample_repository/server/src/config/keypool.py",
-            "server/sample_repository/server/src/graph/nodes/reflector.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution"
+        "query": "How does the status of the reflection verdict in the reflect_on_execution function impact the subsequent API key retrieval from the KeyPool, considering that each verdict may influence the number of times the KeyPool's next method is called?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution",
+            "server/sample_repository/server/src/config/keypool.py[16-20]:KeyPool.next"
+        ]
     },
     {
-        "query": "How does the user's previous DAG rejection and judge's feedback influence the system's tool manifest generation when creating a new DAG?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/registry.py",
-            "server/sample_repository/server/src/graph/nodes/generator.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag"
+        "query": "What modifications would be necessary in the tool registry to support a new tool that isn't accounted for in the current implementation of the DAG generation, and how would these modifications impact the live tool manifest injected into the system prompt within the generate_dag function?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest",
+            "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag"
+        ]
     },
     {
-        "query": "Considering the provided 'user_prompt' and 'feedback' from the 'generate_dag' function, how would these parameters impact the list of tools generated by 'build_tool_manifest' and subsequently the final DAG output?",
-        "required_files": [
-            "server/sample_repository/server/src/tools/registry.py",
-            "server/sample_repository/server/src/graph/nodes/generator.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag"
+        "query": "If a JSONDecodeError occurs due to an invalid JSON string being generated in response to a user's prompt, how would this error be propagated through the system, and what changes could be made in the tool manifest generation to mitigate the occurrence of such errors or improve diagnostic information for the user when they occur?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag",
+        "required_functions": [
+            "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest",
+            "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag"
+        ]
     },
     {
-        "query": "What happens when the synthesize_output function is called with a state that contains an empty list for 'reflexion_scratchpad' and an empty string for 'user_prompt', and how does it impact the final output when the _collect_latest_raw_results function returns an empty dictionary?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/synthesizer.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output"
+        "query": "Suppose the user's original question is about a specific technological trend, and the research results gathered by the agent contain raw excerpts that need to be parsed and then synthesized into a comprehensive response; how does the system ensure that the final output is both informative and easy to understand, considering the constraints imposed by the text truncation and the specific requirements for presenting the research findings?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output",
+            "server/sample_repository/server/src/graph/nodes/synthesizer.py[116-129]:_collect_latest_raw_results",
+            "server/sample_repository/server/src/graph/nodes/synthesizer.py[94-113]:_parse_success_payload",
+            "server/sample_repository/server/src/graph/nodes/synthesizer.py[132-135]:_truncate_text"
+        ]
     },
     {
-        "query": "How does the _parse_success_payload function handle a payload that is not a valid JSON string, and what effect does it have on the successful_results list in the synthesize_output function when the _truncate_text function is used to truncate the text to a maximum of 220 characters?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/synthesizer.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output"
+        "query": "If the system encounters a scenario where the 'tasks' within the current DAG do not contain any 'description', and the 'raw_results' dictionary does not have any matching task IDs, how does it handle the creation of the 'task_lookup' dictionary and the subsequent construction of 'successful_results', especially when the '_parse_success_payload' function might return a fallback due to an empty or malformed payload?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output",
+            "server/sample_repository/server/src/graph/nodes/synthesizer.py[116-129]:_collect_latest_raw_results",
+            "server/sample_repository/server/src/graph/nodes/synthesizer.py[94-113]:_parse_success_payload",
+            "server/sample_repository/server/src/graph/nodes/synthesizer.py[132-135]:_truncate_text"
+        ]
     },
     {
-        "query": "How does the dfs function handle cycles in the graph, and what are the implications of this handling mechanism for the overall correctness of the algorithm, considering the recursive calls and the role of the rec_stack and visited sets?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/evaluator.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[17-29]:dfs"
+        "query": "How does the system handle a situation where a node has already been visited during the depth-first search traversal, and what are the implications of this handling on the overall graph traversal process?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[17-29]:dfs",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/nodes/evaluator.py[17-29]:dfs"
+        ]
     },
     {
-        "query": "Given that the dfs function is designed to detect cycles in a graph, what would be the time and space complexity of this function in terms of the number of nodes and edges in the graph, and how would you optimize this function for very large graphs, considering the recursive calls and the data structures used?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/evaluator.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[17-29]:dfs"
+        "query": "Can you explain how the dfs function utilizes the rec_stack and visited sets to detect cycles in the graph, and how these data structures impact the function's ability to correctly identify cycles?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[17-29]:dfs",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/nodes/evaluator.py[17-29]:dfs"
+        ]
     },
     {
-        "query": "How does the check_for_cycles function utilize Depth-First Search (DFS) to identify cycles in task dependencies, and what specific condition in the dfs function causes it to return True, indicating a cycle has been detected?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/evaluator.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[8-35]:check_for_cycles"
+        "query": "How does the cycle detection in the task dependencies utilize a depth-first search approach to identify potential recursive loops, and what is the relationship between the graph construction in the check_for_cycles function and the recursive calls in the dfs function?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[8-35]:check_for_cycles",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/nodes/evaluator.py[8-35]:check_for_cycles",
+            "server/sample_repository/server/src/graph/nodes/evaluator.py[17-29]:dfs"
+        ]
     },
     {
-        "query": "What is the role of the rec_stack and visited sets in the dfs function when traversing the task dependency graph, and how does the check_for_cycles function construct this graph from the input tasks list?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/evaluator.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[8-35]:check_for_cycles"
+        "query": "What is the role of the visited and rec_stack sets in the dfs function in preventing infinite recursion, and how does the check_for_cycles function utilize these sets to detect cycles in the task dependencies across all nodes in the graph?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[8-35]:check_for_cycles",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/nodes/evaluator.py[8-35]:check_for_cycles",
+            "server/sample_repository/server/src/graph/nodes/evaluator.py[17-29]:dfs"
+        ]
     },
     {
-        "query": "What is the purpose of the custom 15-point metric in the evaluate_dag function and how does the check_for_cycles function contribute to this metric by detecting cycles in the task dependencies?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/evaluator.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag"
+        "query": "How does the evaluate_dag function use the check_for_cycles function to validate the DAG structure before evaluating it based on the custom 15-point metric using Groq, and what are the implications of a cycle being detected in the task dependencies on the overall judge score and feedback?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag",
+            "server/sample_repository/server/src/graph/nodes/evaluator.py[8-35]:check_for_cycles"
+        ]
     },
     {
-        "query": "In the context of the evaluate_dag function, how does the dfs function within check_for_cycles utilize depth-first search to identify cycles in the task dependencies, and what is the significance of the 'relevance_score' and 'dependency_score' returned by the Groq model in the evaluation process?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/evaluator.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag"
+        "query": "What is the significance of the check_for_cycles function's use of Depth-First Search (DFS) in detecting cycles in the task dependencies, and how does the evaluate_dag function incorporate the results of this cycle detection into its overall evaluation of the DAG based on the custom metric using Groq?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag",
+            "server/sample_repository/server/src/graph/nodes/evaluator.py[8-35]:check_for_cycles"
+        ]
     },
     {
-        "query": "How does the system determine the next task to execute from a given directed acyclic graph (DAG) when considering both completed tasks and tasks that have exceeded the maximum number of retries?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/executor.py",
-            "server/sample_repository/server/src/graph/scratchpad.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/executor.py[14-25]:_get_pending_task"
+        "query": "How does the task retrieval process handle both completed and failed tasks in the context of dependency resolution, and what role does the retry limit play in this process?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/executor.py[14-25]:_get_pending_task",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/nodes/executor.py[14-25]:_get_pending_task",
+            "server/sample_repository/server/src/graph/scratchpad.py[6-25]:parse_scratchpad",
+            "server/sample_repository/server/src/graph/scratchpad.py[28-48]:get_exhausted_task_ids"
+        ]
     },
     {
-        "query": "Given a list of tasks in a DAG and their respective dependencies, describe the process by which the system identifies tasks that are eligible for execution based on their dependencies having been completed, while also accounting for tasks that have failed and reached the maximum retry limit.",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/executor.py",
-            "server/sample_repository/server/src/graph/scratchpad.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/executor.py[14-25]:_get_pending_task"
+        "query": "Under what conditions would a task be considered for execution, considering both its dependencies and its own failure history, and how are these conditions evaluated in conjunction with the scratchpad's task status entries?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/executor.py[14-25]:_get_pending_task",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/nodes/executor.py[14-25]:_get_pending_task",
+            "server/sample_repository/server/src/graph/scratchpad.py[6-25]:parse_scratchpad",
+            "server/sample_repository/server/src/graph/scratchpad.py[28-48]:get_exhausted_task_ids"
+        ]
     },
     {
-        "query": "How does the execute_task function handle task dependencies and what is the role of the _get_pending_task function in this process, and how does the get_all_tools function influence the selection of tools for task execution?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/executor.py",
-            "server/sample_repository/server/src/tools/registry.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task"
+        "query": "What happens when a task has already been attempted with all available tools and the select_tool function returns None, considering the overall state transition and the final output compilation?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task",
+            "server/sample_repository/server/src/graph/nodes/executor.py[14-25]:_get_pending_task",
+            "server/sample_repository/server/src/graph/nodes/executor.py[85-87]:_compile_final_output",
+            "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools"
+        ]
     },
     {
-        "query": "What is the relationship between the _compile_final_output function, the reflexion_scratchpad, and the final output of the execute_task function, and how does the get_all_tools function impact the potential tools that can be used to generate this output?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/nodes/executor.py",
-            "server/sample_repository/server/src/tools/registry.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task"
+        "query": "How does the system handle task dependencies and exhausted task IDs when determining the next pending task, taking into account the tool selection process and the compilation of the final output after all tasks are complete?",
+        "root_id": "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task",
+            "server/sample_repository/server/src/graph/nodes/executor.py[14-25]:_get_pending_task",
+            "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
+            "server/sample_repository/server/src/graph/nodes/executor.py[85-87]:_compile_final_output"
+        ]
     },
     {
-        "query": "How does the retry mechanism in the route_execution function determine when to stop retrying a task, and what role does the TASK_MAX_RETRIES variable play in this process, considering the scratchpad parsing logic in the parse_scratchpad function?",
-        "required_files": [
-            "server/sample_repository/server/src/graph/scratchpad.py",
-            "server/sample_repository/server/src/graph/edges/routers.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/edges/routers.py[25-75]:route_execution"
+        "query": "What will happen when the current task in the route execution has failed and the retry count is less than the maximum allowed retries, considering the scratchpad has entries in the format 'STATUS|task_id|content|Reason: ...'?",
+        "root_id": "server/sample_repository/server/src/graph/edges/routers.py[25-75]:route_execution",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/edges/routers.py[25-75]:route_execution",
+            "server/sample_repository/server/src/graph/scratchpad.py[6-25]:parse_scratchpad"
+        ]
     },
     {
-        "query": "Given the current implementation of the route_execution function and the parse_scratchpad function, describe the conditions under which the route_execution function will return 'done', including the impact of the scratchpad length, the current task's retry count, and the overall completion status of tasks as determined by the parse_scratchpad function.",
-        "required_files": [
-            "server/sample_repository/server/src/graph/scratchpad.py",
-            "server/sample_repository/server/src/graph/edges/routers.py"
-        ],
-        "root_id": "server/sample_repository/server/src/graph/edges/routers.py[25-75]:route_execution"
+        "query": "How does the route execution handle the case when the scratchpad exceeds the maximum allowed entries, and what is the role of the parse_scratchpad function in determining the completion and failure of tasks in this scenario?",
+        "root_id": "server/sample_repository/server/src/graph/edges/routers.py[25-75]:route_execution",
+        "required_functions": [
+            "server/sample_repository/server/src/graph/edges/routers.py[25-75]:route_execution",
+            "server/sample_repository/server/src/graph/scratchpad.py[6-25]:parse_scratchpad"
+        ]
     },
     {
-        "query": "How does the renderMarkdown function handle nested markdown elements, such as a bold text within an italic text, and what role does the parseInline function play in this process?",
-        "required_files": [
-            "server/sample_repository/client/src/Dashboard.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/Dashboard.jsx[6-133]:renderMarkdown"
+        "query": "How does the Markdown rendering process handle both inline and block-level formatting for text, including the rendering of headings, horizontal rules, blockquotes, and lists, and what is the role of the parseInline function in this process?",
+        "root_id": "server/sample_repository/client/src/Dashboard.jsx[6-133]:renderMarkdown",
+        "required_functions": [
+            "server/sample_repository/client/src/Dashboard.jsx[6-133]:renderMarkdown",
+            "server/sample_repository/client/src/Dashboard.jsx[13-30]:parseInline"
+        ]
     },
     {
-        "query": "What are the different types of markdown elements that the renderMarkdown function can parse, and how does it utilize the parseInline function to handle inline markdown elements, such as bold, italic, and strikethrough text?",
-        "required_files": [
-            "server/sample_repository/client/src/Dashboard.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/Dashboard.jsx[6-133]:renderMarkdown"
+        "query": "What are the differences in how the renderMarkdown function and the parseInline function handle the parsing of Markdown syntax, such as bold, italic, and strikethrough text, and how do these differences impact the final rendered output?",
+        "root_id": "server/sample_repository/client/src/Dashboard.jsx[6-133]:renderMarkdown",
+        "required_functions": [
+            "server/sample_repository/client/src/Dashboard.jsx[6-133]:renderMarkdown",
+            "server/sample_repository/client/src/Dashboard.jsx[13-30]:parseInline"
+        ]
     },
     {
-        "query": "How does the AssistantBubble component handle the rendering of markdown text when the animation is complete, and what role does the renderMarkdown function play in this process?",
-        "required_files": [
-            "server/sample_repository/client/src/Dashboard.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/Dashboard.jsx[177-194]:AssistantBubble"
+        "query": "How does the AssistantBubble component utilize the useTypewriter hook to animate the text, and what role does the renderMarkdown function play in displaying the final text after animation is complete?",
+        "root_id": "server/sample_repository/client/src/Dashboard.jsx[177-194]:AssistantBubble",
+        "required_functions": [
+            "server/sample_repository/client/src/Dashboard.jsx[177-194]:AssistantBubble",
+            "server/sample_repository/client/src/Dashboard.jsx[147-174]:useTypewriter",
+            "server/sample_repository/client/src/Dashboard.jsx[6-133]:renderMarkdown"
+        ]
     },
     {
-        "query": "What is the purpose of the useTypewriter hook in the AssistantBubble component, and how does it interact with the renderMarkdown function to display animated markdown text?",
-        "required_files": [
-            "server/sample_repository/client/src/Dashboard.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/Dashboard.jsx[177-194]:AssistantBubble"
+        "query": "What is the process by which the renderMarkdown function handles fenced code blocks and how does this relate to the text displayed by the AssistantBubble component, which is animated using the useTypewriter hook?",
+        "root_id": "server/sample_repository/client/src/Dashboard.jsx[177-194]:AssistantBubble",
+        "required_functions": [
+            "server/sample_repository/client/src/Dashboard.jsx[6-133]:renderMarkdown",
+            "server/sample_repository/client/src/Dashboard.jsx[177-194]:AssistantBubble",
+            "server/sample_repository/client/src/Dashboard.jsx[147-174]:useTypewriter"
+        ]
     },
     {
-        "query": "Explain how the DagGraph function handles the case where the input DAG is not an array, but rather an object with a nodes property, and how the buildDagLayout function is used to position the nodes in the resulting graph.",
-        "required_files": [
-            "server/sample_repository/client/src/Dashboard.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/Dashboard.jsx[329-382]:DagGraph"
+        "query": "How does the DagGraph component in the Dashboard.jsx file use the buildDagLayout function's output to position nodes in the directed acyclic graph (DAG), considering the layout algorithm and node dependencies?",
+        "root_id": "server/sample_repository/client/src/Dashboard.jsx[329-382]:DagGraph",
+        "required_functions": [
+            "server/sample_repository/client/src/Dashboard.jsx[329-382]:DagGraph",
+            "server/sample_repository/client/src/Dashboard.jsx[232-326]:buildDagLayout",
+            "server/sample_repository/client/src/Dashboard.jsx[204-230]:normalizeDagTasks"
+        ]
     },
     {
-        "query": "Describe the process by which the normalizeDagTasks function transforms an input DAG into a standardized format, and how this format is then used by the buildDagLayout function to construct the layout of the graph, including the calculation of node positions and the handling of dependencies.",
-        "required_files": [
-            "server/sample_repository/client/src/Dashboard.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/Dashboard.jsx[329-382]:DagGraph"
+        "query": "What is the purpose of the normalizeDagTasks function in preparing the input for the buildDagLayout function, and how does the DagGraph component utilize the output of buildDagLayout to render the graph with correct node positions and edges?",
+        "root_id": "server/sample_repository/client/src/Dashboard.jsx[329-382]:DagGraph",
+        "required_functions": [
+            "server/sample_repository/client/src/Dashboard.jsx[204-230]:normalizeDagTasks",
+            "server/sample_repository/client/src/Dashboard.jsx[232-326]:buildDagLayout",
+            "server/sample_repository/client/src/Dashboard.jsx[329-382]:DagGraph"
+        ]
     },
     {
-        "query": "Given a scenario where the user submits a prompt, describe how the application will handle the prompt, including the role of the openHistoryChat function, the load function, and the handleSubmit function, and how these functions interact with the user's chat history and the DagGraph component.",
-        "required_files": [
-            "server/sample_repository/client/src/Dashboard.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/Dashboard.jsx[419-927]:Dashboard"
+        "query": "What happens when a user submits a new chat message, and how is the chat history updated and displayed in the dashboard?",
+        "root_id": "server/sample_repository/client/src/Dashboard.jsx[419-927]:Dashboard",
+        "required_functions": [
+            "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit",
+            "server/sample_repository/client/src/Dashboard.jsx[440-456]:load",
+            "server/sample_repository/client/src/Dashboard.jsx[461-471]:openHistoryChat"
+        ]
     },
     {
-        "query": "Suppose a user has an ongoing chat with the assistant and the chatIsComplete variable is set to true. Explain how the handleNewChat function, the load function, and the handleSubmit function will work together to create a new chat, persist the new chat to the chat history, and populate the DagGraph component with the new chat's execution DAG.",
-        "required_files": [
-            "server/sample_repository/client/src/Dashboard.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/Dashboard.jsx[419-927]:Dashboard"
+        "query": "How are the chat messages and DAG data synced and updated when a user interacts with the chat interface, and what are the dependencies between these components?",
+        "root_id": "server/sample_repository/client/src/Dashboard.jsx[419-927]:Dashboard",
+        "required_functions": [
+            "server/sample_repository/client/src/Dashboard.jsx[419-927]:Dashboard",
+            "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit",
+            "server/sample_repository/client/src/Dashboard.jsx[461-471]:openHistoryChat"
+        ]
     },
     {
-        "query": "What happens to the chat history when a user's ID is not available, and how does this affect the opening of a chat history dialog in the Dashboard?",
-        "required_files": [
-            "server/sample_repository/client/src/Dashboard.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/Dashboard.jsx[440-456]:load"
+        "query": "After loading chat history, what is the expected format of the messages when a history chat is opened and how does it relate to the prompt and final output retrieved from the database?",
+        "root_id": "server/sample_repository/client/src/Dashboard.jsx[440-456]:load",
+        "required_functions": [
+            "server/sample_repository/client/src/Dashboard.jsx[440-456]:load",
+            "server/sample_repository/client/src/Dashboard.jsx[461-471]:openHistoryChat"
+        ]
     },
     {
-        "query": "How does the load function handle errors when fetching chat history from the database, and what information is used to populate the chat history dialog when a chat is opened using the openHistoryChat function?",
-        "required_files": [
-            "server/sample_repository/client/src/Dashboard.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/Dashboard.jsx[440-456]:load"
+        "query": "If there is an error in loading the chat history, how does it affect the opening of a history chat and what would be the expected state of the error and active chat variables?",
+        "root_id": "server/sample_repository/client/src/Dashboard.jsx[440-456]:load",
+        "required_functions": [
+            "server/sample_repository/client/src/Dashboard.jsx[440-456]:load",
+            "server/sample_repository/client/src/Dashboard.jsx[461-471]:openHistoryChat"
+        ]
     },
     {
-        "query": "How does the system handle a user submitting a query, specifically in terms of preventing default form submission behavior and what happens after the query is processed?",
-        "required_files": [
-            "server/sample_repository/client/src/Dashboard.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/Dashboard.jsx[526-526]:handleKeyDown"
+        "query": "What sequence of events occurs when the 'Enter' key is pressed without the 'Shift' key, and how does the application handle the submission of a user's input, including any subsequent API calls, error handling, and updates to the chat history?",
+        "root_id": "server/sample_repository/client/src/Dashboard.jsx[526-526]:handleKeyDown",
+        "required_functions": [
+            "server/sample_repository/client/src/Dashboard.jsx[526-526]:handleKeyDown",
+            "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit"
+        ]
     },
     {
-        "query": "What is the sequence of events that occurs when a user presses the Enter key without shifting, including any API calls and database operations, and how does this relate to the chat history?",
-        "required_files": [
-            "server/sample_repository/client/src/Dashboard.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/Dashboard.jsx[526-526]:handleKeyDown"
+        "query": "When a user submits input and the application successfully retrieves a response from the backend, how does it construct the 'assistantMsg' object, and what information is persisted to the 'chat_history' table in the database, including the user's ID, email, and input prompt?",
+        "root_id": "server/sample_repository/client/src/Dashboard.jsx[526-526]:handleKeyDown",
+        "required_functions": [
+            "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit",
+            "server/sample_repository/client/src/Dashboard.jsx[526-526]:handleKeyDown"
+        ]
     },
     {
-        "query": "How does the animation delay of a node in the DAG visualization impact the transition timing of the edges in the graph, and what calculations are performed by the getNodeCenter function to determine the position of the nodes?",
-        "required_files": [
-            "server/sample_repository/client/src/LandingPage.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/LandingPage.jsx[8-83]:DAGVisualization"
+        "query": "What is the delay and position of each node in the DAG visualization, and how are they related to the getNodeCenter function's calculations?",
+        "root_id": "server/sample_repository/client/src/LandingPage.jsx[8-83]:DAGVisualization",
+        "required_functions": [
+            "server/sample_repository/client/src/LandingPage.jsx[8-83]:DAGVisualization",
+            "server/sample_repository/client/src/LandingPage.jsx[35-39]:getNodeCenter"
+        ]
     },
     {
-        "query": "What is the relationship between the activeNode state variable in the DAGVisualization component, the styling of the edges in the graph, and the getNodeCenter function's role in positioning the nodes, and how do these elements interact to create the dynamic visualization effect?",
-        "required_files": [
-            "server/sample_repository/client/src/LandingPage.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/LandingPage.jsx[8-83]:DAGVisualization"
+        "query": "How does the getNodeCenter function's returned x and y coordinates impact the rendering of the DAG nodes and edges in the DAGVisualization component?",
+        "root_id": "server/sample_repository/client/src/LandingPage.jsx[8-83]:DAGVisualization",
+        "required_functions": [
+            "server/sample_repository/client/src/LandingPage.jsx[8-83]:DAGVisualization",
+            "server/sample_repository/client/src/LandingPage.jsx[35-39]:getNodeCenter"
+        ]
     },
     {
-        "query": "Explain the relationship between user authentication and the rendering of the particle animation in the LandingPage component.",
-        "required_files": [
-            "server/sample_repository/client/src/LandingPage.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage"
+        "query": "How does the LandingPage function handle the authentication state change and subsequently update the particle animation on the canvas?",
+        "root_id": "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage",
+        "required_functions": [
+            "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage",
+            "server/sample_repository/client/src/LandingPage.jsx[296-323]:draw"
+        ]
     },
     {
-        "query": "Describe the sequence of events that occur when a user signs out of the application, including how it affects the animation and other components on the page.",
-        "required_files": [
-            "server/sample_repository/client/src/LandingPage.jsx"
-        ],
-        "root_id": "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage"
+        "query": "What is the relationship between the user authentication state in the LandingPage function and the rendering of the navigation bar with the Google sign-in button, and how does this impact the overall layout of the page?",
+        "root_id": "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage",
+        "required_functions": [
+            "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage",
+            "server/sample_repository/client/src/LandingPage.jsx[296-323]:draw"
+        ]
     }
 ]
