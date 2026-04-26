@@ -10,6 +10,8 @@ import ollama
 RETRIEVER_DIR = Path(__file__).resolve().parent
 SERVER_DIR = RETRIEVER_DIR.parent
 
+TOKENS_ANSWER = 500
+
 if str(SERVER_DIR) not in sys.path:
     sys.path.insert(0, str(SERVER_DIR))
 
@@ -33,6 +35,10 @@ def generate_rag_answer(
     env_path = server_dir / ".env"
     
     output_dir = Path(output_dir)
+    
+    enc = tiktoken.get_encoding("cl100k_base")
+    estimated_input = len(enc.encode(llm_payload))
+    safe_ctx = estimated_input + TOKENS_ANSWER + 256
     
     # 1. Read the Prepared Context & Query
     if llm_payload is None:
@@ -62,8 +68,8 @@ def generate_rag_answer(
                     {"role": "user", "content": llm_payload}
                 ],
                 options={
-                    "num_ctx": 10240,     # Bumped to 10K to ensure plenty of room for output
-                    "num_predict": -1,    # -1 = Infinite generation (don't stop artificially)
+                    "num_ctx": safe_ctx, # Bumped to 10K to ensure plenty of room for output
+                    "num_predict": TOKENS_ANSWER,
                     "temperature": 0.1
                 }
             )
@@ -89,8 +95,8 @@ def generate_rag_answer(
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": llm_payload}
                 ],
-                temperature=0.1, # Matched to Ollama for fair evaluation
-                max_tokens=1024  # Increased slightly to ensure full code explanations
+                temperature=0.1,
+                max_tokens=TOKENS_ANSWER
             )
             
             return response.choices[0].message.content
