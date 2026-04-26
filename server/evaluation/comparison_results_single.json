@@ -2,36 +2,166 @@
     {
         "query": "What component is responsible for interacting with the Groq model to select the best tool and generate its input based on a task description and available tools?",
         "context_winner": "A",
-        "context_reasoning": "Context A contains the full implementation of '_score_tools', which directly performs the tool selection and input generation using Groq, whereas Context B only provides fragments and the '_generalize' function.",
+        "context_reasoning": "Context A contains the exact function '_score_tools' which is responsible for selecting the best tool and generating its input using Groq, whereas Context B only contains the generalization logic and unrelated DAG functions.",
+        "context_scores": {
+            "A": {
+                "relevance": 2,
+                "completeness": 2,
+                "precision": 2
+            },
+            "B": {
+                "relevance": 1,
+                "completeness": 0,
+                "precision": 1
+            }
+        },
         "answer_winner": "A",
-        "answer_reasoning": "System A correctly identifies `_score_tools` as the function that selects the tool and generates its input, whereas System B incorrectly identifies `_generalize`, which only simplifies the task description."
+        "answer_reasoning": "System A correctly identified the `_score_tools` function as the component that selects the tool and generates the input, whereas System B incorrectly identified `_generalize`, which only simplifies the task description.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 2,
+                "correctness": 2,
+                "completeness": 2,
+                "clarity": 2
+            },
+            "B": {
+                "faithfulness": 2,
+                "correctness": 0,
+                "completeness": 0,
+                "clarity": 2
+            }
+        }
     },
     {
         "query": "What algorithm can be used to detect circular dependencies between tasks in a workflow?",
-        "context_winner": "B",
-        "context_reasoning": "Context B provides the complete implementation of the cycle detection algorithm in the full_source section while maintaining higher precision by truncating irrelevant code, whereas Context A includes large blocks of unrelated JSX.",
+        "context_winner": "TIE",
+        "context_reasoning": "Both contexts provide the complete and correct implementation of the cycle detection algorithm using DFS, but Context B is slightly more precise as the unrelated code is truncated.",
+        "context_scores": {
+            "A": {
+                "relevance": 2,
+                "completeness": 2,
+                "precision": 1
+            },
+            "B": {
+                "relevance": 2,
+                "completeness": 2,
+                "precision": 2
+            }
+        },
         "answer_winner": "A",
-        "answer_reasoning": "System A provides a more complete and helpful answer by including a detailed step-by-step explanation of the algorithm and the corresponding code snippet from the context, whereas System B is very brief."
+        "answer_reasoning": "System A provides a much more comprehensive answer, including a detailed step-by-step explanation of the algorithm and the corresponding code snippet from the context.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 2,
+                "correctness": 2,
+                "completeness": 2,
+                "clarity": 2
+            },
+            "B": {
+                "faithfulness": 2,
+                "correctness": 2,
+                "completeness": 1,
+                "clarity": 2
+            }
+        }
     },
     {
         "query": "What logic is used to order and position nodes in a directed acyclic graph layout to minimize overlap and optimize visual clarity?",
         "context_winner": "A",
-        "context_reasoning": "Context A contains the 'buildDagLayout' function, which explicitly implements the topological sorting, layering, and coordinate calculation logic used to position nodes in a DAG layout.",
+        "context_reasoning": "Context A contains the 'buildDagLayout' function which explicitly implements the logic for topological sorting, layering, and coordinate calculation to position DAG nodes, whereas Context B contains unrelated backend workflow execution logic.",
+        "context_scores": {
+            "A": {
+                "relevance": 2,
+                "completeness": 2,
+                "precision": 1
+            },
+            "B": {
+                "relevance": 0,
+                "completeness": 0,
+                "precision": 0
+            }
+        },
         "answer_winner": "A",
-        "answer_reasoning": "System A correctly identified and explained the layout logic in the `buildDagLayout` function, whereas System B completely ignored the query about visual layout and instead described the execution flow of the graph."
+        "answer_reasoning": "System A correctly identified and explained the layout logic in the provided code, whereas System B described the execution/orchestration logic, completely failing to answer the user's query about visual positioning.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 2,
+                "correctness": 2,
+                "completeness": 2,
+                "clarity": 2
+            },
+            "B": {
+                "faithfulness": 2,
+                "correctness": 0,
+                "completeness": 0,
+                "clarity": 2
+            }
+        }
     },
     {
         "query": "How does the system determine whether to continue, retry, or stop execution based on task status and history?",
         "context_winner": "A",
-        "context_reasoning": "Context A contains the exact logic for routing execution, counting retries, and determining task status in the 'route_execution' and '_get_pending_task' functions, whereas Context B is entirely irrelevant.",
+        "context_reasoning": "Context A contains the exact logic for routing execution, handling retries, and determining task completion in the `route_execution` and `_get_pending_task` functions, whereas Context B is entirely unrelated.",
+        "context_scores": {
+            "A": {
+                "relevance": 2,
+                "completeness": 2,
+                "precision": 2
+            },
+            "B": {
+                "relevance": 0,
+                "completeness": 0,
+                "precision": 0
+            }
+        },
         "answer_winner": "A",
-        "answer_reasoning": "System A correctly identifies and explains the logic in the `route_execution` function as requested, whereas System B provides a completely irrelevant answer about OpenAPI tool generation."
+        "answer_reasoning": "System A correctly answered the query using the provided code, whereas System B provided an answer about OpenAPI tools that was completely irrelevant to the user's question.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 2,
+                "correctness": 2,
+                "completeness": 2,
+                "clarity": 2
+            },
+            "B": {
+                "faithfulness": 2,
+                "correctness": 0,
+                "completeness": 0,
+                "clarity": 2
+            }
+        }
     },
     {
         "query": "What component is responsible for reading OpenAPI specifications and generating a list of tools for use in the application?",
         "context_winner": "A",
-        "context_reasoning": "Context A contains the exact function 'get_openapi_tools' which reads OpenAPI specifications and generates tools, whereas Context B is entirely unrelated to OpenAPI or tool generation.",
+        "context_reasoning": "Context A contains the exact function 'get_openapi_tools' which reads OpenAPI specs and generates tools, whereas Context B is entirely unrelated.",
+        "context_scores": {
+            "A": {
+                "relevance": 2,
+                "completeness": 2,
+                "precision": 2
+            },
+            "B": {
+                "relevance": 0,
+                "completeness": 0,
+                "precision": 0
+            }
+        },
         "answer_winner": "A",
-        "answer_reasoning": "System A correctly identified the relevant function and file from the provided context, whereas System B provided an answer to a completely different and unrelated question."
+        "answer_reasoning": "System A correctly answered the query based on the provided context, whereas System B provided an answer to a completely different, unrelated question.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 2,
+                "correctness": 2,
+                "completeness": 2,
+                "clarity": 2
+            },
+            "B": {
+                "faithfulness": 0,
+                "correctness": 0,
+                "completeness": 0,
+                "clarity": 2
+            }
+        }
     }
 ]

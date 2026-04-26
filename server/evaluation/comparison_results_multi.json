@@ -3,35 +3,165 @@
         "query": "What happens when a task has already been attempted with all available tools and the select_tool function returns None, considering the overall state transition and the final output compilation?",
         "context_winner": "A",
         "context_reasoning": "Context A provides the full implementation of execute_task, which explicitly shows the state transition when tool is None and the final output compilation logic, whereas Context B is heavily truncated.",
+        "context_scores": {
+            "A": {
+                "relevance": 2,
+                "completeness": 2,
+                "precision": 2
+            },
+            "B": {
+                "relevance": 1,
+                "completeness": 0,
+                "precision": 1
+            }
+        },
         "answer_winner": "A",
-        "answer_reasoning": "System A correctly identifies the specific return values and the failure message added to the reflexion_scratchpad when select_tool returns None, whereas System B is vague and fails to utilize the provided code in execute_task."
+        "answer_reasoning": "System A correctly analyzed the provided code to explain the specific return values and state transitions, whereas System B provided a vague answer and incorrectly suggested a fallback tool might be used in this flow.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 2,
+                "correctness": 2,
+                "completeness": 2,
+                "clarity": 2
+            },
+            "B": {
+                "faithfulness": 1,
+                "correctness": 1,
+                "completeness": 0,
+                "clarity": 1
+            }
+        }
     },
     {
         "query": "How does the evaluate_dag function use the check_for_cycles function to validate the DAG structure before evaluating it based on the custom 15-point metric using Groq, and what are the implications of a cycle being detected in the task dependencies on the overall judge score and feedback?",
         "context_winner": "A",
-        "context_reasoning": "Context A provides the full implementation of both evaluate_dag and check_for_cycles, whereas Context B lacks the check_for_cycles function entirely.",
+        "context_reasoning": "Context A provides both the evaluate_dag function and the implementation of check_for_cycles, whereas Context B only provides the caller.",
+        "context_scores": {
+            "A": {
+                "relevance": 2,
+                "completeness": 2,
+                "precision": 1
+            },
+            "B": {
+                "relevance": 2,
+                "completeness": 1,
+                "precision": 1
+            }
+        },
         "answer_winner": "A",
-        "answer_reasoning": "System A provides a clearer, more concise explanation and includes the relevant code snippet, whereas System B is repetitive and mentions internal tool usage ('get_function_source') that is irrelevant to the user's query."
+        "answer_reasoning": "System A is better structured and fully grounded, whereas System B hallucinates the existence of a 'get_function_source' function not present in the provided context.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 2,
+                "correctness": 2,
+                "completeness": 2,
+                "clarity": 2
+            },
+            "B": {
+                "faithfulness": 1,
+                "correctness": 2,
+                "completeness": 2,
+                "clarity": 1
+            }
+        }
     },
     {
         "query": "If the system encounters a scenario where the 'tasks' within the current DAG do not contain any 'description', and the 'raw_results' dictionary does not have any matching task IDs, how does it handle the creation of the 'task_lookup' dictionary and the subsequent construction of 'successful_results', especially when the '_parse_success_payload' function might return a fallback due to an empty or malformed payload?",
         "context_winner": "A",
-        "context_reasoning": "Context A provides the full implementation of 'synthesize_output' and '_parse_success_payload', allowing for a complete answer to all parts of the query, whereas Context B contains truncated snippets.",
+        "context_reasoning": "Context A provides the full implementation of synthesize_output and _parse_success_payload, whereas Context B contains truncated snippets that omit the critical logic requested.",
+        "context_scores": {
+            "A": {
+                "relevance": 2,
+                "completeness": 2,
+                "precision": 2
+            },
+            "B": {
+                "relevance": 2,
+                "completeness": 0,
+                "precision": 1
+            }
+        },
         "answer_winner": "A",
-        "answer_reasoning": "System A correctly analyzed the provided code to explain the fallback logic for task descriptions, raw results, and payload parsing, whereas System B claimed the information was missing and hallucinated that the payload parser is used to construct the task lookup dictionary."
+        "answer_reasoning": "System A correctly analyzed the provided code to explain the fallback logic for task descriptions, raw results, and payload parsing, whereas System B claimed the information was missing and then hallucinated that the payload parser is used to create the task lookup dictionary.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 2,
+                "correctness": 2,
+                "completeness": 2,
+                "clarity": 2
+            },
+            "B": {
+                "faithfulness": 0,
+                "correctness": 0,
+                "completeness": 0,
+                "clarity": 1
+            }
+        }
     },
     {
         "query": "How does the route execution handle the case when the scratchpad exceeds the maximum allowed entries, and what is the role of the parse_scratchpad function in determining the completion and failure of tasks in this scenario?",
         "context_winner": "A",
         "context_reasoning": "Context A provides the full implementation of both route_execution and parse_scratchpad, whereas Context B provides only truncated fragments of the code.",
+        "context_scores": {
+            "A": {
+                "relevance": 2,
+                "completeness": 2,
+                "precision": 2
+            },
+            "B": {
+                "relevance": 2,
+                "completeness": 0,
+                "precision": 1
+            }
+        },
         "answer_winner": "A",
-        "answer_reasoning": "System A correctly identifies that in the specific scenario where the scratchpad exceeds the maximum entries, the function returns early and therefore the results of parse_scratchpad are not used, whereas System B provides a more generic description."
+        "answer_reasoning": "System A correctly identifies that in the specific scenario where the scratchpad exceeds the maximum entries, the parse_scratchpad function is actually bypassed due to the early return, whereas System B only describes the general function of parse_scratchpad.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 2,
+                "correctness": 2,
+                "completeness": 2,
+                "clarity": 2
+            },
+            "B": {
+                "faithfulness": 2,
+                "correctness": 2,
+                "completeness": 1,
+                "clarity": 2
+            }
+        }
     },
     {
         "query": "What sequence of events occurs when the 'Enter' key is pressed without the 'Shift' key, and how does the application handle the submission of a user's input, including any subsequent API calls, error handling, and updates to the chat history?",
         "context_winner": "A",
-        "context_reasoning": "Context A provides the full Dashboard component, allowing the user to see exactly how handleKeyDown is wired to the textarea and how it triggers the complete handleSubmit logic, including API calls and Supabase history updates.",
+        "context_reasoning": "Context A provides all the necessary functions (handleKeyDown, handleSubmit) and the surrounding component context with very little noise, whereas Context B contains many unrelated code snippets.",
+        "context_scores": {
+            "A": {
+                "relevance": 2,
+                "completeness": 2,
+                "precision": 2
+            },
+            "B": {
+                "relevance": 2,
+                "completeness": 2,
+                "precision": 1
+            }
+        },
         "answer_winner": "A",
-        "answer_reasoning": "System A provides a much more detailed and accurate step-by-step sequence of events, specifically capturing the optimistic UI update (adding the user message before the API call) and the granular state changes (loading, prompt reset) that System B omits."
+        "answer_reasoning": "System A provides a much more detailed and accurate step-by-step sequence of the handleSubmit function, including the immediate UI updates and specific error handling, whereas System B is more summarized and includes irrelevant information about deleting chats.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 2,
+                "correctness": 2,
+                "completeness": 2,
+                "clarity": 2
+            },
+            "B": {
+                "faithfulness": 2,
+                "correctness": 2,
+                "completeness": 1,
+                "clarity": 2
+            }
+        }
     }
 ]
