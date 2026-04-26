@@ -275,15 +275,63 @@ def run_comparison(
     print("Comparison complete!\n")
     return comparison_results
 
+def aggregate_scores(comparison_results_filepath: str) -> None:
+    comparison_results_filepath = EVALUATION_DIR / comparison_results_filepath
+    with open(comparison_results_filepath, "r", encoding="utf-8") as f:
+        comparison_results = json.load(f)
+        
+    num_queries = len(comparison_results)
+        
+    context_scores_dict = {
+        "A": {criterion: 0 for criterion in CONTEXT_CRITERIA},
+        "B": {criterion: 0 for criterion in CONTEXT_CRITERIA},
+    }
+
+    for item in comparison_results:
+        scores = item.get("context_scores", {})
+        for system in ("A", "B"):
+            for criterion in CONTEXT_CRITERIA:
+                context_scores_dict[system][criterion] += scores.get(system, {}).get(criterion, 0)
+        
+    for system in ("A", "B"):
+        for criterion in CONTEXT_CRITERIA:
+            context_scores_dict[system][criterion] /= num_queries
+    
+    answer_scores_dict = {
+        "A": {criterion: 0 for criterion in ANSWER_CRITERIA},
+        "B": {criterion: 0 for criterion in ANSWER_CRITERIA},
+    }
+
+    for item in comparison_results:
+        scores = item.get("answer_scores", {})
+        for system in ("A", "B"):
+            for criterion in ANSWER_CRITERIA:
+                answer_scores_dict[system][criterion] += scores.get(system, {}).get(criterion, 0)
+        
+    for system in ("A", "B"):
+        for criterion in ANSWER_CRITERIA:
+            answer_scores_dict[system][criterion] /= num_queries
+
+    comparison_results.append({"aggregate_context_scores": context_scores_dict})
+    comparison_results.append({"aggregate_answer_scores": answer_scores_dict})
+
+    # FIX: write back to file
+    with open(comparison_results_filepath, "w", encoding="utf-8") as f:
+        json.dump(comparison_results, f, indent=4)
+
 if __name__ == "__main__":
     RESULTS_FILE = "comparison_results_multi.json"
     AGENTIC_SYSTEM_FILE = "agentic_rag_results_multi.json"
     RAG_SYSTEM_FILE = "rag_system_results_multi.json"
 
     run_comparison(RESULTS_FILE, AGENTIC_SYSTEM_FILE, RAG_SYSTEM_FILE)
-    
+    print("Aggregating scores...")
+    aggregate_scores(RESULTS_FILE)
+
     RESULTS_FILE = "comparison_results_single.json"
     AGENTIC_SYSTEM_FILE = "agentic_rag_results_single.json"
     RAG_SYSTEM_FILE = "rag_system_results_single.json"
 
     run_comparison(RESULTS_FILE, AGENTIC_SYSTEM_FILE, RAG_SYSTEM_FILE)
+    print("Aggregating scores...")
+    aggregate_scores(RESULTS_FILE)

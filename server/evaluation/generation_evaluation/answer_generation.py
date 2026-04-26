@@ -72,10 +72,10 @@ if __name__ == "__main__":
 
     generate_answers_from_models(RESULTS_FILE, "llama-3.3-70b-versatile", "groq")
     generate_answers_from_models(RESULTS_FILE, "qwen2.5-coder:7b", "ollama")
-    generate_answers_from_models(RESULTS_FILE, "llama3.1:8b", "ollama")
+    generate_answers_from_models(RESULTS_FILE, "gemma3:4b", "ollama")
     
     RESULTS_FILE = "rag_system_results_multi.json"
 
     generate_answers_from_models(RESULTS_FILE, "llama-3.3-70b-versatile", "groq")
     generate_answers_from_models(RESULTS_FILE, "qwen2.5-coder:7b", "ollama")
-    generate_answers_from_models(RESULTS_FILE, "llama3.1:8b", "ollama")
+    generate_answers_from_models(RESULTS_FILE, "gemma3:4b", "ollama")

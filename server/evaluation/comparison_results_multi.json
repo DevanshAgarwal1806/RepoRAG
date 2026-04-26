@@ -163,5 +163,35 @@
                 "clarity": 2
             }
         }
+    },
+    {
+        "aggregate_context_scores": {
+            "A": {
+                "relevance": 2.0,
+                "completeness": 2.0,
+                "precision": 1.8
+            },
+            "B": {
+                "relevance": 1.8,
+                "completeness": 0.6,
+                "precision": 1.0
+            }
+        }
+    },
+    {
+        "aggregate_answer_scores": {
+            "A": {
+                "faithfulness": 2.0,
+                "correctness": 2.0,
+                "completeness": 2.0,
+                "clarity": 2.0
+            },
+            "B": {
+                "faithfulness": 1.2,
+                "correctness": 1.4,
+                "completeness": 0.8,
+                "clarity": 1.4
+            }
+        }
     }
 ]

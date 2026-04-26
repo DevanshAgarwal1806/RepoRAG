@@ -203,7 +203,7 @@ def run_comparison(model_1: str, model_2: str, results_filename: str) -> list:
 if __name__ == "__main__":
     MODEL_A = "llama-3.3-70b-versatile"
     MODEL_B = "qwen2.5-coder:7b"
-    MODEL_C = "llama3.1:8b"
+    MODEL_C = "gemma3:4b"
 
     for filename in ["rag_system_results_single.json", "rag_system_results_multi.json"]:
         run_comparison(MODEL_A, MODEL_B, filename)
