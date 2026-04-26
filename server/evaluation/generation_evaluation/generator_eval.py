@@ -199,6 +199,32 @@ def run_comparison(model_1: str, model_2: str, results_filename: str) -> list:
     print(f"Done. Results saved to: {output_filename}\n")
     return comparison_results
 
+def aggregate_scores(comparison_results_filepath: str) -> None:
+    comparison_results_filepath = GENERATOR_EVALUATION_DIR / comparison_results_filepath
+    with open(comparison_results_filepath, "r", encoding="utf-8") as f:
+        comparison_results = json.load(f)
+
+    num_queries = len(comparison_results)
+
+    answer_scores_dict = {
+        "A": {criterion: 0 for criterion in ANSWER_CRITERIA},
+        "B": {criterion: 0 for criterion in ANSWER_CRITERIA},
+    }
+
+    for item in comparison_results:
+        scores = item.get("scores", {})
+        for system in ("A", "B"):
+            for criterion in ANSWER_CRITERIA:
+                answer_scores_dict[system][criterion] += scores.get(system, {}).get(criterion, 0)
+
+    for system in ("A", "B"):
+        for criterion in ANSWER_CRITERIA:
+            answer_scores_dict[system][criterion] /= num_queries
+
+    comparison_results.append({"aggregate_answer_scores": answer_scores_dict})
+
+    with open(comparison_results_filepath, "w", encoding="utf-8") as f:
+        json.dump(comparison_results, f, indent=4)
 
 if __name__ == "__main__":
     MODEL_A = "llama-3.3-70b-versatile"
@@ -209,3 +235,8 @@ if __name__ == "__main__":
         run_comparison(MODEL_A, MODEL_B, filename)
         run_comparison(MODEL_A, MODEL_C, filename)
         run_comparison(MODEL_B, MODEL_C, filename)
+        
+        print(f"\nAggregating scores for {filename}...")
+        aggregate_scores(_output_filename(MODEL_A, MODEL_B, filename))
+        aggregate_scores(_output_filename(MODEL_A, MODEL_C, filename))
+        aggregate_scores(_output_filename(MODEL_B, MODEL_C, filename))

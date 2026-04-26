@@ -93,5 +93,21 @@
                 "clarity": 2
             }
         }
+    },
+    {
+        "aggregate_answer_scores": {
+            "A": {
+                "faithfulness": 2.0,
+                "correctness": 2.0,
+                "completeness": 2.0,
+                "clarity": 2.0
+            },
+            "B": {
+                "faithfulness": 1.2,
+                "correctness": 1.0,
+                "completeness": 0.4,
+                "clarity": 1.8
+            }
+        }
     }
 ]
