@@ -44,10 +44,12 @@ def generate_answers_from_models(
     for idx, item in enumerate(results):
         query = item.get("query", "")
         print(f"[{idx+1}/{len(results)}] Generating answer for query: {query[:70]}...")
+        payload = item.get("retrieved_context", "")
+        print(f"Payload token count: {_number_of_tokens(payload)}")
+        if item.get("payload_token_count") is None:
+            item["payload_token_count"] = _number_of_tokens(payload)
 
         if item.get(f"generated_answer_{model_name}") in (None, "ERROR"):
-            payload = item.get("retrieved_context", "")
-            print(f"Payload token count: {_number_of_tokens(payload)}")
             start = time.perf_counter()
             generated_answer = generate_rag_answer(DEFAULT_OUTPUT_DIR, payload, provider, model_name)
             end = time.perf_counter()
