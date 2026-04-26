@@ -1,0 +1,8 @@
+{
+  "description": "Database schema containing employee profiles, current project requirements, and historical project performance metrics for AI-driven task assignment.",
+  "tables": {
+    "neurax_employees_dataset": "Contains employee details including their roles, technical skills, years of experience, and current workload percentages.",
+    "neurax_projects_dataset": "Lists active and upcoming projects, including their objectives, required technical skills, deadlines in days, and priority levels.",
+    "neurax_project_history_dataset": "Logs historical project execution data, tracking team sizes, tools utilized, completion times, and overall success scores."
+  }
+}

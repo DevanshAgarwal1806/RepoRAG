@@ -3,6 +3,7 @@ import argparse
 import networkx as nx
 from pathlib import Path
 import warnings
+import time
 
 from indexer.ast_parser import index_repository, save_functions_to_json, FunctionNode
 from indexer.graph_builder import build_dependency_graph
@@ -57,5 +58,7 @@ if __name__ == "__main__":
     parser.add_argument("--output", "-o", default="output",
                         help="Directory to write all output files (default: ./output)")
     args = parser.parse_args()
-
+    start = time.perf_counter()
     run_indexer_pipeline(args.repo_path, args.output)
+    end = time.perf_counter()
+    print(f"\nTotal execution time for indexing: {end - start:.2f} seconds")

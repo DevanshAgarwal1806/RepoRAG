@@ -1,0 +1,33 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Open Exchange Rate API",
+    "version": "1.0.0",
+    "description": "Fetches live currency exchange rates."
+  },
+  "servers": [
+    {
+      "url": "https://open.er-api.com/v6/latest"
+    }
+  ],
+  "paths": {
+    "/{base_currency}": {
+      "get": {
+        "summary": "Get latest exchange rates",
+        "operationId": "getExchangeRates",
+        "parameters": [
+          {
+            "name": "base_currency",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "default": "USD" },
+            "description": "The base currency code (e.g., USD, EUR, INR)"
+          }
+        ],
+        "responses": {
+          "200": { "description": "JSON object containing conversion rates for all major currencies." }
+        }
+      }
+    }
+  }
+}

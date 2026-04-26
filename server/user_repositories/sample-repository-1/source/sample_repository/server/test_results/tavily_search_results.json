@@ -1,0 +1,80 @@
+{
+  "query": "Latest breakthrough in Deep Reinforcement Learning",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+    {
+      "url": "https://www.mdpi.com/2673-2688/6/3/46",
+      "title": "Deep Reinforcement Learning: A Chronological Overview ... - MDPI",
+      "content": "The transformative breakthrough occurred when deep Q-networks (DQNs) demonstrated human-level performance on dozens of Atari 2600 video games using only raw",
+      "score": 0.9987551,
+      "raw_content": null
+    },
+    {
+      "url": "https://www.linkedin.com/pulse/breakthroughs-reinforcement-learning-new-era-ai-advancements-91bzc",
+      "title": "Breakthroughs in Reinforcement Learning: A New Era of AI ...",
+      "content": "These breakthroughs have expanded the scope and efficiency of RL, enabling more complex problem-solving and decision-making processes.",
+      "score": 0.9961456,
+      "raw_content": null
+    },
+    {
+      "url": "https://icml.cc/virtual/2022/session/20080",
+      "title": "Track: Reinforcement Learning: Deep RL - ICML 2026",
+      "content": "We propose a novel phasic solution by alternating online RL and offline SL for tackling sparse-reward goal-conditioned problems.",
+      "score": 0.99128854,
+      "raw_content": null
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=i-WyIw2I05g",
+      "title": "Cutting-Edge AI: Deep Reinforcement Learning in PyTorch (v2) Promo",
+      "content": "GET 75% OFF: https://deeplearningcourses.com/c/deep-reinforcement-learning-ddpg-td3-in-pytorch.",
+      "score": 0.99101454,
+      "raw_content": null
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=EvHRQhMX7_w",
+      "title": "Stanford CS224R Deep Reinforcement Learning | Spring 2025",
+      "content": "View course details: https://online.stanford.edu/courses/xcs224r-deep-reinforcement-learning April 2, 2025 This lecture covers: \u2022 Class",
+      "score": 0.98242307,
+      "raw_content": null
+    },
+    {
+      "url": "https://www.facebook.com/groups/595424764221375/posts/2320787658351735/",
+      "title": "Huge breakthrough from DeepMind! - Facebook",
+      "content": "Recently, the AlphaGo Zero algorithm achieved superhuman performance in the game of Go by representing Go knowledge with the use of deep",
+      "score": 0.9738444,
+      "raw_content": null
+    },
+    {
+      "url": "https://www.reddit.com/r/reinforcementlearning/comments/1qupb6j/rl_researchers_to_follow_for_new_algorithms/",
+      "title": "RL researchers to follow for new algorithms : r/reinforcementlearning",
+      "content": "My goal is not to miss any new breakthroughs in RL algorithms, so I'm mostly interested in people who work on them now or have done so recently.",
+      "score": 0.9693242,
+      "raw_content": null
+    },
+    {
+      "url": "https://spinningup.openai.com/en/latest/spinningup/keypapers.html",
+      "title": "Key Papers in Deep RL \u2014 Spinning Up documentation",
+      "content": "A list of papers in deep RL that are worth reading. This is far from comprehensive, but should provide a useful starting point for someone looking to do",
+      "score": 0.9079672,
+      "raw_content": null
+    },
+    {
+      "url": "https://medium.com/@fahey_james/the-state-of-reinforcement-learning-in-2025-foundations-frontiers-and-future-applications-c81ae556fc8a",
+      "title": "The State of Reinforcement Learning in 2025 - Medium",
+      "content": "Reinforcement learning in 2025 remains both promising and limited. It dominates AI headlines with demonstrations of high intelligence and autonomy.",
+      "score": 0.5794004,
+      "raw_content": null
+    },
+    {
+      "url": "https://www.nature.com/articles/s41586-025-09761-x",
+      "title": "Discovering state-of-the-art reinforcement learning algorithms - Nature",
+      "content": "The primary goal of artificial intelligence is to design agents that, like humans, can predict and act in complex environments to achieve goals.",
+      "score": 0.45713672,
+      "raw_content": null
+    }
+  ],
+  "response_time": 0.87,
+  "request_id": "a48ab622-19d6-4cb5-8fcb-0691fad76e44"
+}

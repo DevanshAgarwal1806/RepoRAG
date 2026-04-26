@@ -1,0 +1,291 @@
+{
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/._test_tool_retry_fallback.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/._main.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/._test_phase1.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/._test_synthesis_depth.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/evals/._test_dag_relevancy.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/evals/.___init__.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/data/._generate_supabase_specs.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/data/._csv_to_db.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/.___init__.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/tools/._test_tools.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/tools/._ecosystem.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/tools/._search.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/tools/._registry.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/tools/._tool_selector.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/tools/._openapi_parser.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/tools/._temp.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/config/._prompts.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/config/._settings.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/config/._keypool.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/config/.___init__.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/graph/._workflow.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/graph/.___init__.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/graph/._scratchpad.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/graph/._state.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/graph/nodes/._executor.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/graph/nodes/._evaluator.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/graph/nodes/._generator.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/graph/nodes/._reflector.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/graph/nodes/.___init__.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/graph/nodes/._synthesizer.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/graph/edges/.___init__.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/graph/edges/._routers.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/api/._server.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/server/src/api/.___init__.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/client/._vite.config.js": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/client/._eslint.config.js": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/client/src/._Dashboard.jsx": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/client/src/._LandingPage.jsx": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/client/src/._supabaseClient.js": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/client/src/._main.jsx": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/__MACOSX/sample_repository/client/src/._App.jsx": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/test_tool_retry_fallback.py": {
+    "unittest": "unittest",
+    "patch": "unittest.mock",
+    "Path": "pathlib",
+    "sys": "sys",
+    "_get_pending_task": "src.graph.nodes.executor",
+    "select_tool": "src.tools.tool_selector"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/test_synthesis_depth.py": {
+    "unittest": "unittest",
+    "Path": "pathlib",
+    "sys": "sys",
+    "_collect_latest_raw_results": "src.graph.nodes.synthesizer",
+    "_parse_success_payload": "src.graph.nodes.synthesizer"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/test_phase1.py": {
+    "os": "os",
+    "json": "json",
+    "load_dotenv": "dotenv",
+    "build_synapse_graph": "src.graph.workflow",
+    "execution_warnings": "src.tools.tool_selector"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/main.py": {
+    "load_dotenv": "dotenv",
+    "sys": "sys",
+    "build_synapse_graph": "src.graph.workflow",
+    "json": "json"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/evals/test_dag_relevancy.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/evals/__init__.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/data/csv_to_db.py": {
+    "os": "os",
+    "re": "re",
+    "json": "json",
+    "pd": "pandas",
+    "create_engine": "sqlalchemy",
+    "text": "sqlalchemy",
+    "load_dotenv": "dotenv"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/data/generate_supabase_specs.py": {
+    "os": "os",
+    "requests": "requests",
+    "json": "json",
+    "load_dotenv": "dotenv"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/__init__.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/tools/registry.py": {
+    "get_search_tools": "src.tools.search",
+    "get_research_tools": "src.tools.ecosystem",
+    "get_openapi_tools": "src.tools.openapi_parser"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/tools/tool_selector.py": {
+    "os": "os",
+    "json": "json",
+    "ChatGroq": "langchain_groq",
+    "SystemMessage": "langchain_core.messages",
+    "HumanMessage": "langchain_core.messages",
+    "TOOL_MATCH_THRESHOLD": "src.config.settings",
+    "TOOL_MAX_GENERALIZATION_STEPS": "src.config.settings",
+    "pool": "src.config.keypool"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/tools/openapi_parser.py": {
+    "os": "os",
+    "json": "json",
+    "yaml": "yaml",
+    "OpenAPIToolkit": "langchain_community.agent_toolkits.openapi.toolkit",
+    "RequestsWrapper": "langchain_community.utilities.requests",
+    "JsonSpec": "langchain_community.tools.json.tool",
+    "ChatGroq": "langchain_groq"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/tools/temp.py": {
+    "os": "os",
+    "load_dotenv": "dotenv"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/tools/search.py": {
+    "os": "os",
+    "load_dotenv": "dotenv",
+    "FirecrawlApp": "firecrawl",
+    "tool": "langchain_classic.agents",
+    "TavilySearch": "langchain_tavily"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/tools/ecosystem.py": {
+    "json": "json",
+    "os": "os",
+    "HTTPError": "urllib.error",
+    "URLError": "urllib.error",
+    "urlencode": "urllib.parse",
+    "urlopen": "urllib.request",
+    "wikipedia": "wikipedia",
+    "tool": "langchain_core.tools",
+    "WikipediaAPIWrapper": "langchain_community.utilities.wikipedia",
+    "WikipediaQueryRun": "langchain_community.tools.wikipedia.tool",
+    "WikipediaLoader": "langchain_community.document_loaders",
+    "ArxivAPIWrapper": "langchain_community.utilities.arxiv",
+    "ArxivQueryRun": "langchain_community.tools.arxiv.tool",
+    "ArxivLoader": "langchain_community.document_loaders",
+    "GitHubToolkit": "langchain_community.agent_toolkits.github.toolkit",
+    "GitHubAPIWrapper": "langchain_community.utilities.github",
+    "load_dotenv": "dotenv"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/tools/test_tools.py": {
+    "os": "os",
+    "json": "json",
+    "load_dotenv": "dotenv",
+    "get_openapi_tools": "src.tools.openapi_parser",
+    "get_research_tools": "src.tools",
+    "get_search_tool": "src.tools",
+    "firecrawl_scrape": "src.tools"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/config/__init__.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/config/prompts.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/config/keypool.py": {
+    "threading": "threading",
+    "GROQ_KEY_POOL": "src.config.settings"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/config/settings.py": {
+    "os": "os",
+    "load_dotenv": "dotenv"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/graph/scratchpad.py": {
+    "Counter": "collections"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/graph/__init__.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/graph/workflow.py": {
+    "StateGraph": "langgraph.graph",
+    "END": "langgraph.graph",
+    "SynapseState": "src.graph.state",
+    "generate_dag": "src.graph.nodes.generator",
+    "evaluate_dag": "src.graph.nodes.evaluator",
+    "execute_task": "src.graph.nodes.executor",
+    "reflect_on_execution": "src.graph.nodes.reflector",
+    "synthesize_output": "src.graph.nodes.synthesizer",
+    "route_evaluation": "src.graph.edges.routers",
+    "route_execution": "src.graph.edges.routers"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/graph/state.py": {
+    "TypedDict": "typing",
+    "List": "typing",
+    "Dict": "typing",
+    "Any": "typing",
+    "Annotated": "typing",
+    "operator": "operator"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/graph/nodes/reflector.py": {
+    "json": "json",
+    "ChatGroq": "langchain_groq",
+    "SystemMessage": "langchain_core.messages",
+    "HumanMessage": "langchain_core.messages",
+    "SynapseState": "src.graph.state",
+    "REFLECTOR_SYSTEM_PROMPT": "src.config.prompts",
+    "pool": "src.config.keypool"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/graph/nodes/__init__.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/graph/nodes/generator.py": {
+    "json": "json",
+    "ChatGroq": "langchain_groq",
+    "SystemMessage": "langchain_core.messages",
+    "HumanMessage": "langchain_core.messages",
+    "SynapseState": "src.graph.state",
+    "GENERATOR_SYSTEM_PROMPT": "src.config.prompts",
+    "GROQ_API_KEY_GENERATOR": "src.config.settings",
+    "build_tool_manifest": "src.tools.registry"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/graph/nodes/synthesizer.py": {
+    "json": "json",
+    "ChatGroq": "langchain_groq",
+    "SystemMessage": "langchain_core.messages",
+    "HumanMessage": "langchain_core.messages",
+    "SynapseState": "src.graph.state",
+    "pool": "src.config.keypool"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/graph/nodes/evaluator.py": {
+    "json": "json",
+    "ChatGroq": "langchain_groq",
+    "SystemMessage": "langchain_core.messages",
+    "HumanMessage": "langchain_core.messages",
+    "SynapseState": "src.graph.state",
+    "EVALUATOR_SYSTEM_PROMPT": "src.config.prompts",
+    "GROQ_API_KEY_EVALUATOR": "src.config.settings"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/graph/nodes/executor.py": {
+    "SynapseState": "src.graph.state",
+    "get_all_tools": "src.tools.registry",
+    "select_tool": "src.tools.tool_selector",
+    "get_attempted_tools": "src.graph.scratchpad",
+    "get_exhausted_task_ids": "src.graph.scratchpad",
+    "parse_scratchpad": "src.graph.scratchpad",
+    "TASK_MAX_RETRIES": "src.config.settings"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/graph/edges/__init__.py": {},
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/graph/edges/routers.py": {
+    "SynapseState": "src.graph.state",
+    "parse_scratchpad": "src.graph.scratchpad",
+    "DAG_MAX_RETRIES": "src.config.settings",
+    "DAG_PASSING_SCORE": "src.config.settings",
+    "TASK_MAX_RETRIES": "src.config.settings"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/api/server.py": {
+    "FastAPI": "fastapi",
+    "HTTPException": "fastapi",
+    "run_in_threadpool": "fastapi.concurrency",
+    "CORSMiddleware": "fastapi.middleware.cors",
+    "BaseModel": "pydantic",
+    "Field": "pydantic",
+    "run": "main"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/server/src/api/__init__.py": {
+    "app": ".server"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/client/vite.config.js": {
+    "defineConfig": "vite",
+    "react": "@vitejs/plugin-react"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/client/eslint.config.js": {
+    "js": "@eslint/js",
+    "globals": "globals",
+    "reactHooks": "eslint-plugin-react-hooks",
+    "reactRefresh": "eslint-plugin-react-refresh",
+    "defineConfig": "eslint/config",
+    "globalIgnores": "eslint/config"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/client/src/Dashboard.jsx": {
+    "useEffect": "react",
+    "useRef": "react",
+    "useState": "react",
+    "supabase": "./supabaseClient"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/client/src/main.jsx": {
+    "StrictMode": "react",
+    "createRoot": "react-dom/client",
+    "App": "./App.jsx"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/client/src/App.jsx": {
+    "useEffect": "react",
+    "useState": "react",
+    "supabase": "./supabaseClient",
+    "LandingPage": "./LandingPage",
+    "Dashboard": "./Dashboard"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/client/src/supabaseClient.js": {
+    "createClient": "@supabase/supabase-js"
+  },
+  "/Users/anshulrath/Documents/Acads/3-2/IR Project/RepoRAG/server/user_repositories/sample-repository-1/source/sample_repository/client/src/LandingPage.jsx": {
+    "useEffect": "react",
+    "useRef": "react",
+    "useState": "react",
+    "supabase": "./supabaseClient"
+  }
+}
