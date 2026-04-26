@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 COMPLETE_EVALUATION_DIR = Path(__file__).resolve().parent
 EVALUATION_ROOT = COMPLETE_EVALUATION_DIR.parent
 SERVER_DIR = EVALUATION_ROOT.parent
-GROUND_TRUTH_DIR = EVALUATION_ROOT / "ground_truth_construction"
+GROUND_TRUTH_DIR = EVALUATION_ROOT / "0-ground_truth_construction"
 DEFAULT_OUTPUT_DIR = SERVER_DIR / "sample_repository_output"
 DEFAULT_RESULTS_PATH = COMPLETE_EVALUATION_DIR / "rag_evaluation_results.json"
 

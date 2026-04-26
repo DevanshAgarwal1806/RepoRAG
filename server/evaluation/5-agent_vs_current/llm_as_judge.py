@@ -8,10 +8,10 @@ from pathlib import Path
 
 EVALUATION_DIR = Path(__file__).resolve().parent
 SERVER_DIR = EVALUATION_DIR.parent
-GROUND_TRUTH_DIR = EVALUATION_DIR / "ground_truth_construction"
+GROUND_TRUTH_DIR = EVALUATION_DIR / "0-ground_truth_construction"
 DEFAULT_OUTPUT_DIR = SERVER_DIR / "sample_repository_output"
-COMPLETE_SYSTEM_EVALUATION_DIR = EVALUATION_DIR / "complete_system_evaluation"
-AGENTIC_SYSTEM_OUTPUT_DIR = EVALUATION_DIR / "agentic_ai_baseline"
+COMPLETE_SYSTEM_EVALUATION_DIR = EVALUATION_DIR / "3-complete_system_evaluation"
+AGENTIC_SYSTEM_OUTPUT_DIR = EVALUATION_DIR / "4-agentic_ai_baseline"
 
 load_dotenv()
 

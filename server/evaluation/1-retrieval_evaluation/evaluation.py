@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 
 EVALUATION_DIR = Path(__file__).resolve().parent
 SERVER_DIR = EVALUATION_DIR.parent
-GROUND_TRUTH_DIR = EVALUATION_DIR / "ground_truth_construction"
+GROUND_TRUTH_DIR = EVALUATION_DIR / "0-ground_truth_construction"
 DEFAULT_OUTPUT_DIR = SERVER_DIR / "sample_repository_output"
 DEFAULT_RESULTS_PATH = EVALUATION_DIR / "retrieval_evaluation_results.json"
 
