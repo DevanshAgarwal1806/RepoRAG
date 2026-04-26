@@ -2,10 +2,7 @@ import os
 from pathlib import Path
 import sys
 from dotenv import load_dotenv
-from groq import Groq
-import tiktoken
 import argparse
-import ollama
 
 RETRIEVER_DIR = Path(__file__).resolve().parent
 SERVER_DIR = RETRIEVER_DIR.parent
@@ -14,6 +11,19 @@ TOKENS_ANSWER = 500
 
 if str(SERVER_DIR) not in sys.path:
     sys.path.insert(0, str(SERVER_DIR))
+
+
+def estimate_context_size(payload: str) -> int:
+    try:
+        import tiktoken
+
+        enc = tiktoken.get_encoding("cl100k_base")
+        estimated_input = len(enc.encode(payload))
+    except Exception:
+        estimated_input = max(1, len(payload) // 4)
+
+    return estimated_input + TOKENS_ANSWER + 256
+
 
 def generate_rag_answer(
     output_dir: str, 
@@ -35,11 +45,7 @@ def generate_rag_answer(
     env_path = server_dir / ".env"
     
     output_dir = Path(output_dir)
-    
-    enc = tiktoken.get_encoding("cl100k_base")
-    estimated_input = len(enc.encode(llm_payload))
-    safe_ctx = estimated_input + TOKENS_ANSWER + 256
-    
+
     # 1. Read the Prepared Context & Query
     if llm_payload is None:
         payload_path = output_dir / "final_llm_payload.md"
@@ -60,6 +66,9 @@ def generate_rag_answer(
 
     if provider == "ollama":
         try:
+            import ollama
+
+            safe_ctx = estimate_context_size(llm_payload)
             print(f"Generating local answer using Ollama ({model_name})...")
             response = ollama.chat(
                 model=model_name,
@@ -84,6 +93,8 @@ def generate_rag_answer(
         
         if not api_key or not api_key.startswith("gsk_"):
             raise ValueError("Valid Groq API Key (starting with 'gsk_') not found in server/.env.")
+
+        from groq import Groq
 
         client = Groq(api_key=api_key)
         

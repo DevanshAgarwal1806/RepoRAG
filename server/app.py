@@ -23,7 +23,6 @@ from rank_bm25 import BM25Okapi
 from server.indexer_pipeline import run_indexer_pipeline
 from retriever.bm25_basic import tokenize_code
 from retriever.generator import generate_rag_answer
-from retriever.graph_context import assemble_llm_context
 
 USER_REPOS_DIR = APP_DIR / "user_repositories"
 USER_REPOS_DIR.mkdir(parents=True, exist_ok=True)
@@ -84,12 +83,23 @@ def output_files(path: Path) -> dict[str, Path]:
     }
 
 
+def chat_history_path(path: Path) -> Path:
+    return path / "chat_history.json"
+
+
 def read_json_file(path: Path, default: Any) -> Any:
     if not path.exists():
         return default
 
     with open(path, "r", encoding="utf-8") as handle:
         return json.load(handle)
+
+
+def write_json_file(path: Path, values: Any) -> None:
+    temp_path = path.with_suffix(f"{path.suffix}.tmp")
+    with open(temp_path, "w", encoding="utf-8") as handle:
+        json.dump(values, handle, indent=2)
+    temp_path.replace(path)
 
 
 def write_metadata(path: Path, values: dict[str, Any]) -> None:
@@ -188,6 +198,91 @@ def load_functions(path: Path) -> list[dict[str, Any]]:
     return read_json_file(output_files(path)["functions"], [])
 
 
+def normalize_references(references: Any) -> list[dict[str, Any]]:
+    if not isinstance(references, list):
+        return []
+
+    normalized = []
+    for item in references:
+        if not isinstance(item, dict):
+            continue
+
+        normalized.append(
+            {
+                "id": item.get("id", ""),
+                "name": item.get("name", ""),
+                "file_path": item.get("file_path", ""),
+                "start_line": item.get("start_line"),
+                "end_line": item.get("end_line"),
+                "source_code": item.get("source_code", ""),
+            }
+        )
+
+    return normalized
+
+
+def read_chat_history(path: Path) -> list[dict[str, Any]]:
+    try:
+        raw_history = read_json_file(chat_history_path(path), [])
+    except (OSError, json.JSONDecodeError):
+        return []
+
+    if isinstance(raw_history, dict):
+        raw_history = raw_history.get("history", [])
+
+    if not isinstance(raw_history, list):
+        return []
+
+    history = []
+    for index, item in enumerate(raw_history, start=1):
+        if not isinstance(item, dict):
+            continue
+
+        query = item.get("query")
+        answer = item.get("answer")
+        if not isinstance(query, str) or not isinstance(answer, str):
+            continue
+
+        history.append(
+            {
+                "id": item.get("id") or f"chat-{index}",
+                "query": query,
+                "answer": answer,
+                "created_at": item.get("created_at"),
+                "generated_with_model": bool(item.get("generated_with_model", False)),
+                "references": normalize_references(item.get("references", [])),
+            }
+        )
+
+    return history
+
+
+def append_chat_history_entry(
+    path: Path,
+    query: str,
+    answer: str,
+    generated_with_model: bool,
+    references: list[dict[str, Any]],
+) -> dict[str, Any]:
+    created_at = now_iso()
+    entry = {
+        "id": f"chat-{int(datetime.now(timezone.utc).timestamp() * 1_000_000)}",
+        "query": query,
+        "answer": answer,
+        "created_at": created_at,
+        "generated_with_model": generated_with_model,
+        "references": normalize_references(references),
+    }
+
+    lock = get_repo_lock(path.name)
+    with lock:
+        history = read_chat_history(path)
+        history.append(entry)
+        write_json_file(chat_history_path(path), history)
+
+    return entry
+
+
 def score_functions(path: Path, query: str, limit: int = 4) -> list[dict[str, Any]]:
     functions = load_functions(path)
     if not functions:
@@ -215,14 +310,33 @@ def build_fallback_answer(query: str, references: list[dict[str, Any]]) -> str:
     return " ".join(summary)
 
 
+def build_llm_payload(query: str, references: list[dict[str, Any]]) -> str:
+    lines = [f"### USER QUERY: {query}", "", "### CODEBASE CONTEXT", ""]
+
+    for item in references:
+        lines.extend(
+            [
+                f"Function: `{item.get('name', 'Unknown')}`",
+                f"File: `{item.get('file_path', 'Unknown')}`",
+                f"Lines: {item.get('start_line', '?')}-{item.get('end_line', '?')}",
+                "",
+                "Code:",
+                "```",
+                item.get("source_code", ""),
+                "```",
+                "",
+            ]
+        )
+
+    return "\n".join(lines)
+
+
 def query_repository(path: Path, query: str) -> dict[str, Any]:
     references = score_functions(path, query)
-    reference_ids = [item["id"] for item in references]
 
-    if reference_ids:
-        payload, _ = assemble_llm_context(reference_ids, str(path), d=1)
+    if references:
+        payload = build_llm_payload(query, references)
         with open(output_files(path)["payload"], "w", encoding="utf-8") as handle:
-            handle.write(f"### USER QUERY: {query}\n\n")
             handle.write(payload)
 
     answer = build_fallback_answer(query, references)
@@ -234,20 +348,30 @@ def query_repository(path: Path, query: str) -> dict[str, Any]:
     except Exception:
         generated_with_model = False
 
+    normalized_references = [
+        {
+            "id": item["id"],
+            "name": item["name"],
+            "file_path": item["file_path"],
+            "start_line": item["start_line"],
+            "end_line": item["end_line"],
+            "source_code": item["source_code"],
+        }
+        for item in references
+    ]
+    history_entry = append_chat_history_entry(
+        path,
+        query,
+        answer,
+        generated_with_model,
+        normalized_references,
+    )
+
     return {
         "answer": answer,
         "generated_with_model": generated_with_model,
-        "references": [
-            {
-                "id": item["id"],
-                "name": item["name"],
-                "file_path": item["file_path"],
-                "start_line": item["start_line"],
-                "end_line": item["end_line"],
-                "source_code": item["source_code"],
-            }
-            for item in references
-        ],
+        "references": normalized_references,
+        "history_entry": history_entry,
     }
 
 
@@ -290,6 +414,7 @@ async def upload_repository(file: UploadFile = File(...)) -> dict[str, Any]:
         "error_message": None,
     }
     write_metadata(path, metadata)
+    write_json_file(chat_history_path(path), [])
 
     with NamedTemporaryFile(delete=False, suffix=".zip") as temp_file:
         temp_path = Path(temp_file.name)
@@ -311,6 +436,12 @@ async def upload_repository(file: UploadFile = File(...)) -> dict[str, Any]:
 def get_repository(repo_id: str) -> dict[str, Any]:
     path = repo_dir(repo_id)
     return summarize_repository(path)
+
+
+@app.get("/api/repositories/{repo_id}/chat-history")
+def get_repository_chat_history(repo_id: str) -> dict[str, Any]:
+    path = repo_dir(repo_id)
+    return {"history": read_chat_history(path)}
 
 
 @app.post("/api/repositories/{repo_id}/reindex")
@@ -339,6 +470,8 @@ def ask_repository(repo_id: str, request: QueryRequest) -> dict[str, Any]:
 def bootstrap_sample_repository() -> None:
     sample_path = USER_REPOS_DIR / "sample-repository"
     if sample_path.exists():
+        if not chat_history_path(sample_path).exists():
+            write_json_file(chat_history_path(sample_path), [])
         return
 
     original_source = APP_DIR / "sample_repository"
@@ -369,3 +502,4 @@ def bootstrap_sample_repository() -> None:
             "error_message": None,
         },
     )
+    write_json_file(chat_history_path(sample_path), [])

@@ -1,0 +1,84 @@
+[
+  {
+    "id": "chat-1777188339504947",
+    "query": "What is this doing",
+    "answer": "This codebase appears to be a part of a real-time telemetry analytics system. It consists of several components:\n\n1. **Event Validation**: The `isValidEvent` function checks if a telemetry event is valid by verifying that it has at least one sensor reading and a timestamp greater than 0.\n\n2. **Text Embeddings**: The `compute_embeddings` function generates a vector representation of a given list of strings. It uses a deterministic approach, distributing the ASCII values of characters across a 768-dimensional vector using sine and cosine waves, and then normalizes the resulting vector.\n\n3. **Stream Processing**: The `ingestAndRoute` function is part of a stream processing system. It takes in raw data, performs basic structural validation, normalizes the schema, and routes the data to an analytics queue.\n\n4. **Dashboard**: The `Dashboard` component is a React-based frontend that establishes a WebSocket connection to a stream endpoint. It receives telemetry events, parses them, and stores the latest 100 events in memory. The component displays the connection status and the number of active events in memory.\n\nIn summary, this codebase is designed to collect, process, and visualize real-time telemetry data. However, the exact purpose and functionality of the system depend on the specific requirements and context in which it is deployed. \n\nWithout more information, it's difficult to provide a more detailed explanation of what this code is doing. If you have any specific questions or need further clarification, please let me know.",
+    "created_at": "2026-04-26T07:25:39.504947+00:00",
+    "generated_with_model": true,
+    "references": [
+      {
+        "id": "server/sample_repository/frontend/modern_dash/types.ts[11-13]:isValidEvent",
+        "name": "isValidEvent",
+        "file_path": "server/sample_repository/frontend/modern_dash/types.ts",
+        "start_line": 11,
+        "end_line": 13,
+        "source_code": "export function isValidEvent(event: TelemetryEvent): boolean {\n    return event.sensorReadings.length > 0 && event.timestamp > 0;\n}"
+      },
+      {
+        "id": "server/sample_repository/backend/core_engine/fast_math.cpp[12-52]:compute_embeddings",
+        "name": "compute_embeddings",
+        "file_path": "server/sample_repository/backend/core_engine/fast_math.cpp",
+        "start_line": 12,
+        "end_line": 52,
+        "source_code": "std::vector<float> compute_embeddings(const std::vector<std::string>& texts) {\n    const int EMBEDDING_DIM = 768;\n    std::vector<float> embeddings(EMBEDDING_DIM, 0.0f);\n    \n    if (texts.empty()) {\n        return embeddings;\n    }\n\n    // Iterate through all provided texts to build a composite embedding\n    for (size_t t = 0; t < texts.size(); ++t) {\n        const std::string& text = texts[t];\n        \n        for (size_t i = 0; i < text.length(); ++i) {\n            // Distribute the ASCII value across the 768 dimensions using sine/cosine waves\n            // This creates a deterministic, non-uniform distribution of floats\n            int dim_index = (i * 31 + t) % EMBEDDING_DIM;\n            float char_weight = static_cast<float>(text[i]);\n            \n            if (i % 2 == 0) {\n                embeddings[dim_index] += std::sin(char_weight * 0.1f);\n            } else {\n                embeddings[dim_index] += std::cos(char_weight * 0.1f);\n            }\n        }\n    }\n\n    // Normalize the final embedding vector using L2 normalization\n    float sum_squares = 0.0f;\n    for (float val : embeddings) {\n        sum_squares += val * val;\n    }\n    \n    if (sum_squares > 0.0f) {\n        float magnitude = std::sqrt(sum_squares);\n        for (float& val : embeddings) {\n            val /= magnitude;\n        }\n    }\n\n    return embeddings;\n}"
+      },
+      {
+        "id": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java[22-47]:StreamProcessor.ingestAndRoute",
+        "name": "StreamProcessor.ingestAndRoute",
+        "file_path": "server/sample_repository/backend/java_service/src/main/java/com/polydata/StreamProcessor.java",
+        "start_line": 22,
+        "end_line": 47,
+        "source_code": "public boolean ingestAndRoute(String rawData) {\n        if (rawData == null || rawData.isEmpty()) {\n            LOGGER.warning(\"Received null or empty raw data packet. Dropping payload.\");\n            return false;\n        }\n\n        try {\n            // 1. Basic Structural Validation\n            if (!rawData.trim().startsWith(\"{\") || !rawData.trim().endsWith(\"}\")) {\n                throw new IllegalArgumentException(\"Malformed JSON payload: Must be a valid JSON object.\");\n            }\n\n            // 2. Schema Normalization\n            String normalizedData = normalizeSchema(rawData);\n\n            // 3. Routing to Analytics Queue\n            return routeToQueue(normalizedData);\n\n        } catch (IllegalArgumentException e) {\n            LOGGER.log(Level.WARNING, \"Validation error during ingestion: \" + e.getMessage());\n            return false;\n        } catch (Exception e) {\n            LOGGER.log(Level.SEVERE, \"Unexpected error routing data packet\", e);\n            return false;\n        }\n    }"
+      },
+      {
+        "id": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+        "name": "Dashboard",
+        "file_path": "server/sample_repository/frontend/modern_dash/Dashboard.tsx",
+        "start_line": 12,
+        "end_line": 68,
+        "source_code": "export const Dashboard: React.FC<Props> = ({ streamEndpoint }) => {\n    const [events, setEvents] = useState<TelemetryEvent[]>([]);\n    const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('disconnected');\n    const wsRef = useRef<WebSocket | null>(null);\n\n    useEffect(() => {\n        setConnectionStatus('connecting');\n        const ws = new WebSocket(streamEndpoint);\n        wsRef.current = ws;\n\n        ws.onopen = () => {\n            console.log(`Successfully connected to ${streamEndpoint}`);\n            setConnectionStatus('connected');\n        };\n\n        ws.onmessage = (messageEvent) => {\n            try {\n                const newEvent: TelemetryEvent = JSON.parse(messageEvent.data);\n                setEvents(prevEvents => {\n                    // Keep only the latest 100 events in memory to prevent browser lag\n                    const updated = [...prevEvents, newEvent];\n                    return updated.length > 100 ? updated.slice(updated.length - 100) : updated;\n                });\n            } catch (error) {\n                console.error(\"Failed to parse incoming telemetry data:\", error);\n            }\n        };\n\n        ws.onerror = (error) => {\n            console.error(\"WebSocket encountered an error:\", error);\n            setConnectionStatus('disconnected');\n        };\n\n        ws.onclose = () => {\n            console.log(\"WebSocket connection closed.\");\n            setConnectionStatus('disconnected');\n        };\n\n        // Cleanup function on component unmount\n        return () => {\n            if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {\n                wsRef.current.close();\n            }\n        };\n    }, [streamEndpoint]);\n\n    return (\n        <div className=\"dashboard-container\">\n            <h1>Live Telemetry Analytics</h1>\n            <div className={`status-indicator ${connectionStatus}`}>\n                Status: {connectionStatus}\n            </div>\n            <p>Active Events in Memory: {events.length}</p>\n            {/* Charting components would be rendered here using the 'events' state */}\n        </div>\n    );\n};"
+      }
+    ]
+  },
+  {
+    "id": "chat-1777188347787448",
+    "query": "odhvlfb",
+    "answer": "The provided query \"odhvlfb\" does not seem to be related to any specific functionality or code within the given context. The context includes code for a `Dashboard` component, `isValidEvent` function, `UserWidget` component, and `fetchLegacyUserData` function, but none of these seem to be directly related to the query \"odhvlfb\".\n\nTherefore, I cannot answer the user's question based on the provided code. The query \"odhvlfb\" appears to be unrelated to the given context, and without more information, it is not possible to provide a meaningful response.",
+    "created_at": "2026-04-26T07:25:47.787448+00:00",
+    "generated_with_model": true,
+    "references": [
+      {
+        "id": "server/sample_repository/frontend/modern_dash/Dashboard.tsx[12-68]:Dashboard",
+        "name": "Dashboard",
+        "file_path": "server/sample_repository/frontend/modern_dash/Dashboard.tsx",
+        "start_line": 12,
+        "end_line": 68,
+        "source_code": "export const Dashboard: React.FC<Props> = ({ streamEndpoint }) => {\n    const [events, setEvents] = useState<TelemetryEvent[]>([]);\n    const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('disconnected');\n    const wsRef = useRef<WebSocket | null>(null);\n\n    useEffect(() => {\n        setConnectionStatus('connecting');\n        const ws = new WebSocket(streamEndpoint);\n        wsRef.current = ws;\n\n        ws.onopen = () => {\n            console.log(`Successfully connected to ${streamEndpoint}`);\n            setConnectionStatus('connected');\n        };\n\n        ws.onmessage = (messageEvent) => {\n            try {\n                const newEvent: TelemetryEvent = JSON.parse(messageEvent.data);\n                setEvents(prevEvents => {\n                    // Keep only the latest 100 events in memory to prevent browser lag\n                    const updated = [...prevEvents, newEvent];\n                    return updated.length > 100 ? updated.slice(updated.length - 100) : updated;\n                });\n            } catch (error) {\n                console.error(\"Failed to parse incoming telemetry data:\", error);\n            }\n        };\n\n        ws.onerror = (error) => {\n            console.error(\"WebSocket encountered an error:\", error);\n            setConnectionStatus('disconnected');\n        };\n\n        ws.onclose = () => {\n            console.log(\"WebSocket connection closed.\");\n            setConnectionStatus('disconnected');\n        };\n\n        // Cleanup function on component unmount\n        return () => {\n            if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {\n                wsRef.current.close();\n            }\n        };\n    }, [streamEndpoint]);\n\n    return (\n        <div className=\"dashboard-container\">\n            <h1>Live Telemetry Analytics</h1>\n            <div className={`status-indicator ${connectionStatus}`}>\n                Status: {connectionStatus}\n            </div>\n            <p>Active Events in Memory: {events.length}</p>\n            {/* Charting components would be rendered here using the 'events' state */}\n        </div>\n    );\n};"
+      },
+      {
+        "id": "server/sample_repository/frontend/modern_dash/types.ts[11-13]:isValidEvent",
+        "name": "isValidEvent",
+        "file_path": "server/sample_repository/frontend/modern_dash/types.ts",
+        "start_line": 11,
+        "end_line": 13,
+        "source_code": "export function isValidEvent(event: TelemetryEvent): boolean {\n    return event.sensorReadings.length > 0 && event.timestamp > 0;\n}"
+      },
+      {
+        "id": "server/sample_repository/frontend/legacy_portal/UserWidget.jsx[6-13]:UserWidget",
+        "name": "UserWidget",
+        "file_path": "server/sample_repository/frontend/legacy_portal/UserWidget.jsx",
+        "start_line": 6,
+        "end_line": 13,
+        "source_code": "const UserWidget = ({ username, avatarUrl }) => {\n    return (\n        <div className=\"widget-card\">\n            <img src={avatarUrl} alt={`${username}'s avatar`} />\n            <h3>@{username}</h3>\n        </div>\n    );\n};"
+      },
+      {
+        "id": "server/sample_repository/frontend/legacy_portal/api_client.js[5-13]:fetchLegacyUserData",
+        "name": "fetchLegacyUserData",
+        "file_path": "server/sample_repository/frontend/legacy_portal/api_client.js",
+        "start_line": 5,
+        "end_line": 13,
+        "source_code": "export async function fetchLegacyUserData(userId) {\n    try {\n        const response = await fetch(`/api/v1/users/${userId}`);\n        return await response.json();\n    } catch (error) {\n        console.error(\"Failed to fetch user:\", error);\n        return null;\n    }\n}"
+      }
+    ]
+  }
+]

@@ -510,6 +510,9 @@
 }
 
 .message-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 8px;
   font-size: 0.85rem;
   text-transform: uppercase;

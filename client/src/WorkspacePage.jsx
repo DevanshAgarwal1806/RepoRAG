@@ -41,6 +41,28 @@ const shortSnippet = (snippet) => {
   return snippet.length > 420 ? `${snippet.slice(0, 420)}\n...` : snippet
 }
 
+const messagesFromHistory = (history = []) =>
+  history.flatMap((entry, index) => {
+    const id = entry.id ?? `history-${index}`
+
+    return [
+      {
+        id: `${id}-user`,
+        role: 'user',
+        content: entry.query,
+        createdAt: entry.created_at,
+      },
+      {
+        id: `${id}-assistant`,
+        role: 'assistant',
+        content: entry.answer,
+        references: entry.references ?? [],
+        generatedWithModel: entry.generated_with_model,
+        createdAt: entry.created_at,
+      },
+    ]
+  })
+
 const renderInlineMarkdown = (text) => {
   const source = text ?? ''
   const inlinePattern = /(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\))/g
@@ -231,10 +253,12 @@ function WorkspacePage({ navigate }) {
   const [messages, setMessages] = useState([])
   const [query, setQuery] = useState('')
   const [isLoadingRepos, setIsLoadingRepos] = useState(true)
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [isQuerying, setIsQuerying] = useState(false)
   const [dragActive, setDragActive] = useState(false)
   const [notice, setNotice] = useState('')
+  const chatStreamRef = useRef(null)
   const fileInputRef = useRef(null)
 
   const selectedRepo =
@@ -291,8 +315,61 @@ function WorkspacePage({ navigate }) {
   }, [])
 
   useEffect(() => {
-    setMessages([])
+    let cancelled = false
+
+    if (!selectedRepoId) {
+      setMessages([])
+      setIsLoadingHistory(false)
+      return () => {
+        cancelled = true
+      }
+    }
+
+    const loadChatHistory = async () => {
+      setMessages([])
+      setIsLoadingHistory(true)
+
+      try {
+        const response = await fetch(
+          `/api/repositories/${selectedRepoId}/chat-history`,
+        )
+        const data = await response.json()
+        if (!response.ok) {
+          throw new Error(data.detail ?? 'Unable to load chat history.')
+        }
+
+        if (!cancelled) {
+          setMessages(messagesFromHistory(data.history ?? []))
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setMessages([])
+          setNotice(error.message)
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoadingHistory(false)
+        }
+      }
+    }
+
+    loadChatHistory()
+
+    return () => {
+      cancelled = true
+    }
   }, [selectedRepoId])
+
+  useEffect(() => {
+    if (!chatStreamRef.current) {
+      return
+    }
+
+    chatStreamRef.current.scrollTo({
+      top: chatStreamRef.current.scrollHeight,
+      behavior: 'smooth',
+    })
+  }, [messages, isLoadingHistory])
 
   const refreshRepositories = async () => {
     const response = await fetch('/api/repositories')
@@ -357,7 +434,7 @@ function WorkspacePage({ navigate }) {
   const submitQuery = async (event) => {
     event.preventDefault()
 
-    if (!selectedRepo || !query.trim()) {
+    if (!selectedRepo || isLoadingHistory || !query.trim()) {
       return
     }
 
@@ -366,8 +443,10 @@ function WorkspacePage({ navigate }) {
     setMessages((current) => [
       ...current,
       {
+        id: `pending-${Date.now()}-user`,
         role: 'user',
         content: question,
+        createdAt: new Date().toISOString(),
       },
     ])
     setQuery('')
@@ -391,20 +470,24 @@ function WorkspacePage({ navigate }) {
       setMessages((current) => [
         ...current,
         {
+          id: `${data.history_entry?.id ?? `pending-${Date.now()}`}-assistant`,
           role: 'assistant',
           content: data.answer,
           references: data.references,
           generatedWithModel: data.generated_with_model,
+          createdAt: data.history_entry?.created_at ?? new Date().toISOString(),
         },
       ])
     } catch (error) {
       setMessages((current) => [
         ...current,
         {
+          id: `error-${Date.now()}`,
           role: 'assistant',
           content: error.message,
           references: [],
           generatedWithModel: false,
+          createdAt: new Date().toISOString(),
         },
       ])
     } finally {
@@ -540,8 +623,13 @@ function WorkspacePage({ navigate }) {
             </div>
           ) : (
             <div className="chat-shell">
-              <div className="chat-stream">
-                {messages.length === 0 ? (
+              <div className="chat-stream" ref={chatStreamRef}>
+                {isLoadingHistory ? (
+                  <div className="chat-placeholder">
+                    <h3>Loading saved chat history...</h3>
+                    <p>Restoring the previous conversation for this repository.</p>
+                  </div>
+                ) : messages.length === 0 ? (
                   <div className="chat-placeholder">
                     <h3>Ask questions about your codebase</h3>
                     <p>
@@ -552,11 +640,14 @@ function WorkspacePage({ navigate }) {
                 ) : (
                   messages.map((message, index) => (
                     <article
-                      key={`${message.role}-${index}`}
+                      key={message.id ?? `${message.role}-${index}`}
                       className={`message-card ${message.role}`}
                     >
                       <div className="message-label">
-                        {message.role === 'user' ? 'You' : 'Assistant'}
+                        <span>{message.role === 'user' ? 'You' : 'Assistant'}</span>
+                        {message.createdAt ? (
+                          <time dateTime={message.createdAt}>{formatTime(message.createdAt)}</time>
+                        ) : null}
                       </div>
                       <div className="message-body">{renderMessageContent(message.content)}</div>
                       {message.references?.length ? (
@@ -590,9 +681,13 @@ function WorkspacePage({ navigate }) {
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
                   placeholder="Ask questions about your codebase..."
-                  disabled={isQuerying}
+                  disabled={isQuerying || isLoadingHistory}
                 />
-                <button type="submit" className="primary-button" disabled={isQuerying}>
+                <button
+                  type="submit"
+                  className="primary-button"
+                  disabled={isQuerying || isLoadingHistory}
+                >
                   {isQuerying ? 'Thinking...' : 'Send'}
                 </button>
               </form>

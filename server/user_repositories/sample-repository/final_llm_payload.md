@@ -1,10 +1,10 @@
-### USER QUERY: okay perfect
+### USER QUERY: odhvlfb
 
 ### CODEBASE CONTEXT
 
-PRIMARY MATCH: `Dashboard`
-
+Function: `Dashboard`
 File: `server/sample_repository/frontend/modern_dash/Dashboard.tsx`
+Lines: 12-68
 
 Code:
 ```
@@ -67,9 +67,9 @@ export const Dashboard: React.FC<Props> = ({ streamEndpoint }) => {
 };
 ```
 
-PRIMARY MATCH: `isValidEvent`
-
+Function: `isValidEvent`
 File: `server/sample_repository/frontend/modern_dash/types.ts`
+Lines: 11-13
 
 Code:
 ```
@@ -78,9 +78,9 @@ export function isValidEvent(event: TelemetryEvent): boolean {
 }
 ```
 
-PRIMARY MATCH: `UserWidget`
-
+Function: `UserWidget`
 File: `server/sample_repository/frontend/legacy_portal/UserWidget.jsx`
+Lines: 6-13
 
 Code:
 ```
@@ -94,9 +94,9 @@ const UserWidget = ({ username, avatarUrl }) => {
 };
 ```
 
-PRIMARY MATCH: `fetchLegacyUserData`
-
+Function: `fetchLegacyUserData`
 File: `server/sample_repository/frontend/legacy_portal/api_client.js`
+Lines: 5-13
 
 Code:
 ```
@@ -110,4 +110,3 @@ export async function fetchLegacyUserData(userId) {
     }
 }
 ```
-
