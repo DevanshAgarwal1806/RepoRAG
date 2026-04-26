@@ -27,7 +27,7 @@ for candidate in [SERVER_DIR / ".env"]:
         load_dotenv(dotenv_path=candidate)
         break
 
-from retriever.graph_context import load_data
+from retriever.hybrid_retrieval_dependency import load_data
 
 from openai import OpenAI
 

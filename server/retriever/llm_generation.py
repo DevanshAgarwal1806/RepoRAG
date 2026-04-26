@@ -14,6 +14,7 @@ if str(SERVER_DIR) not in sys.path:
 
 from retriever.query_expansion import expand_query
 from retriever.hybrid_retrieval_dependency import hybrid_retrieval_with_dependency, load_data
+from retriever.hybrid_retrieval import hybrid_retrieval
 
 import tiktoken
 _enc = tiktoken.get_encoding("cl100k_base")
@@ -21,10 +22,9 @@ _enc = tiktoken.get_encoding("cl100k_base")
 def estimate_tokens(text: str) -> int:
     return len(_enc.encode(text))
 
-def assemble_llm_context(functions_retrieved: list[tuple[str, str]], function_map: dict, output_dir: str, d: int = 1) -> str:
+def assemble_llm_context(functions_retrieved: list[tuple[str, str]], function_map: dict, output_dir: str, with_dependency: bool = False) -> str:
     # Format the payload
     llm_prompt_context = "### CODEBASE CONTEXT\n\n"
-    
     for role, node_id in functions_retrieved:
         # Filter out external/library nodes (they don't have source code in our map)
         if node_id.startswith("__external__") or node_id not in function_map:
@@ -36,13 +36,16 @@ def assemble_llm_context(functions_retrieved: list[tuple[str, str]], function_ma
         file_path = fn_data.get("file_path", fn_data.get("file", "Unknown File"))
         source_code = fn_data.get("source_code", fn_data.get("source", "No source available."))
         
-        llm_prompt_context += f"{role}: `{fn_data.get('name', 'Unknown')}`\n\n"
+        if with_dependency:
+            llm_prompt_context += f"{role}: `{fn_data.get('name', 'Unknown')}`\n\n"
+        else:
+            llm_prompt_context += f"`{fn_data.get('name', 'Unknown')}`\n\n"
         llm_prompt_context += f"File: `{file_path}`\n\n"
         llm_prompt_context += f"Code:\n```\n{source_code}\n```\n\n"
         
     return llm_prompt_context
 
-def llm_generation(output_dir: Path, query: str, save_prompt: bool = False) -> tuple[list[tuple[str, str]], str]:
+def llm_generation(output_dir: Path, query: str, save_prompt: bool = False, with_dependency: bool = False) -> tuple[list[tuple[str, str]], str]:
     # 1. Load the fully embedded data
     corpus_path_embeddings = output_dir / "embeddings.json"
     corpus_path_functions = output_dir / "extracted_functions.json"
@@ -60,13 +63,21 @@ def llm_generation(output_dir: Path, query: str, save_prompt: bool = False) -> t
     
     G, function_map = load_data(str(output_dir))
     
-    functions_retrieved = hybrid_retrieval_with_dependency(
-        expanded_query,
-        corpus_functions,
-        corpus_embeddings,
-        G,
-        top_k=7,
-    )
+    if with_dependency:
+        functions_retrieved = hybrid_retrieval_with_dependency(
+            expanded_query,
+            corpus_functions,
+            corpus_embeddings,
+            G,
+            top_k=7,
+        )
+    else:
+        functions_retrieved = hybrid_retrieval(
+            expanded_query,
+            corpus_functions,
+            corpus_embeddings,
+            top_k=7,
+        )
 
     llm_prompt_context = assemble_llm_context(functions_retrieved, function_map, str(output_dir), d=1)
     final_payload = f"### USER QUERY: {original_query}\n\n{llm_prompt_context}"

@@ -13,11 +13,11 @@ import networkx as nx
 import numpy as np
 from dotenv import load_dotenv
 
-EVALUATION_DIR = Path(__file__).resolve().parent
+EVALUATION_DIR = Path(__file__).resolve().parent.parent
 SERVER_DIR = EVALUATION_DIR.parent
 GROUND_TRUTH_DIR = EVALUATION_DIR / "0-ground_truth_construction"
 DEFAULT_OUTPUT_DIR = SERVER_DIR / "sample_repository_output"
-DEFAULT_RESULTS_PATH = EVALUATION_DIR / "retrieval_evaluation_results.json"
+DEFAULT_RESULTS_PATH = EVALUATION_DIR / "1-retrieval_evaluation" / "retrieval_evaluation_results.json"
 
 if str(SERVER_DIR) not in sys.path:
     sys.path.insert(0, str(SERVER_DIR))
@@ -355,6 +355,45 @@ class Evaluator:
 
             aggregate_results[strategy] = strategy_metrics
         return aggregate_results
+    
+    @staticmethod
+    def aggregate_by_type(
+        results: dict[str, list[PerQueryResult]],
+        queries: list[SingleHopQuery],
+    ) -> dict[str, dict[str, dict[str, float]]]:
+        # Build a lookup: query text → query_type
+        type_by_query = {q.query: q.query_type for q in queries}
+
+        # Group PerQueryResult objects by query_type, per strategy
+        by_type: dict[str, dict[str, list[PerQueryResult]]] = {}
+        for strategy, per_query in results.items():
+            by_type[strategy] = {}
+            for result in per_query:
+                qtype = type_by_query.get(result.query, "unknown")
+                by_type[strategy].setdefault(qtype, []).append(result)
+
+        # Aggregate metrics within each type, same logic as aggregate()
+        type_wise: dict[str, dict[str, dict[str, float]]] = {}
+        all_types = {
+            type_by_query.get(r.query, "unknown")
+            for per_query in results.values()
+            for r in per_query
+        }
+        for qtype in sorted(all_types):
+            type_wise[qtype] = {}
+            for strategy in results:
+                group = by_type[strategy].get(qtype, [])
+                if not group:
+                    continue
+                metrics: dict[str, float] = {}
+                rr_values = [r.reciprocal_rank for r in group if r.reciprocal_rank is not None]
+                metrics["MRR"] = float(np.mean(rr_values)) if rr_values else 0.0
+                for k in K_VALUES:
+                    metrics[f"Recall@{k}"] = float(np.mean([r.recall_at_k[k] for r in group]))
+                    metrics[f"nDCG@{k}"]   = float(np.mean([r.ndcg_at_k[k]   for r in group]))
+                type_wise[qtype][strategy] = metrics
+
+        return type_wise
 
 
 def serialize_per_query_results(
@@ -407,6 +446,7 @@ def run_evaluation(output_dir: Path, results_path: Path, top_k: int) -> None:
 
     print("\nEvaluating single-hop queries ...")
     single_hop_results = evaluator.evaluate_single_hop(single_hop_queries)
+    single_hop_type_wise = evaluator.aggregate_by_type(single_hop_results, single_hop_queries)
     single_hop_aggregate = evaluator.aggregate(single_hop_results, include_mrr=True)
 
     print("\nEvaluating multi-hop queries ...")
@@ -424,6 +464,7 @@ def run_evaluation(output_dir: Path, results_path: Path, top_k: int) -> None:
         },
         "single_hop": {
             "aggregate": single_hop_aggregate,
+            "type_wise": single_hop_type_wise,
             "per_query": serialize_per_query_results(
                 single_hop_results,
                 single_hop_queries,

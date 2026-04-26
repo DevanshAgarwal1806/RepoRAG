@@ -17,6 +17,10 @@ DEFAULT_RESULTS_PATH = COMPLETE_EVALUATION_DIR / "rag_evaluation_results.json"
 
 if str(SERVER_DIR) not in sys.path:
     sys.path.insert(0, str(SERVER_DIR))
+    
+from retriever.generator import generate_rag_answer
+from retriever.llm_generation import llm_generation
+from retriever.query_classifier import classify_query, load_examples, build_example_store
 
 ENV_PATH = SERVER_DIR / ".env"
 if ENV_PATH.exists():
@@ -24,11 +28,16 @@ if ENV_PATH.exists():
 
 os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
 
-def run_rag_system(query: str, output_dir: Path) -> dict:
-    from retriever.generator import generate_rag_answer
-    from retriever.llm_generation import llm_generation
+def run_rag_system(query: str, output_dir: Path, classify_query_fn=None) -> dict:
 
-    _functions_retrieved, llm_payload = llm_generation(output_dir, query)
+    if classify_query_fn:
+        query_type = classify_query_fn(query)["label"]
+    else:
+        query_type = "multi-hop"
+    if query_type == "single-hop":
+        _functions_retrieved, llm_payload = llm_generation(output_dir, query, with_dependency=False)
+    else:
+        _functions_retrieved, llm_payload = llm_generation(output_dir, query, with_dependency=True)
     answer = generate_rag_answer(str(output_dir), llm_payload)
 
     return {
@@ -44,6 +53,7 @@ def batch_rag_system(
     ground_truth_dir: str,
     results_dir: str,
     query_key: str = "query",
+    classify_query_fn = None
 ):
     ground_truth_path = Path(ground_truth_dir) / ground_truth_path
     results_path = Path(results_dir) / results_path
@@ -65,7 +75,7 @@ def batch_rag_system(
             continue
         print(f"\n[Your System {idx+1}/{len(ground_truth)}] {q[:70]}…")
         try:
-            r = run_rag_system(q, out)
+            r = run_rag_system(q, out, classify_query_fn=classify_query_fn)
             results.append(r)
             with open(results_path, "w", encoding="utf-8") as f:
                 json.dump(results, f, indent=4)
@@ -82,6 +92,9 @@ if __name__ == "__main__":
     parser.add_argument("--ground_truth_path", type=str, required=True, help="Path to the ground truth JSON file.")
     parser.add_argument("--results_path", type=str, required=True, help="Path to save the evaluation results JSON.")
     args = parser.parse_args()
+    
+    examples = load_examples()
+    store = build_example_store(examples)
 
     batch_rag_system(
         ground_truth_path=args.ground_truth_path,
@@ -89,5 +102,6 @@ if __name__ == "__main__":
         ground_truth_dir=args.ground_truth_dir,
         results_dir=args.results_dir,
         output_dir=args.output_dir,
-        query_key="query"
+        query_key="query",
+        classify_query_fn=lambda q: classify_query(q, store)
     )

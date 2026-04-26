@@ -37,13 +37,13 @@
         "nDCG@7": 0.5043790820367945
       },
       "bm25_dense": {
-        "MRR": 0.6722737399053188,
+        "MRR": 0.6775368978000557,
         "Recall@3": 0.7649122807017544,
-        "nDCG@3": 0.6755184865413582,
+        "nDCG@3": 0.6794034365037638,
         "Recall@5": 0.8421052631578947,
-        "nDCG@5": 0.7072260190649586,
+        "nDCG@5": 0.7111109690273643,
         "Recall@7": 0.8701754385964913,
-        "nDCG@7": 0.7169840398914151
+        "nDCG@7": 0.7208689898538209
       },
       "bm25_dense_dep": {
         "MRR": 0.44983291562238936,
@@ -53,6 +53,122 @@
         "nDCG@5": 0.5269126609461275,
         "Recall@7": 0.8807017543859649,
         "nDCG@7": 0.5524371740875179
+      }
+    },
+    "type_wise": {
+      "exact": {
+        "bm25": {
+          "MRR": 0.464248120300752,
+          "Recall@3": 0.5578947368421052,
+          "nDCG@3": 0.4458603743609078,
+          "Recall@5": 0.7263157894736842,
+          "nDCG@5": 0.5156275577729201,
+          "Recall@7": 0.7894736842105263,
+          "nDCG@7": 0.5374025215763313
+        },
+        "bm25_dep": {
+          "MRR": 0.4856975772765247,
+          "Recall@3": 0.5894736842105263,
+          "nDCG@3": 0.47743932172932885,
+          "Recall@5": 0.7263157894736842,
+          "nDCG@5": 0.5345287980619468,
+          "Recall@7": 0.7894736842105263,
+          "nDCG@7": 0.5565445392735126
+        },
+        "bm25_dense": {
+          "MRR": 0.745672514619883,
+          "Recall@3": 0.8842105263157894,
+          "nDCG@3": 0.768291213872186,
+          "Recall@5": 0.9473684210526315,
+          "nDCG@5": 0.7941079306713841,
+          "Recall@7": 0.9473684210526315,
+          "nDCG@7": 0.7941079306713841
+        },
+        "bm25_dense_dep": {
+          "MRR": 0.4916959064327486,
+          "Recall@3": 0.6842105263157895,
+          "nDCG@3": 0.49623488511278935,
+          "Recall@5": 0.9052631578947369,
+          "nDCG@5": 0.5877466505110044,
+          "Recall@7": 0.9368421052631579,
+          "nDCG@7": 0.5989952985249419
+        }
+      },
+      "semantic": {
+        "bm25": {
+          "MRR": 0.48592731829573943,
+          "Recall@3": 0.6105263157894737,
+          "nDCG@3": 0.5007490215037631,
+          "Recall@5": 0.6526315789473685,
+          "nDCG@5": 0.5184214686769707,
+          "Recall@7": 0.7052631578947368,
+          "nDCG@7": 0.5362061057342481
+        },
+        "bm25_dep": {
+          "MRR": 0.47862573099415207,
+          "Recall@3": 0.5894736842105263,
+          "nDCG@3": 0.4835813398872214,
+          "Recall@5": 0.6736842105263158,
+          "nDCG@5": 0.5189262342336366,
+          "Recall@7": 0.6947368421052632,
+          "nDCG@7": 0.526425332909595
+        },
+        "bm25_dense": {
+          "MRR": 0.6787259816207184,
+          "Recall@3": 0.7578947368421053,
+          "nDCG@3": 0.6796963899248157,
+          "Recall@5": 0.8105263157894737,
+          "nDCG@5": 0.7014409719110185,
+          "Recall@7": 0.8526315789473684,
+          "nDCG@7": 0.7161983918547806
+        },
+        "bm25_dense_dep": {
+          "MRR": 0.44743525480367585,
+          "Recall@3": 0.5894736842105263,
+          "nDCG@3": 0.43784080060150865,
+          "Recall@5": 0.7789473684210526,
+          "nDCG@5": 0.5152909509991025,
+          "Recall@7": 0.8736842105263158,
+          "nDCG@7": 0.5483145628164513
+        }
+      },
+      "structural": {
+        "bm25": {
+          "MRR": 0.4104385964912281,
+          "Recall@3": 0.5157894736842106,
+          "nDCG@3": 0.41791670312030477,
+          "Recall@5": 0.5894736842105263,
+          "nDCG@5": 0.44918946265372467,
+          "Recall@7": 0.6105263157894737,
+          "nDCG@7": 0.45668856132968316
+        },
+        "bm25_dep": {
+          "MRR": 0.3729657477025899,
+          "Recall@3": 0.47368421052631576,
+          "nDCG@3": 0.37330469793233545,
+          "Recall@5": 0.5789473684210527,
+          "nDCG@5": 0.41540995398351405,
+          "Recall@7": 0.6210526315789474,
+          "nDCG@7": 0.43016737392727616
+        },
+        "bm25_dense": {
+          "MRR": 0.6082121971595655,
+          "Recall@3": 0.6526315789473685,
+          "nDCG@3": 0.5902227057142894,
+          "Recall@5": 0.7684210526315789,
+          "nDCG@5": 0.6377840044996901,
+          "Recall@7": 0.8105263157894737,
+          "nDCG@7": 0.6523006470352976
+        },
+        "bm25_dense_dep": {
+          "MRR": 0.4103675856307435,
+          "Recall@3": 0.5263157894736842,
+          "nDCG@3": 0.3907220533834648,
+          "Recall@5": 0.7368421052631579,
+          "nDCG@5": 0.4777003813282758,
+          "Recall@7": 0.8315789473684211,
+          "nDCG@7": 0.5100016609211607
+        }
       }
     },
     "per_query": {
@@ -17551,8 +17667,8 @@
             "server/sample_repository/server/test_synthesis_depth.py[40-41]:__main__",
             "server/sample_repository/server/src/tools/test_tools.py[29-44]:test_tavily_tool",
             "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop",
-            "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__",
-            "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools"
+            "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools",
+            "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__"
           ],
           "reciprocal_rank": 0.3333333333333333,
           "recall_at_k": {
@@ -18059,8 +18175,8 @@
             "server/sample_repository/server/src/graph/scratchpad.py[51-70]:get_attempted_tools",
             "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__",
             "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
-            "server/sample_repository/server/src/tools/ecosystem.py[57-187]:aviationstack_flights_tool",
             "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
+            "server/sample_repository/server/src/tools/ecosystem.py[57-187]:aviationstack_flights_tool",
             "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
             "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task"
           ],
@@ -18143,8 +18259,8 @@
             "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__",
             "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline",
+            "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__",
             "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop",
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools",
             "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit",
@@ -18154,16 +18270,16 @@
             "server/sample_repository/client/src/Dashboard.jsx[440-456]:load",
             "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution"
           ],
-          "reciprocal_rank": 1.0,
+          "reciprocal_rank": 0.5,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 1.0,
-            "5": 1.0,
-            "7": 1.0
+            "3": 0.6309297535714575,
+            "5": 0.6309297535714575,
+            "7": 0.6309297535714575
           },
           "query_type": "structural"
         },
@@ -18173,8 +18289,8 @@
             "server/sample_repository/server/data/generate_supabase_specs.py[13-43]:download_all_specs"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/data/generate_supabase_specs.py[13-43]:download_all_specs",
             "server/sample_repository/server/data/generate_supabase_specs.py[45-46]:__main__",
+            "server/sample_repository/server/data/generate_supabase_specs.py[13-43]:download_all_specs",
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools",
             "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool",
             "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
@@ -18184,16 +18300,16 @@
             "server/sample_repository/server/src/tools/search.py[10-23]:firecrawl_scrape",
             "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools"
           ],
-          "reciprocal_rank": 1.0,
+          "reciprocal_rank": 0.5,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 1.0,
-            "5": 1.0,
-            "7": 1.0
+            "3": 0.6309297535714575,
+            "5": 0.6309297535714575,
+            "7": 0.6309297535714575
           },
           "query_type": "exact"
         },
@@ -18295,8 +18411,8 @@
           "retrieved_top_k": [
             "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
             "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
-            "server/sample_repository/server/src/graph/scratchpad.py[51-70]:get_attempted_tools",
             "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
+            "server/sample_repository/server/src/graph/scratchpad.py[51-70]:get_attempted_tools",
             "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
             "server/sample_repository/server/src/tools/tool_selector.py[216-218]:_fallback_tool",
             "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools",
@@ -18446,8 +18562,8 @@
             "server/sample_repository/server/src/tools/tool_selector.py[216-218]:_fallback_tool",
             "server/sample_repository/server/src/graph/scratchpad.py[51-70]:get_attempted_tools",
             "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
-            "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
             "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
+            "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
             "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools",
             "server/sample_repository/server/test_tool_retry_fallback.py[35-56]:ToolRetryFallbackTests.test_selector_excludes_previously_attempted_tools",
             "server/sample_repository/server/src/tools/ecosystem.py[24-39]:wikipedia_full_read_tool",
@@ -18623,8 +18739,8 @@
             "server/sample_repository/server/src/tools/tool_selector.py[237-255]:_print_warning"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
             "server/sample_repository/server/src/tools/tool_selector.py[237-255]:_print_warning",
+            "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
             "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
             "server/sample_repository/server/src/tools/tool_selector.py[216-218]:_fallback_tool",
             "server/sample_repository/server/src/tools/ecosystem.py[24-39]:wikipedia_full_read_tool",
@@ -18634,16 +18750,16 @@
             "server/sample_repository/server/src/tools/tool_selector.py[221-234]:_build_warning",
             "server/sample_repository/server/src/tools/ecosystem.py[41-55]:arxiv_full_read_tool"
           ],
-          "reciprocal_rank": 0.5,
+          "reciprocal_rank": 1.0,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 0.6309297535714575,
-            "5": 0.6309297535714575,
-            "7": 0.6309297535714575
+            "3": 1.0,
+            "5": 1.0,
+            "7": 1.0
           },
           "query_type": "exact"
         },
@@ -19043,8 +19159,8 @@
             "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
             "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools",
+            "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
             "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools",
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools",
             "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
@@ -19054,16 +19170,16 @@
             "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output",
             "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest"
           ],
-          "reciprocal_rank": 0.5,
+          "reciprocal_rank": 1.0,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 0.6309297535714575,
-            "5": 0.6309297535714575,
-            "7": 0.6309297535714575
+            "3": 1.0,
+            "5": 1.0,
+            "7": 1.0
           },
           "query_type": "structural"
         },
@@ -19110,8 +19226,8 @@
             "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools",
             "server/sample_repository/server/src/tools/ecosystem.py[41-55]:arxiv_full_read_tool",
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools",
-            "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
             "server/sample_repository/server/main.py[137-149]:__main__",
+            "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
             "server/sample_repository/server/src/tools/ecosystem.py[24-39]:wikipedia_full_read_tool"
           ],
           "reciprocal_rank": 1.0,
@@ -19283,8 +19399,8 @@
             "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool",
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools",
+            "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool",
             "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools",
             "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
             "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
@@ -19294,16 +19410,16 @@
             "server/sample_repository/server/src/tools/search.py[25-33]:get_search_tools",
             "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize"
           ],
-          "reciprocal_rank": 1.0,
+          "reciprocal_rank": 0.5,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 1.0,
-            "5": 1.0,
-            "7": 1.0
+            "3": 0.6309297535714575,
+            "5": 0.6309297535714575,
+            "7": 0.6309297535714575
           },
           "query_type": "semantic"
         },
@@ -19493,8 +19609,8 @@
             "server/sample_repository/server/src/config/keypool.py[11-14]:KeyPool.__init__"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/src/config/keypool.py[11-14]:KeyPool.__init__",
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools",
+            "server/sample_repository/server/src/config/keypool.py[11-14]:KeyPool.__init__",
             "server/sample_repository/server/src/graph/scratchpad.py[51-70]:get_attempted_tools",
             "server/sample_repository/server/src/config/keypool.py[16-20]:KeyPool.next",
             "server/sample_repository/server/src/config/keypool.py[22-23]:KeyPool.__len__",
@@ -19504,16 +19620,16 @@
             "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
             "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools"
           ],
-          "reciprocal_rank": 1.0,
+          "reciprocal_rank": 0.5,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 1.0,
-            "5": 1.0,
-            "7": 1.0
+            "3": 0.6309297535714575,
+            "5": 0.6309297535714575,
+            "7": 0.6309297535714575
           },
           "query_type": "structural"
         },
@@ -20513,8 +20629,8 @@
             "server/sample_repository/server/data/csv_to_db.py[34-48]:get_metadata"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/data/csv_to_db.py[34-48]:get_metadata",
             "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline",
+            "server/sample_repository/server/data/csv_to_db.py[34-48]:get_metadata",
             "server/sample_repository/client/src/LandingPage.jsx[140-165]:UserGreeting",
             "server/sample_repository/server/data/generate_supabase_specs.py[13-43]:download_all_specs",
             "server/sample_repository/server/src/tools/ecosystem.py[24-39]:wikipedia_full_read_tool",
@@ -20524,16 +20640,16 @@
             "server/sample_repository/server/src/tools/search.py[25-33]:get_search_tools",
             "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest"
           ],
-          "reciprocal_rank": 1.0,
+          "reciprocal_rank": 0.5,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 1.0,
-            "5": 1.0,
-            "7": 1.0
+            "3": 0.6309297535714575,
+            "5": 0.6309297535714575,
+            "7": 0.6309297535714575
           },
           "query_type": "exact"
         },
@@ -20603,8 +20719,8 @@
             "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__",
             "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline",
+            "server/sample_repository/server/data/csv_to_db.py[127-128]:__main__",
             "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop",
             "server/sample_repository/client/src/Dashboard.jsx[204-230]:normalizeDagTasks",
             "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution",
@@ -20614,16 +20730,16 @@
             "server/sample_repository/server/test_phase1.py[11-35]:run_agent",
             "server/sample_repository/server/main.py[111-132]:run"
           ],
-          "reciprocal_rank": 0.5,
+          "reciprocal_rank": 1.0,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 0.6309297535714575,
-            "5": 0.6309297535714575,
-            "7": 0.6309297535714575
+            "3": 1.0,
+            "5": 1.0,
+            "7": 1.0
           },
           "query_type": "exact"
         },
@@ -20969,8 +21085,8 @@
             "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools",
             "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools",
             "server/sample_repository/server/test_tool_retry_fallback.py[42-44]:ToolRetryFallbackTests.fake_score_tools",
-            "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
             "server/sample_repository/server/src/graph/scratchpad.py[51-70]:get_attempted_tools",
+            "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
             "server/sample_repository/server/src/tools/tool_selector.py[216-218]:_fallback_tool",
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools"
           ],
@@ -21023,8 +21139,8 @@
             "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
             "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
+            "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
             "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
             "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task",
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools",
@@ -21034,16 +21150,16 @@
             "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools",
             "server/sample_repository/server/test_phase1.py[11-35]:run_agent"
           ],
-          "reciprocal_rank": 0.5,
+          "reciprocal_rank": 1.0,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 0.6309297535714575,
-            "5": 0.6309297535714575,
-            "7": 0.6309297535714575
+            "3": 1.0,
+            "5": 1.0,
+            "7": 1.0
           },
           "query_type": "structural"
         },
@@ -21053,8 +21169,8 @@
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools",
+            "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
             "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool",
             "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools",
             "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
@@ -21064,16 +21180,16 @@
             "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest",
             "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize"
           ],
-          "reciprocal_rank": 0.5,
+          "reciprocal_rank": 1.0,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 0.6309297535714575,
-            "5": 0.6309297535714575,
-            "7": 0.6309297535714575
+            "3": 1.0,
+            "5": 1.0,
+            "7": 1.0
           },
           "query_type": "exact"
         },
@@ -21113,8 +21229,8 @@
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool",
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools",
+            "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool",
             "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools",
             "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
             "server/sample_repository/server/src/tools/search.py[25-33]:get_search_tools",
@@ -21124,16 +21240,16 @@
             "server/sample_repository/server/data/generate_supabase_specs.py[13-43]:download_all_specs",
             "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest"
           ],
-          "reciprocal_rank": 0.5,
+          "reciprocal_rank": 1.0,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 0.6309297535714575,
-            "5": 0.6309297535714575,
-            "7": 0.6309297535714575
+            "3": 1.0,
+            "5": 1.0,
+            "7": 1.0
           },
           "query_type": "structural"
         },
@@ -21180,8 +21296,8 @@
             "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools",
             "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output",
             "server/sample_repository/server/src/tools/test_tools.py[108-116]:test_firecrawl_tool",
-            "server/sample_repository/client/src/Dashboard.jsx[158-168]:tick",
             "server/sample_repository/client/src/Dashboard.jsx[147-174]:useTypewriter",
+            "server/sample_repository/client/src/Dashboard.jsx[158-168]:tick",
             "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize"
           ],
           "reciprocal_rank": 1.0,
@@ -21203,8 +21319,8 @@
             "server/sample_repository/server/src/tools/ecosystem.py[24-39]:wikipedia_full_read_tool"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/src/tools/ecosystem.py[24-39]:wikipedia_full_read_tool",
             "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools",
+            "server/sample_repository/server/src/tools/ecosystem.py[24-39]:wikipedia_full_read_tool",
             "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools",
             "server/sample_repository/server/src/tools/test_tools.py[108-116]:test_firecrawl_tool",
             "server/sample_repository/server/src/tools/test_tools.py[118-122]:__main__",
@@ -21214,16 +21330,16 @@
             "server/sample_repository/server/src/tools/registry.py[8-11]:get_all_tools",
             "server/sample_repository/server/src/tools/test_tools.py[29-44]:test_tavily_tool"
           ],
-          "reciprocal_rank": 1.0,
+          "reciprocal_rank": 0.5,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 1.0,
-            "5": 1.0,
-            "7": 1.0
+            "3": 0.6309297535714575,
+            "5": 0.6309297535714575,
+            "7": 0.6309297535714575
           },
           "query_type": "structural"
         },
@@ -21413,8 +21529,8 @@
             "server/sample_repository/server/src/tools/test_tools.py[118-122]:__main__"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/main.py[137-149]:__main__",
             "server/sample_repository/server/src/tools/test_tools.py[118-122]:__main__",
+            "server/sample_repository/server/main.py[137-149]:__main__",
             "server/sample_repository/server/src/tools/test_tools.py[46-93]:test_wikipedia_and_arxiv_tools",
             "server/sample_repository/server/test_phase1.py[69-70]:__main__",
             "server/sample_repository/server/src/tools/test_tools.py[29-44]:test_tavily_tool",
@@ -21422,18 +21538,18 @@
             "server/sample_repository/server/test_tool_retry_fallback.py[59-60]:__main__",
             "server/sample_repository/server/test_synthesis_depth.py[40-41]:__main__",
             "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool",
-            "server/sample_repository/server/src/graph/scratchpad.py[51-70]:get_attempted_tools"
+            "server/sample_repository/server/data/generate_supabase_specs.py[45-46]:__main__"
           ],
-          "reciprocal_rank": 0.5,
+          "reciprocal_rank": 1.0,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 0.6309297535714575,
-            "5": 0.6309297535714575,
-            "7": 0.6309297535714575
+            "3": 1.0,
+            "5": 1.0,
+            "7": 1.0
           },
           "query_type": "exact"
         },
@@ -21749,8 +21865,8 @@
             "server/sample_repository/server/src/graph/scratchpad.py[6-25]:parse_scratchpad",
             "server/sample_repository/server/src/graph/scratchpad.py[51-70]:get_attempted_tools",
             "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution",
-            "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
             "server/sample_repository/server/test_tool_retry_fallback.py[19-33]:ToolRetryFallbackTests.test_failed_task_is_retried_until_exhausted",
+            "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
             "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task",
             "server/sample_repository/server/src/graph/nodes/evaluator.py[8-35]:check_for_cycles"
           ],
@@ -21991,8 +22107,8 @@
             "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
             "server/sample_repository/server/test_synthesis_depth.py[14-25]:SynthesisDepthTests.test_parse_success_payload_prefers_structured_details",
             "server/sample_repository/server/data/csv_to_db.py[34-48]:get_metadata",
-            "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline",
-            "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools"
+            "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools",
+            "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline"
           ],
           "reciprocal_rank": 0.25,
           "recall_at_k": {
@@ -23217,8 +23333,8 @@
             "server/sample_repository/client/src/Dashboard.jsx[147-174]:useTypewriter",
             "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools",
             "server/sample_repository/server/src/tools/ecosystem.py[24-39]:wikipedia_full_read_tool",
-            "server/sample_repository/server/src/tools/search.py[10-23]:firecrawl_scrape",
             "server/sample_repository/server/src/tools/test_tools.py[15-27]:save_to_file",
+            "server/sample_repository/server/src/tools/search.py[10-23]:firecrawl_scrape",
             "server/sample_repository/server/src/tools/test_tools.py[29-44]:test_tavily_tool",
             "server/sample_repository/client/src/App.jsx[6-29]:App",
             "server/sample_repository/client/src/Dashboard.jsx[385-416]:ChatArea",
@@ -23545,8 +23661,8 @@
           "retrieved_top_k": [
             "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline",
             "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output",
-            "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution",
             "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools",
+            "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution",
             "server/sample_repository/client/src/Dashboard.jsx[204-230]:normalizeDagTasks",
             "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag",
             "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage",
@@ -23606,8 +23722,8 @@
             "server/sample_repository/client/src/Dashboard.jsx[329-382]:DagGraph",
             "server/sample_repository/client/src/LandingPage.jsx[8-83]:DAGVisualization",
             "server/sample_repository/server/src/graph/nodes/evaluator.py[8-35]:check_for_cycles",
-            "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph",
             "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop",
+            "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph",
             "server/sample_repository/client/src/Dashboard.jsx[204-230]:normalizeDagTasks",
             "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag",
             "server/sample_repository/server/test_phase1.py[11-35]:run_agent",
@@ -24023,8 +24139,8 @@
             "server/sample_repository/client/src/Dashboard.jsx[461-471]:openHistoryChat"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/client/src/Dashboard.jsx[440-456]:load",
             "server/sample_repository/client/src/Dashboard.jsx[461-471]:openHistoryChat",
+            "server/sample_repository/client/src/Dashboard.jsx[440-456]:load",
             "server/sample_repository/client/src/Dashboard.jsx[478-486]:handleDelete",
             "server/sample_repository/client/src/Dashboard.jsx[419-927]:Dashboard",
             "server/sample_repository/client/src/Dashboard.jsx[385-416]:ChatArea",
@@ -24034,16 +24150,16 @@
             "server/sample_repository/client/src/Dashboard.jsx[473-476]:handleNewChat",
             "server/sample_repository/client/src/Dashboard.jsx[177-194]:AssistantBubble"
           ],
-          "reciprocal_rank": 0.5,
+          "reciprocal_rank": 1.0,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 0.6309297535714575,
-            "5": 0.6309297535714575,
-            "7": 0.6309297535714575
+            "3": 1.0,
+            "5": 1.0,
+            "7": 1.0
           },
           "query_type": "exact"
         },
@@ -24053,8 +24169,8 @@
             "server/sample_repository/client/src/Dashboard.jsx[461-471]:openHistoryChat"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit",
             "server/sample_repository/client/src/Dashboard.jsx[461-471]:openHistoryChat",
+            "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit",
             "server/sample_repository/client/src/Dashboard.jsx[385-416]:ChatArea",
             "server/sample_repository/client/src/Dashboard.jsx[440-456]:load",
             "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output",
@@ -24064,16 +24180,16 @@
             "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag",
             "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize"
           ],
-          "reciprocal_rank": 0.5,
+          "reciprocal_rank": 1.0,
           "recall_at_k": {
             "3": 1.0,
             "5": 1.0,
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 0.6309297535714575,
-            "5": 0.6309297535714575,
-            "7": 0.6309297535714575
+            "3": 1.0,
+            "5": 1.0,
+            "7": 1.0
           },
           "query_type": "semantic"
         },
@@ -24419,8 +24535,8 @@
             "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit",
             "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output",
             "server/sample_repository/server/src/graph/edges/routers.py[25-75]:route_execution",
-            "server/sample_repository/client/src/LandingPage.jsx[88-135]:GoogleSignInButton",
             "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage",
+            "server/sample_repository/client/src/LandingPage.jsx[88-135]:GoogleSignInButton",
             "server/sample_repository/server/main.py[100-106]:print_scratchpad",
             "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution"
           ],
@@ -24957,8 +25073,8 @@
             "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output",
             "server/sample_repository/client/src/LandingPage.jsx[253-500]:LandingPage",
             "server/sample_repository/client/src/App.jsx[6-29]:App",
-            "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit",
             "server/sample_repository/client/src/Dashboard.jsx[385-416]:ChatArea",
+            "server/sample_repository/client/src/Dashboard.jsx[488-524]:handleSubmit",
             "server/sample_repository/server/main.py[100-106]:print_scratchpad",
             "server/sample_repository/server/src/tools/registry.py[14-21]:build_tool_manifest",
             "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
@@ -33678,11 +33794,11 @@
       },
       "bm25_dense": {
         "Recall@3": 0.7614583333333333,
-        "nDCG@3": 0.7737407453824814,
+        "nDCG@3": 0.7691273673021246,
         "Recall@5": 0.825,
-        "nDCG@5": 0.804977782687056,
+        "nDCG@5": 0.8003644046066993,
         "Recall@7": 0.8541666666666666,
-        "nDCG@7": 0.818527636031855
+        "nDCG@7": 0.8139142579514982
       },
       "bm25_dense_dep": {
         "Recall@3": 0.715625,
@@ -38510,8 +38626,8 @@
             "server/sample_repository/server/src/tools/tool_selector.py[25-102]:select_tool",
             "server/sample_repository/server/test_tool_retry_fallback.py[35-56]:ToolRetryFallbackTests.test_selector_excludes_previously_attempted_tools",
             "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
-            "server/sample_repository/server/src/graph/scratchpad.py[51-70]:get_attempted_tools",
             "server/sample_repository/server/main.py[27-51]:print_warnings",
+            "server/sample_repository/server/src/graph/scratchpad.py[51-70]:get_attempted_tools",
             "server/sample_repository/server/src/tools/tool_selector.py[164-213]:_generalize",
             "server/sample_repository/server/src/graph/nodes/executor.py[28-82]:execute_task",
             "server/sample_repository/server/src/tools/tool_selector.py[237-255]:_print_warning",
@@ -38568,8 +38684,8 @@
           ],
           "retrieved_top_k": [
             "server/sample_repository/server/test_synthesis_depth.py[14-25]:SynthesisDepthTests.test_parse_success_payload_prefers_structured_details",
-            "server/sample_repository/server/src/graph/nodes/synthesizer.py[94-113]:_parse_success_payload",
             "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution",
+            "server/sample_repository/server/src/graph/nodes/synthesizer.py[94-113]:_parse_success_payload",
             "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output",
             "server/sample_repository/server/src/tools/ecosystem.py[57-187]:aviationstack_flights_tool",
             "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
@@ -38585,9 +38701,9 @@
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 1.0,
-            "5": 1.0,
-            "7": 1.0
+            "3": 0.9197207891481876,
+            "5": 0.9197207891481876,
+            "7": 0.9197207891481876
           }
         },
         {
@@ -38747,8 +38863,8 @@
             "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph",
             "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop",
+            "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph",
             "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag",
             "server/sample_repository/server/test_phase1.py[69-70]:__main__",
             "server/sample_repository/server/test_phase1.py[11-35]:run_agent",
@@ -38777,8 +38893,8 @@
             "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph",
             "server/sample_repository/server/test_phase1.py[36-67]:test_generation_loop",
+            "server/sample_repository/server/src/graph/workflow.py[11-50]:build_synapse_graph",
             "server/sample_repository/server/main.py[111-132]:run",
             "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag",
             "server/sample_repository/server/test_phase1.py[69-70]:__main__",
@@ -39019,8 +39135,8 @@
             "server/sample_repository/server/data/csv_to_db.py[34-48]:get_metadata"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/data/csv_to_db.py[34-48]:get_metadata",
             "server/sample_repository/server/data/csv_to_db.py[50-125]:run_ingestion_pipeline",
+            "server/sample_repository/server/data/csv_to_db.py[34-48]:get_metadata",
             "server/sample_repository/server/data/generate_supabase_specs.py[13-43]:download_all_specs",
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools",
             "server/sample_repository/server/src/tools/test_tools.py[15-27]:save_to_file",
@@ -39653,8 +39769,8 @@
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool",
             "server/sample_repository/server/src/tools/openapi_parser.py[9-68]:get_openapi_tools",
+            "server/sample_repository/server/src/tools/test_tools.py[95-106]:test_openapi_tool",
             "server/sample_repository/server/data/generate_supabase_specs.py[13-43]:download_all_specs",
             "server/sample_repository/server/src/tools/ecosystem.py[57-187]:aviationstack_flights_tool",
             "server/sample_repository/server/src/tools/ecosystem.py[190-212]:get_research_tools",
@@ -39744,8 +39860,8 @@
           ],
           "retrieved_top_k": [
             "server/sample_repository/server/src/tools/test_tools.py[108-116]:test_firecrawl_tool",
-            "server/sample_repository/server/src/tools/search.py[10-23]:firecrawl_scrape",
             "server/sample_repository/server/src/tools/test_tools.py[15-27]:save_to_file",
+            "server/sample_repository/server/src/tools/search.py[10-23]:firecrawl_scrape",
             "server/sample_repository/server/data/generate_supabase_specs.py[13-43]:download_all_specs",
             "server/sample_repository/server/src/tools/test_tools.py[29-44]:test_tavily_tool",
             "server/sample_repository/server/src/tools/search.py[25-33]:get_search_tools",
@@ -39761,9 +39877,9 @@
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 0.9197207891481876,
-            "5": 0.9197207891481876,
-            "7": 0.9197207891481876
+            "3": 1.0,
+            "5": 1.0,
+            "7": 1.0
           }
         },
         {
@@ -39925,8 +40041,8 @@
           "retrieved_top_k": [
             "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag",
             "server/sample_repository/server/src/graph/nodes/synthesizer.py[8-91]:synthesize_output",
-            "server/sample_repository/server/src/tools/ecosystem.py[57-187]:aviationstack_flights_tool",
             "server/sample_repository/server/src/tools/tool_selector.py[107-161]:_score_tools",
+            "server/sample_repository/server/src/tools/ecosystem.py[57-187]:aviationstack_flights_tool",
             "server/sample_repository/server/src/graph/nodes/reflector.py[9-96]:reflect_on_execution",
             "server/sample_repository/server/data/csv_to_db.py[34-48]:get_metadata",
             "server/sample_repository/server/src/graph/nodes/synthesizer.py[94-113]:_parse_success_payload",
@@ -40045,8 +40161,8 @@
             "server/sample_repository/server/src/graph/nodes/evaluator.py[17-29]:dfs"
           ],
           "retrieved_top_k": [
-            "server/sample_repository/server/src/graph/nodes/evaluator.py[17-29]:dfs",
             "server/sample_repository/server/src/graph/nodes/evaluator.py[8-35]:check_for_cycles",
+            "server/sample_repository/server/src/graph/nodes/evaluator.py[17-29]:dfs",
             "server/sample_repository/client/src/Dashboard.jsx[329-382]:DagGraph",
             "server/sample_repository/server/src/graph/nodes/generator.py[10-59]:generate_dag",
             "server/sample_repository/server/src/graph/nodes/evaluator.py[37-102]:evaluate_dag",
@@ -40063,9 +40179,9 @@
             "7": 1.0
           },
           "ndcg_at_k": {
-            "3": 1.0,
-            "5": 1.0,
-            "7": 1.0
+            "3": 0.6309297535714575,
+            "5": 0.6309297535714575,
+            "7": 0.6309297535714575
           }
         },
         {
