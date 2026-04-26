@@ -51,10 +51,10 @@ def judge_context_relevance(query: str, rag_context: str, agentic_context: str) 
     User Query:
     {query}
 
-    --- Context A (RAG System) ---
+    --- Context A ---
     {rag_context}
 
-    --- Context B (Agentic System) ---
+    --- Context B ---
     {agentic_context}
 
     Evaluation Criteria:
@@ -89,14 +89,14 @@ def judge_answer_quality(
     User Query:
     {query}
 
-    === System A (RAG System) ===
+    === System A ===
     Retrieved Context:
     {rag_context}
 
     Generated Answer:
     {rag_answer}
 
-    === System B (Agentic System) ===
+    === System B ===
     Retrieved Context:
     {agentic_context}
 
