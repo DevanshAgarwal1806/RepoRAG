@@ -115,9 +115,9 @@ if __name__ == "__main__":
     
     RESULTS_FILE = "gen_results_multi.json"
 
-    generate_answers_from_models("multihop_ground_truth.json", fn_map, True, RESULTS_FILE, "phi4-mini", "ollama")
-    generate_answers_from_models("multihop_ground_truth.json", fn_map, True, RESULTS_FILE, "qwen2.5-coder:3b", "ollama")
-    generate_answers_from_models("multihop_ground_truth.json", fn_map, True, RESULTS_FILE, "gemma3:4b", "ollama")
+    generate_answers_from_models("multihop_ground_truth.json", fn_map, False, RESULTS_FILE, "phi4-mini", "ollama")
+    generate_answers_from_models("multihop_ground_truth.json", fn_map, False, RESULTS_FILE, "qwen2.5-coder:3b", "ollama")
+    generate_answers_from_models("multihop_ground_truth.json", fn_map, False, RESULTS_FILE, "gemma3:4b", "ollama")
     
     # generate_answers_from_models("multihop_ground_truth.json", fn_map, True, RESULTS_FILE, "qwen2.5-coder:7b", "ollama")
     # generate_answers_from_models("multihop_ground_truth.json", fn_map, True, RESULTS_FILE, "mistral:7b", "ollama")
