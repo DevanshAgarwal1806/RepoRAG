@@ -8,24 +8,18 @@ from typing import Dict, List, Tuple
 from retriever.hybrid_retrieval import hybrid_retrieval
 
 def load_data(output_dir: str):
-    """
-    Loads the dependency graph and the extracted functions.
-    """
     graph_path = os.path.join(output_dir, "dependency_graph.json")
     functions_path = os.path.join(output_dir, "extracted_functions.json")
     
     with open(graph_path, "r", encoding="utf-8") as f:
         graph_data = json.load(f)
         
-        # Determine if the JSON uses 'links' or 'edges' to prevent KeyErrors
         edge_key = "links" if "links" in graph_data else "edges"
         
-        # Pass the explicit key to the graph builder
         G = nx.node_link_graph(graph_data, edges=edge_key)
         
     with open(functions_path, "r", encoding="utf-8") as f:
         functions = json.load(f)
-        # Map IDs to their full data for O(1) lookup
         function_map = {fn["id"]: fn for fn in functions}
         
     return G, function_map
@@ -51,7 +45,6 @@ def get_neighborhood(
             if depth >= max_depth:
                 continue
 
-            # Children
             for child in G.successors(current_node):
                 edge_data = G.get_edge_data(current_node, child)
                 weight = edge_data.get("weight", 0) if edge_data else 0
@@ -65,7 +58,6 @@ def get_neighborhood(
 
                     queue.append((child, depth + 1))
 
-            # Parents
             for parent in G.predecessors(current_node):
                 edge_data = G.get_edge_data(parent, current_node)
                 weight = edge_data.get("weight", 0) if edge_data else 0
@@ -79,7 +71,6 @@ def get_neighborhood(
 
                     queue.append((parent, depth + 1))
 
-    # Sort by weight descending
     context_nodes_list.sort(key=lambda x: x[1], reverse=True)
 
     return [node_id for node_id, _ in context_nodes_list]
@@ -92,7 +83,6 @@ def propagate_scores_and_rerank(
 ) -> List[Tuple[str, float]]:
     personalization = {node: 0.0 for node in G.nodes()}
     
-    # 2. Inject the Initial Search Scores (The "Heat Sources")
     valid_initial_nodes = [node_id for node_id in initial_search_results if node_id in personalization]
     has_positive_scores = any(initial_search_results[node_id] > 0 for node_id in valid_initial_nodes)
 
@@ -104,14 +94,10 @@ def propagate_scores_and_rerank(
             else:
                 personalization[node_id] = 1.0 / rank
             
-    # Safety Check: If the search engine found absolutely nothing in the graph
     if sum(personalization.values()) == 0:
         print("Warning: Initial search yielded no valid graph nodes.")
         return []
 
-    # 3. Run the Propagation (Spreading Activation)
-    # NetworkX handles the iterative matrix math automatically until convergence.
-    # It will use the 'weight' attribute on your edges if you assigned one during parsing.
     propagated_scores = nx.pagerank(
         G, 
         alpha=alpha, 
@@ -119,14 +105,12 @@ def propagate_scores_and_rerank(
         weight='weight' 
     )
     
-    # 4. Sort all nodes by their new, network-aware scores
     ranked_nodes = sorted(
         propagated_scores.items(), 
         key=lambda item: item[1], 
         reverse=True
     )
     
-    # 5. Return the Top K Context for the LLM
     return ranked_nodes[:top_k]
 
 def hybrid_retrieval_with_dependency(

@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 
 import tiktoken
 
-# Llama models are close enough to cl100k
 enc = tiktoken.get_encoding("cl100k_base")
 
 def count_tokens(text: str) -> int:
@@ -31,16 +30,12 @@ from retriever.hybrid_retrieval_dependency import load_data
 
 from openai import OpenAI
 
-# Initialize the Client using Groq
 client = OpenAI(
     api_key=os.getenv("GROQ_API_KEY"),
     base_url="https://api.groq.com/openai/v1",
 )
 
 def extract_single_node_context(G: nx.DiGraph, node_id: str) -> str:
-    """
-    Given a node ID, extracts just its own source code and metadata.
-    """
     if not G.has_node(node_id):
         return ""
 
@@ -56,14 +51,11 @@ def extract_single_node_context(G: nx.DiGraph, node_id: str) -> str:
     return payload
 
 def build_single_hop_ground_truth(G: nx.DiGraph, output_file: str = "singlehop_ground_truth.json"):
-    
-    # 1. Load existing progress and build a set of processed nodes
     processed_nodes = set()
     try:
         with open(output_file, "r", encoding="utf-8") as f:
             ground_truth_dataset = json.load(f)
             
-            # Extract node_ids that have already been successfully processed
             for item in ground_truth_dataset:
                 if "node_id" in item:
                     processed_nodes.add(item["node_id"])
@@ -74,16 +66,13 @@ def build_single_hop_ground_truth(G: nx.DiGraph, output_file: str = "singlehop_g
         ground_truth_dataset = []
         print("Starting fresh single-hop dataset generation.")
 
-    # 2. Get all candidate nodes (internal code only)
     candidate_nodes = [
         n for n in G.nodes() 
         if not str(n).startswith("__external__")
     ]
     
-    # Optional: Filter out extremely short nodes (like 1-liners) that don't make good questions
     candidate_nodes = [n for n in candidate_nodes if len(G.nodes[n].get("source", "")) > 30]
 
-    # 3. Filter out the ones we've already completed
     nodes_to_process = [n for n in candidate_nodes if n not in processed_nodes]
     
     print(f"Total candidates: {len(candidate_nodes)} | Remaining to process: {len(nodes_to_process)}\n")
@@ -143,14 +132,11 @@ def build_single_hop_ground_truth(G: nx.DiGraph, output_file: str = "singlehop_g
                     response_format={"type": "json_object"} 
                 )
                 
-                # 1. Parse the text into a Python dictionary
                 response_text = response.choices[0].message.content.replace("```json", "").replace("```", "").strip()
                 response_json = json.loads(response_text)
                 
-                # 2. Extract the array using the exact key we prompted for
                 extracted_array = response_json.get("queries")
                 
-                # 3. Process the array
                 if isinstance(extracted_array, list):
                     for item in extracted_array:
                         item["node_id"] = node_id
@@ -175,7 +161,6 @@ def build_single_hop_ground_truth(G: nx.DiGraph, output_file: str = "singlehop_g
                     print(f"  -> API/Parse Error: {e}")
                     break
         
-        # The mathematically safe sleep for 12K TPM
         time.sleep(6)
         
     return ground_truth_dataset

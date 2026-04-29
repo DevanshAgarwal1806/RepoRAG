@@ -95,7 +95,6 @@ class AgentTools:
         if not self.G.has_node(function_id):
             return {"error": f"Node '{function_id}' not found in dependency graph."}
 
-        # get_neighborhood returns (all_ids_list, neighbour_ids_set)
         _, neighbour_ids = get_neighborhood(
             self.G, [function_id], max_depth=1, min_weight=MIN_WEIGHT
         )
@@ -199,17 +198,6 @@ Your goal: answer the user's query by iteratively searching and reading source c
 """
 
 def run_agentic_rag(query: str, output_dir: Path) -> dict:
-    """
-    Runs the full agentic RAG pipeline for a single query.
-
-    Returns:
-        {
-          "query": str,
-          "retrieved_context": str,   # all code seen during the agent loop
-          "generated_answer": str,   # final LLM answer
-          "steps": int,
-        }
-    """
     tools = AgentTools(output_dir)
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
@@ -347,7 +335,6 @@ def run_agentic_rag(query: str, output_dir: Path) -> dict:
 
         steps += 1
     
-    # After the while loop, set a default
     generated_answer = ""
     error_flag = None
 
@@ -389,10 +376,6 @@ def run_batch(
     results_path: str = "agentic_rag_results.json",
     query_key: str = "query",
 ):
-    """
-    Runs agentic RAG on every query in a ground-truth JSON file.
-    Saves incrementally so it can resume if interrupted.
-    """
     
     num_results = 0
 

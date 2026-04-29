@@ -19,15 +19,10 @@ client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 JUDGE_MODEL = "gemma-4-31b-it"
 
-# Scoring criteria and their weights for the final score
 ANSWER_CRITERIA = ["faithfulness", "correctness", "completeness", "clarity"]
 CONTEXT_CRITERIA = ["relevance", "completeness", "precision"]
 
 def _call_judge(prompt: str, expected_criteria: list[str]) -> dict:
-    """
-    Calls Gemma 4 31B, parses JSON, and validates all expected score fields exist.
-    Raises on failure.
-    """
     response = client.models.generate_content(
         model=JUDGE_MODEL,
         contents=prompt,
@@ -39,13 +34,11 @@ def _call_judge(prompt: str, expected_criteria: list[str]) -> dict:
     )
     output = json.loads(response.text)
 
-    # Validate winner
     winner = output.get("winner", "").strip().upper()
     if winner not in ("A", "B", "TIE"):
         raise ValueError(f"Unexpected winner value: '{winner}'")
     output["winner"] = winner
 
-    # Validate scores block exists for both systems
     scores = output.get("scores", {})
     for system in ("A", "B"):
         if system not in scores:
@@ -61,11 +54,6 @@ def _call_judge(prompt: str, expected_criteria: list[str]) -> dict:
 
 
 def judge_context_relevance(query: str, rag_context: str, agentic_context: str) -> dict:
-    """
-    Head-to-head: which system retrieved more relevant code snippets for the query?
-    A = RAG system, B = Agentic system
-    Scores each system on relevance, completeness, precision (0-5 each).
-    """
     prompt = f"""You are an expert code search evaluator. Your task is to judge which retrieved code context is MORE RELEVANT and USEFUL for answering the given user query.
 
     User Query:
@@ -118,11 +106,6 @@ def judge_answer_quality(
     rag_context: str, rag_answer: str,
     agentic_context: str, agentic_answer: str
 ) -> dict:
-    """
-    Head-to-head: which system generated a better answer, grounded in its own retrieved context?
-    A = RAG system, B = Agentic system
-    Scores each system on faithfulness, correctness, completeness, clarity (0-5 each).
-    """
     prompt = f"""You are an expert code reviewer. Your task is to judge which AI system produced a BETTER answer to the user query.
     Each system has its own retrieved code context and generated answer. Judge each answer ONLY against its own context — penalise any system that hallucinates logic not present in its retrieved code.
 
@@ -187,10 +170,6 @@ def run_comparison(
     agentic_results_filepath: str,
     rag_results_filepath: str
 ) -> list:
-    """
-    Main runner. Loads RAG and Agentic results, runs both judges on each item,
-    and saves incrementally to allow resuming if interrupted.
-    """
     comparison_path = EVALUATION_DIR / comparison_results_filepath
 
     with open(AGENTIC_SYSTEM_OUTPUT_DIR / agentic_results_filepath, "r", encoding="utf-8") as f:

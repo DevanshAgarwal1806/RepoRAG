@@ -23,7 +23,7 @@ client = OpenAI(
     base_url="https://api.groq.com/openai/v1",
 )
 
-from retriever.graph_context import load_data
+from retriever.hybrid_retrieval_dependency import load_data
 import tiktoken
 
 # Llama models are close enough to cl100k
@@ -107,7 +107,6 @@ def build_multi_hop_ground_truth(
     max_neighbors: int = 3,  # FIX: expose max_neighbors as a parameter
 ) -> list:
 
-    # 1. Load existing progress and build a set of processed root IDs
     processed_roots: set = set()
     try:
         with open(output_file, "r", encoding="utf-8") as f:
@@ -123,14 +122,12 @@ def build_multi_hop_ground_truth(
         ground_truth_dataset = []
         print("Starting fresh dataset generation.")
 
-    # 2. Get all candidate nodes that have at least one outgoing edge
     candidate_roots = [
         n
         for n in G.nodes()
         if not str(n).startswith("__external__") and len(list(G.successors(n))) > 0
     ]
 
-    # 3. Filter out already-completed roots
     roots_to_process = [r for r in candidate_roots if r not in processed_roots]
 
     print(
@@ -192,7 +189,6 @@ def build_multi_hop_ground_truth(
 
         for attempt in range(max_retries):
             try:
-                # 4. Groq API call
                 response = client.chat.completions.create(
                     model="llama-3.3-70b-versatile",
                     messages=[
@@ -208,8 +204,6 @@ def build_multi_hop_ground_truth(
                     response_format={"type": "json_object"},
                 )
 
-                # 5. Parse — no need to strip markdown fences since json_object mode
-                #    guarantees raw JSON, but kept as a safety net
                 response_text = (
                     response.choices[0]
                     .message.content
@@ -221,14 +215,12 @@ def build_multi_hop_ground_truth(
                 extracted_array = response_json.get("queries")
 
                 if not isinstance(extracted_array, list):
-                    # FIX: retry on malformed response instead of silently breaking
                     print(
                         f"  -> Warning: 'queries' key missing or not a list "
                         f"(Attempt {attempt + 1}/{max_retries}). Retrying..."
                     )
                     continue
 
-                # FIX: deduplicate required_files per query item
                 for item in extracted_array:
                     item["root_id"] = root_id
                     if "required_chunks" in item and isinstance(item["required_chunks"], list):
@@ -253,18 +245,15 @@ def build_multi_hop_ground_truth(
                     query.pop("required_chunks", None)  # Remove the original required_chunks key
                     if len(query.get("required_functions", [])) != 0:
                         to_add.append(idx)
-                        
-                # ground_truth_dataset.extend([extracted_array[i] for i in to_add])
                 
                 ground_truth_dataset.extend(extracted_array)
 
-                # 6. Persist to disk after every successful root
                 with open(output_file, "w", encoding="utf-8") as f:
                     json.dump(ground_truth_dataset, f, indent=4)
 
                 print(f"  -> Success! Total queries saved: {len(ground_truth_dataset)}")
                 success = True
-                break  # Exit retry loop on success
+                break
 
             except Exception as e:
                 error_msg = str(e)
@@ -276,12 +265,11 @@ def build_multi_hop_ground_truth(
                     time.sleep(retry_delay)
                 else:
                     print(f"  -> API/Parse Error: {e}")
-                    break  # Non-recoverable error; skip this root
+                    break
 
         if not success:
             print(f"  -> Skipped '{node_name}' after {max_retries} attempts.")
 
-        # 7. Rate-limit sleep (only after a completed attempt, success or not)
         time.sleep(6)
 
     print("\nExtraction complete! All data saved to", output_file)

@@ -3,6 +3,7 @@ from pathlib import Path
 import sys
 from dotenv import load_dotenv
 import argparse
+import ollama
 
 RETRIEVER_DIR = Path(__file__).resolve().parent
 SERVER_DIR = RETRIEVER_DIR.parent
@@ -31,22 +32,12 @@ def generate_rag_answer(
     provider: str = "groq", 
     model_name: str = "llama-3.3-70b-versatile"
 ) -> str:
-    """
-    Generates an answer using either the Groq API or a local Ollama instance.
-    
-    Args:
-        output_dir: Directory containing the context payload.
-        llm_payload: The actual text payload (optional, will read from file if None).
-        provider: "groq" or "ollama".
-        model_name: The specific model ID to use for the selected provider.
-    """
     current_dir = Path(__file__).resolve().parent
     server_dir = current_dir.parent  
     env_path = server_dir / ".env"
     
     output_dir = Path(output_dir)
 
-    # 1. Read the Prepared Context & Query
     if llm_payload is None:
         payload_path = output_dir / "final_llm_payload.md"
         if not payload_path.exists():
@@ -55,7 +46,6 @@ def generate_rag_answer(
         with open(payload_path, "r", encoding="utf-8") as f:
             llm_payload = f.read()
 
-    # 2. Define the Shared System Prompt
     system_prompt = (
         "You are an expert senior software engineer. "
         "You will be provided with a user query and a heavily filtered context from a codebase. "
@@ -66,8 +56,6 @@ def generate_rag_answer(
 
     if provider == "ollama":
         try:
-            import ollama
-
             safe_ctx = estimate_context_size(llm_payload)
             print(f"Generating local answer using Ollama ({model_name})...")
             response = ollama.chat(
@@ -127,7 +115,6 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     
-    # Run the generator and print the output
     final_answer = generate_rag_answer(args.output, provider=args.provider, model_name=args.model)
     
     print("\n--- Final Generated Answer ---\n")

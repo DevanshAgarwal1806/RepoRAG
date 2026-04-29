@@ -19,11 +19,6 @@ def get_client() -> OpenAI | None:
     )
 
 def expand_query(user_query: str) -> str:
-    """
-    Takes a natural language user query and uses an LLM to generate 
-    software engineering synonyms returned in a strict JSON format.
-    """
-    
     system_prompt = (
         "You are an expert software engineering assistant. "
         "The user will provide a short natural language query about a codebase. "
@@ -51,19 +46,14 @@ def expand_query(user_query: str) -> str:
             response_format={"type": "json_object"} 
         )
         
-        # Extract the raw JSON string
         raw_json_string = response.choices[0].message.content.strip()
         
-        # 3. Parse the JSON safely
         parsed_data = json.loads(raw_json_string)
         
-        # Extract the list of synonyms (default to empty list if key is missing)
         synonyms_list = parsed_data.get("synonyms", [])
         
-        # Convert the list back into a space-separated string for BM25
         synonyms_string = " ".join(synonyms_list)
         
-        # Combine with original query
         expanded_query = f"{user_query} {synonyms_string}"
         
         return expanded_query
