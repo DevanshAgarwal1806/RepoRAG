@@ -90,19 +90,6 @@ def propagate_scores_and_rerank(
     alpha: float = 0.85, 
     top_k: int = 5
 ) -> List[Tuple[str, float]]:
-    """
-    Takes initial semantic/BM25 search scores and propagates them through 
-    the AST Dependency Graph to boost the ranking of critical dependencies.
-    
-    Args:
-        G: The NetworkX directional graph representing your codebase AST.
-        initial_search_results: A dictionary of {node_id: search_score} from your vector DB.
-        alpha: Damping factor. Higher = spreads further. Lower = stays closer to original hits.
-        top_k: How many final nodes to return.
-    """
-    
-    # 1. Initialize the "Heat" Map
-    # Every node in the graph starts cold (0.0)
     personalization = {node: 0.0 for node in G.nodes()}
     
     # 2. Inject the Initial Search Scores (The "Heat Sources")

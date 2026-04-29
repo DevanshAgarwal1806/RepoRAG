@@ -35,9 +35,9 @@ def build_dependency_graph(
         file_imports = global_import_map.get(fn.file_path, {})
         for call_obj in fn.calls:
             called_name = call_obj["name"]
-            is_method   = call_obj["is_method"]
+            is_method = call_obj["is_method"]
             is_decorator = call_obj.get("is_decorator", False)
-            receiver     = call_obj.get("receiver")
+            receiver = call_obj.get("receiver")
             if not is_method:
                 if called_name in exact_name_to_ids:
                     for callee_id in exact_name_to_ids[called_name]:
@@ -69,22 +69,12 @@ def build_dependency_graph(
             else:
                 if called_name in base_name_to_ids:
                     for callee_id in base_name_to_ids[called_name]:
-                        callee_node      = G.nodes[callee_id]
+                        callee_node = G.nodes[callee_id]
                         callee_full_name = callee_node["name"]
-                        callee_file      = callee_node["file"]
-
-                        # All class segments of the qualified name.
-                        # e.g. "Outer.Inner.method" -> ["Outer", "Inner"]
-                        # e.g. "MyClass.method"     -> ["MyClass"]
-                        name_parts     = callee_full_name.split(".")
+                        callee_file = callee_node["file"]
+                        name_parts = callee_full_name.split(".")
                         class_segments = name_parts[:-1]
-
-                        # file_imports maps local_name -> module
-                        # e.g. {"MyClass": "my_module", "np": "numpy", "B": "a"}
-                        # We check if any class segment matches a known imported name (key)
-                        # OR if any segment matches a module name (value) for cases like
-                        # `import mymodule` then `mymodule.MyClass.method()`
-                        imported_keys   = set(file_imports.keys())
+                        imported_keys = set(file_imports.keys())
                         imported_values = set(file_imports.values())
 
                         segment_set = set(class_segments)

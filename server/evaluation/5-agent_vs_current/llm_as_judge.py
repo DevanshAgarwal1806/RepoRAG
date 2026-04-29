@@ -6,7 +6,7 @@ from google import genai
 from google.genai import types
 from pathlib import Path
 
-EVALUATION_DIR = Path(__file__).resolve().parent
+EVALUATION_DIR = Path(__file__).resolve().parent.parent
 SERVER_DIR = EVALUATION_DIR.parent
 GROUND_TRUTH_DIR = EVALUATION_DIR / "0-ground_truth_construction"
 DEFAULT_OUTPUT_DIR = SERVER_DIR / "sample_repository_output"
@@ -223,7 +223,7 @@ def run_comparison(
                 result = judge_context_relevance(
                     query=query,
                     rag_context=rag.get("retrieved_context", ""),
-                    agentic_context=agentic.get("retrieved_context_str", ""),
+                    agentic_context=agentic.get("retrieved_context", ""),
                 )
                 comparison_results[idx].update({
                     "context_winner": result["winner"],
@@ -251,7 +251,7 @@ def run_comparison(
                     query=query,
                     rag_context=rag.get("retrieved_context", ""),
                     rag_answer=rag.get("generated_answer", ""),
-                    agentic_context=agentic.get("retrieved_context_str", ""),
+                    agentic_context=agentic.get("retrieved_context", ""),
                     agentic_answer=agentic.get("generated_answer", ""),
                 )
                 comparison_results[idx].update({

@@ -1,0 +1,1022 @@
+[
+    {
+        "query": "How does the system ingest CSV files into a database, handling schema creation and table population?",
+        "context_winner": "B",
+        "context_reasoning": "Context B is much more precise and complete, providing the essential 'sanitize_identifier' helper function while avoiding the large amount of irrelevant frontend and LLM logic present in Context A.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 4,
+                "precision": 1
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A provides a clearer, step-by-step breakdown of the ingestion process, making it easier to follow the logic flow compared to System B's more narrative approach.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 4
+            }
+        }
+    },
+    {
+        "query": "How is the chat interface rendered when there are no messages and the system is not loading?",
+        "context_winner": "TIE",
+        "context_reasoning": "Context A is more complete as it includes both the JSX logic and the CSS styles for the welcome screen, but it contains significant noise from irrelevant Python files; Context B is more focused but lacks the styling information.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 2
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 3,
+                "precision": 4
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A provided the exact code snippet from the context, whereas System B omitted the icon character inside the div in its code block.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 4,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "What is the function name that returns all available tools in the server/sample_repository/server/src/tools/registry.py file?",
+        "context_winner": "TIE",
+        "context_reasoning": "Both contexts provide the correct function name and code from the specified file, and the difference in their precision is negligible.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 3
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            }
+        },
+        "answer_winner": "TIE",
+        "answer_reasoning": "Both systems correctly identified the function name from the provided context and provided identical, accurate answers.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "How does the system aggregate and provide access to various academic research tools for retrieving information from sources like Wikipedia and Arxiv?",
+        "context_winner": "A",
+        "context_reasoning": "Context A provides the full implementation of the aggregation functions (get_research_tools and get_all_tools), whereas Context B contains truncated snippets that omit the critical logic.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 2,
+                "precision": 4
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A provides a detailed explanation of how the tools are aggregated and used, whereas System B simply lists the functions found in the context without explaining the logic.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 2,
+                "clarity": 3
+            }
+        }
+    },
+    {
+        "query": "What is the implementation of the print_scratchpad function in main.py",
+        "context_winner": "B",
+        "context_reasoning": "Both contexts provide the full implementation of the requested function, but Context B is more precise as it focuses primarily on the requested file (main.py) and avoids including multiple irrelevant test files.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 3
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A provided the code exactly as it appeared in the source, whereas System B replaced the box-drawing characters with Unicode escape sequences, making the code significantly less readable.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 3
+            }
+        }
+    },
+    {
+        "query": "What is the purpose of the if __name__ == __main__ block in the test_phase1.py file",
+        "context_winner": "TIE",
+        "context_reasoning": "Both contexts provide the exact code snippet from test_phase1.py needed to answer the query, and both include a similar amount of irrelevant noise from other files.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 3
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 3
+            }
+        },
+        "answer_winner": "TIE",
+        "answer_reasoning": "Both systems correctly identified the function being called in the specified file and accurately explained the purpose of the Python idiom.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "What component is responsible for interacting with the Groq model to select the best tool and generate its input based on a task description and available tools?",
+        "context_winner": "A",
+        "context_reasoning": "Context A contains the exact function '_score_tools' which is responsible for interacting with Groq to select the best tool and generate its input, whereas Context B only contains the generalization helper.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 2,
+                "completeness": 1,
+                "precision": 2
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A correctly identified the `_score_tools` function as the component that selects the tool and generates the input, whereas System B incorrectly identified `_generalize`, which only simplifies the task description.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 2,
+                "correctness": 1,
+                "completeness": 2,
+                "clarity": 4
+            }
+        }
+    },
+    {
+        "query": "What component is responsible for acting as the central registry for all available tools within our system's architecture?",
+        "context_winner": "A",
+        "context_reasoning": "Context A provides the full implementation of the 'get_all_tools' function in 'registry.py' and all its dependencies, whereas Context B contains truncated versions of the same code.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 3,
+                "precision": 4
+            }
+        },
+        "answer_winner": "TIE",
+        "answer_reasoning": "Both systems correctly identified the get_all_tools function in registry.py as the central registry based on the provided code and docstrings.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "What is the implementation of the dfs function in the evaluator module?",
+        "context_winner": "A",
+        "context_reasoning": "Context A provides the full implementation of the dfs function and the check_for_cycles function it is nested within, whereas Context B truncates the outer function.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 3
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 3,
+                "precision": 3
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A provided a more complete answer by correctly identifying that the dfs function is implemented as a nested function within check_for_cycles, whereas System B treated it as a standalone function.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 4,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "What is the purpose of the get_search_tools function in the Tavily Search integration?",
+        "context_winner": "A",
+        "context_reasoning": "Context A provides the full implementation and docstring of the requested function without the noise of truncated code fragments found in Context B.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 3
+            }
+        },
+        "answer_winner": "TIE",
+        "answer_reasoning": "Both systems provided accurate, faithful, and clear answers based on the provided code; System A included a small amount of extra context regarding the function's usage in get_all_tools, but both fully answered the user's query.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "What component is responsible for managing the workflow and decision-making process after each task execution in the system?",
+        "context_winner": "A",
+        "context_reasoning": "Context A provides the full implementation of 'route_execution' and the 'build_synapse_graph' function, which explicitly defines the workflow and decision-making logic after task execution, whereas Context B truncates the most critical code.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 4,
+                "completeness": 2,
+                "precision": 3
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A correctly identifies both the reflector (which analyzes the result) and the router (which makes the actual decision on where to go next), whereas System B only mentions the reflector.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 3,
+                "completeness": 3,
+                "clarity": 4
+            }
+        }
+    },
+    {
+        "query": "What is the implementation of the _score_tools function in the tool_selector module?",
+        "context_winner": "A",
+        "context_reasoning": "Context A provides the full implementation of the requested function clearly, whereas Context B contains multiple truncated fragments and unrelated code before finally providing the full source.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 2
+            }
+        },
+        "answer_winner": "B",
+        "answer_reasoning": "System B provided the full implementation and a complete explanation, whereas System A's explanation was cut off mid-sentence.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 4,
+                "clarity": 3
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "What module is responsible for testing retry and fallback logic in the server sample repository",
+        "context_winner": "A",
+        "context_reasoning": "Both contexts identify the correct module (test_tool_retry_fallback.py), but Context A provides full, readable code blocks, whereas Context B provides truncated snippets that are less useful.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 4,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 2,
+                "precision": 4
+            }
+        },
+        "answer_winner": "B",
+        "answer_reasoning": "System B correctly identifies actual test methods, whereas System A lists a helper function (fake_score_tools) as one of the tests.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 4,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "What component is responsible for transforming and standardizing workflow data in our client-side dashboard?",
+        "context_winner": "B",
+        "context_reasoning": "Both contexts identify the DagGraph component and its use of normalizeDagTasks, but Context B is more precise as it focuses on client-side files rather than including a large amount of irrelevant server-side code.",
+        "context_scores": {
+            "A": {
+                "relevance": 4,
+                "completeness": 3,
+                "precision": 1
+            },
+            "B": {
+                "relevance": 4,
+                "completeness": 3,
+                "precision": 3
+            }
+        },
+        "answer_winner": "B",
+        "answer_reasoning": "System B correctly identified the 'normalizeDagTasks' function within the DagGraph component as the logic responsible for transforming the data, whereas System A claimed the information was not present.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 4,
+                "completeness": 2,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "How does the system handle and display warnings for tasks that require simplification due to the lack of appropriate tools?",
+        "context_winner": "A",
+        "context_reasoning": "Context A provides the full end-to-end logic, including how warnings are triggered in execute_task and surfaced in run_agent, whereas Context B contains truncated snippets and lacks the integration context.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 3,
+                "precision": 3
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A provides a more structured and logical breakdown of the warning lifecycle (generation, storage, and display), making it easier to follow than System B's paragraph format.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 4
+            }
+        }
+    },
+    {
+        "query": "What component is responsible for ensuring that only the latest results are collected and stored for each task in our data processing pipeline",
+        "context_winner": "A",
+        "context_reasoning": "Context A is more complete as it provides both the test case for '_collect_latest_raw_results' and the manual implementation of the 'latest result' logic within the 'reflect_on_execution' function.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 4,
+                "precision": 3
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 3,
+                "precision": 3
+            }
+        },
+        "answer_winner": "B",
+        "answer_reasoning": "System A hallucinated the implementation code for the _collect_latest_raw_results function, which was not present in the retrieved context, whereas System B remained faithful to the provided text.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 2,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "What component is responsible for retrieving JSON metadata for schema comments in the database setup process?",
+        "context_winner": "A",
+        "context_reasoning": "Context A provides the full implementation of both the retrieval function (get_metadata) and the pipeline that uses it (run_ingestion_pipeline), whereas Context B truncates the pipeline.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 3
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 4,
+                "precision": 3
+            }
+        },
+        "answer_winner": "TIE",
+        "answer_reasoning": "Both systems correctly identified the function and file responsible for retrieving the metadata and provided accurate descriptions based on the provided context.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "What component is responsible for executing tests for various tools like firecrawl when the test_tools script is run directly?",
+        "context_winner": "A",
+        "context_reasoning": "Context A provides the full, non-truncated code for the test functions and the main entry point, whereas Context B truncates the logic of the functions.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 2,
+                "precision": 3
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A correctly identifies the 'if __name__ == \"__main__\":' block, whereas System B incorrectly refers to it as a 'function'. System A also provides a more complete answer by mentioning the other tool tests present in the file.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 3,
+                "completeness": 4,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "How can we dynamically generate a combined list of tools from multiple OpenAPI specifications using a large language model?",
+        "context_winner": "A",
+        "context_reasoning": "Both contexts provide the full implementation of the key function 'get_openapi_tools', but Context A is cleaner and provides useful supporting functions (test and download) without the redundant truncated snippets found in Context B.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 3
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A is fully accurate, whereas System B hallucinates that the RequestsWrapper class is used to make network calls to the Groq LLM, when it is actually passed to the OpenAPIToolkit to handle the API requests defined in the specifications.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 3,
+                "correctness": 4,
+                "completeness": 5,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "How does the application determine when to execute the test generation loop",
+        "context_winner": "TIE",
+        "context_reasoning": "Both contexts provide the exact same critical information: the 'if __name__ == \"__main__\":' block in test_phase1.py which triggers the test_generation_loop.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A provides a more precise and focused answer regarding the trigger for execution, whereas System B conflates the trigger with the internal sequence of the function.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 4,
+                "completeness": 4,
+                "clarity": 4
+            }
+        }
+    },
+    {
+        "query": "What is the purpose of the test_synthesis_depth module within the server/sample_repository/server directory",
+        "context_winner": "TIE",
+        "context_reasoning": "Neither context contains any information or code related to the 'test_synthesis_depth' module.",
+        "context_scores": {
+            "A": {
+                "relevance": 0,
+                "completeness": 0,
+                "precision": 0
+            },
+            "B": {
+                "relevance": 0,
+                "completeness": 0,
+                "precision": 0
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A correctly identifies that the requested information is not present in the context, whereas System B hallucinates that the other provided test functions are related to 'synthesis depth'.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 1,
+                "correctness": 2,
+                "completeness": 3,
+                "clarity": 4
+            }
+        }
+    },
+    {
+        "query": "How can I verify that failed tasks are retried until exhausted in a workflow",
+        "context_winner": "A",
+        "context_reasoning": "Context A provides the full implementation of the retry logic in route_execution and the exhaustion check in get_exhausted_task_ids, whereas Context B contains mostly truncated snippets.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 2,
+                "precision": 4
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A correctly identifies the logic in route_execution and get_exhausted_task_ids that handles the retry/exhaustion process, whereas System B incorrectly claims the provided test case verifies exhaustion when it only verifies that a task remains pending after a single failure.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 4,
+                "clarity": 4
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 3,
+                "completeness": 3,
+                "clarity": 4
+            }
+        }
+    },
+    {
+        "query": "How can I parse a string to apply formatting such as bold, italic, and strikethrough in a React application?",
+        "context_winner": "A",
+        "context_reasoning": "Context A provides the full, unabbreviated implementation of the parseInline and renderMarkdown functions, whereas Context B provides only truncated snippets.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 3
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 1,
+                "precision": 4
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A correctly handles the return value of parseInline, which can be either a string or an array; System B attempts to .map() over the result, which would cause a runtime error if the function returns a string.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 2,
+                "completeness": 5,
+                "clarity": 4
+            }
+        }
+    },
+    {
+        "query": "How can I create a typewriter effect in a React application that displays text based on a specific speed and activation state?",
+        "context_winner": "TIE",
+        "context_reasoning": "Context A provides the full implementation of the hook and the component that uses it (including the cursor blink effect), whereas Context B truncates the component usage; however, Context A contains a significant amount of irrelevant CSS and unrelated code.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 2
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 3,
+                "precision": 3
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A provides a more comprehensive guide, including the cursor implementation found in the AssistantBubble component of the context, and a more practical code example.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 4,
+                "clarity": 4
+            }
+        }
+    },
+    {
+        "query": "What is the implementation of the ChatArea function in the Dashboard.jsx file?",
+        "context_winner": "B",
+        "context_reasoning": "Both contexts provide the full implementation of ChatArea, but Context B is more precise as it avoids including the entire Dashboard component and its extensive CSS styles.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 2
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A provided the exact code from the context, whereas System B omitted the symbol inside the 'chat-welcome-icon' div.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 4,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "How do we visually indicate that a user is typing in the chat interface?",
+        "context_winner": "A",
+        "context_reasoning": "Context A provides the full component logic, the state management in the Dashboard, and the critical CSS animations required to answer the query, whereas Context B is heavily truncated.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 3
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 2,
+                "precision": 4
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A correctly identifies that the TypingIndicator in the code is actually used for the assistant's loading state, whereas System B incorrectly claims it is used to indicate the user is typing.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 2,
+                "correctness": 2,
+                "completeness": 3,
+                "clarity": 4
+            }
+        }
+    },
+    {
+        "query": "What is the purpose of the _get_pending_task function in the executor module of our server's graph nodes package?",
+        "context_winner": "A",
+        "context_reasoning": "Context A provides the full implementation of the target function, the full implementation of the calling function (execute_task), and a complete test case, whereas Context B contains multiple truncated snippets.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 3,
+                "precision": 4
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A provides a more comprehensive and well-structured explanation, including a step-by-step breakdown of the function's logic and its role within the larger workflow.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 4,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "What does the build_initial_state function do in server/main.py",
+        "context_winner": "A",
+        "context_reasoning": "Context A provides the full function definition and the 'run' function that demonstrates how it is used, whereas Context B includes irrelevant frontend code and several truncated snippets.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 2
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A provides a detailed breakdown of the dictionary keys and their specific initial values, whereas System B only lists the keys.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 4,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "query": "What does the parse_scratchpad function in the scratchpad.py file do?",
+        "context_winner": "A",
+        "context_reasoning": "Both contexts provide the full implementation of the requested function, but Context A's additional code is more logically related to the scratchpad system, whereas Context B includes an entirely unrelated JSX file.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 3
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A provides a more detailed explanation, including a step-by-step breakdown and a helpful usage example, whereas System B is very brief.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 4
+            }
+        }
+    },
+    {
+        "query": "What role does the search.py module play in the agent-optimized web intelligence system?",
+        "context_winner": "TIE",
+        "context_reasoning": "Both contexts provide the exact function and docstring from search.py that explains its role in the system; Context A provides more full context of the surrounding system, while Context B is slightly more concise due to truncation.",
+        "context_scores": {
+            "A": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 3
+            },
+            "B": {
+                "relevance": 5,
+                "completeness": 5,
+                "precision": 4
+            }
+        },
+        "answer_winner": "A",
+        "answer_reasoning": "System A provides a better explanation of the module's role within the overall system by connecting it to the research tools and the synthesis process, whereas System B focuses primarily on the contents of the file.",
+        "answer_scores": {
+            "A": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 5,
+                "clarity": 5
+            },
+            "B": {
+                "faithfulness": 5,
+                "correctness": 5,
+                "completeness": 4,
+                "clarity": 5
+            }
+        }
+    },
+    {
+        "aggregate_context_scores": {
+            "A": {
+                "relevance": 4.8,
+                "completeness": 4.666666666666667,
+                "precision": 3.1666666666666665
+            },
+            "B": {
+                "relevance": 4.666666666666667,
+                "completeness": 3.4,
+                "precision": 3.2666666666666666
+            }
+        }
+    },
+    {
+        "aggregate_answer_scores": {
+            "A": {
+                "faithfulness": 4.9,
+                "correctness": 4.933333333333334,
+                "completeness": 4.833333333333333,
+                "clarity": 4.9
+            },
+            "B": {
+                "faithfulness": 4.533333333333333,
+                "correctness": 4.3,
+                "completeness": 4.3,
+                "clarity": 4.5
+            }
+        }
+    }
+]
