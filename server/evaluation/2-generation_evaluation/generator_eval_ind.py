@@ -80,6 +80,34 @@ def score_answer(query: str, context: str, answer: str) -> dict:
     }}"""
     return _call_judge(prompt)
 
+def aggregate_scores(models: list[str], gen_results: list[dict]) -> dict:
+    aggregated = {}
+
+    for model in models:
+        metric_totals = {metric: 0.0 for metric in SCORE_METRICS}
+        count = 0
+
+        for item in gen_results:
+            model_data = item.get(model)
+            if not isinstance(model_data, dict):
+                continue
+            scores = model_data.get("scores")
+            if not isinstance(scores, dict):
+                continue  # skip errored or missing scores
+
+            if all(metric in scores for metric in SCORE_METRICS):
+                for metric in SCORE_METRICS:
+                    metric_totals[metric] += scores[metric]
+                count += 1
+
+        if count == 0:
+            aggregated[model] = {"error": "No valid scores found"}
+            continue
+
+        avg_scores = {metric: round(metric_totals[metric] / count, 3) for metric in SCORE_METRICS}
+        aggregated[model] = avg_scores
+
+    return aggregated
 
 def run_scoring(models: list[str], results_filename: str) -> None:
     results_path = GENERATOR_EVALUATION_DIR / results_filename
@@ -131,6 +159,12 @@ def run_scoring(models: list[str], results_filename: str) -> None:
         print()
 
     print(f"Done. Results saved to: {results_filename}\n")
+    
+    print("Aggregating scores...")
+    aggregated = aggregate_scores(models, gen_results)
+    
+    for model, scores in aggregated.items():
+        print(f"{model}: {scores}")
 
 
 if __name__ == "__main__":

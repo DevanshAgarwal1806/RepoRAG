@@ -186,7 +186,12 @@
         "llama-3.3-70b-versatile": {
             "answer": "The implementation of the `print_scratchpad` function in `main.py` is as follows:\n\n```python\ndef print_scratchpad(scratchpad: list[str]) -> None:\n    print(\"\\n\u2500\u2500 Reflexion Scratchpad \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\")\n    for i, entry in enumerate(scratchpad, 1):\n        # Truncate long raw results so the terminal stays readable\n        display = entry if len(entry) < 200 else entry[:200] + \"...[truncated]\"\n        print(f\"  {i:02d}. {display}\")\n    print(\"\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\\n\")\n```\n\nThis function takes a list of strings (`scratchpad`) as input and prints it to the console in a formatted manner. It truncates any string longer than 200 characters to prevent the terminal from becoming too cluttered. The output includes a header, numbered entries, and a footer.",
             "generation_time_sec": "0.916146",
-            "scores": "ERROR \u2014 500 INTERNAL. {'error': {'code': 500, 'message': 'Internal error encountered.', 'status': 'INTERNAL'}}"
+            "scores": {
+                "faithfulness": 5,
+                "completeness": 5,
+                "correctness": 5,
+                "clarity": 5
+            }
         },
         "phi4-mini:3.8b": {
             "answer": "The `print_scratchpad` function in the provided context from main.py is implemented as follows:\n\n```python\ndef print_scratchpad(scratchpad: list[str]) -> None:\n    print(\"\\n\u2500\u2500 Reflexion Scratchpad \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\")\n    for i, entry in enumerate(scratchpad, 1):\n        # Truncate long raw results so the terminal stays readable\n        display = entry if len(entry) < 200 else entry[:200] + \"...[truncated]\"\n        print(f\"  {i:02d}. {display}\")\n    print(\"\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\\n\")\n```\n\nThis function takes a list of strings as input and prints them out in an organized format. Each string is prefixed with its index (formatted to have at least two digits), followed by the content itself, which may be truncated if it exceeds 200 characters for readability purposes.\n\nIf you need more details or further implementation specifics that are not included within this context, please let me know!",
@@ -211,7 +216,12 @@
         "gemma3:4b": {
             "answer": "The `print_scratchpad` function takes a list of strings called `scratchpad` as input and prints each string in the list to the console, along with a number indicating its position. If any string in the list is longer than 200 characters, it truncates the string to 200 characters and appends \"[truncated]\" to indicate that the string has been cut off. The function also prints a header and footer to the console.\n",
             "generation_time_sec": "4.328908",
-            "scores": "ERROR \u2014 500 INTERNAL. {'error': {'code': 500, 'message': 'Internal error encountered.', 'status': 'INTERNAL'}}"
+            "scores": {
+                "faithfulness": 5,
+                "completeness": 5,
+                "correctness": 5,
+                "clarity": 5
+            }
         }
     },
     {
