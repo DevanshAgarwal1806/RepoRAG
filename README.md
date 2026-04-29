@@ -27,13 +27,6 @@ If you want the API on a specific host/port:
 uvicorn server.app:app --reload --host 127.0.0.1 --port 8000
 ```
 
-## CLI Pipeline
-Ensure that the repository to query is in the same folder as the server folder.
-```bash
-python server/run_pipeline.py --repo <repo_path> --query <query> --rerun
-```
-To prevent reindexing each time the query is run, remove the `--rerun` flag.
-
 ## Note on Evaluation
 Gemini API key has been used for evaluation. If you want to execute the evaluation scripts, ensure that the `.env` file contains `GEMINI_API_KEY = <API-KEY>`
 
