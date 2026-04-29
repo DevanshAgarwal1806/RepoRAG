@@ -48,7 +48,8 @@ def generate_answers_from_models(
         results = []
         print("Building initial results structure from ground truth")
         for item in ground_truth:
-            actual_context = "### CODEBASE CONTEXT\n\n"
+            actual_context = f"### USER QUERY: {item.get('query', '')}\n\n"
+            actual_context += "### CODEBASE CONTEXT\n\n"
             if single_hop:
                 function = fn_map.get(item["node_id"])
                 actual_context += f"`{function.get('name', 'Unknown')}`\n\n"
@@ -110,14 +111,12 @@ if __name__ == "__main__":
     generate_answers_from_models("singlehop_ground_truth.json", fn_map, True, RESULTS_FILE, "qwen2.5-coder:3b", "ollama")
     generate_answers_from_models("singlehop_ground_truth.json", fn_map, True, RESULTS_FILE, "gemma3:4b", "ollama")
     
-    # generate_answers_from_models("singlehop_ground_truth.json", fn_map, True, RESULTS_FILE, "qwen2.5-coder:7b", "ollama")
-    # generate_answers_from_models("singlehop_ground_truth.json", fn_map, True, RESULTS_FILE, "mistral:7b", "ollama")
+    generate_answers_from_models("singlehop_ground_truth.json", fn_map, True, RESULTS_FILE, "llama-3.3-70b-versatile", "groq")
     
     RESULTS_FILE = "gen_results_multi.json"
 
-    generate_answers_from_models("multihop_ground_truth.json", fn_map, False, RESULTS_FILE, "phi4-mini", "ollama")
+    generate_answers_from_models("multihop_ground_truth.json", fn_map, False, RESULTS_FILE, "phi4-mini:3.8b", "ollama")
     generate_answers_from_models("multihop_ground_truth.json", fn_map, False, RESULTS_FILE, "qwen2.5-coder:3b", "ollama")
     generate_answers_from_models("multihop_ground_truth.json", fn_map, False, RESULTS_FILE, "gemma3:4b", "ollama")
     
-    # generate_answers_from_models("multihop_ground_truth.json", fn_map, True, RESULTS_FILE, "qwen2.5-coder:7b", "ollama")
-    # generate_answers_from_models("multihop_ground_truth.json", fn_map, True, RESULTS_FILE, "mistral:7b", "ollama")
+    generate_answers_from_models("multihop_ground_truth.json", fn_map, False, RESULTS_FILE, "llama-3.3-70b-versatile", "groq")

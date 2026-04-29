@@ -102,8 +102,11 @@ def run_scoring(models: list[str], results_filename: str) -> None:
                 continue
 
             if model_data.get("scores"):
-                print(f"  {model}: already scored, skipping")
-                continue
+                if isinstance(model_data.get("scores"), str) and model_data.get("scores").startswith("ERROR"):
+                     print(f"  {model}: previous error — {model_data['scores']}")
+                else:
+                    print(f"  {model}: already scored, skipping")
+                    continue
 
             answer = model_data.get("answer", "")
             if not answer:
@@ -114,6 +117,8 @@ def run_scoring(models: list[str], results_filename: str) -> None:
                 result = score_answer(query=query, context=context, answer=answer)
                 model_data["scores"] = result["scores"]
                 print(f"  {model}: {result['scores']}  | {result.get('reasoning', '')}")
+                with open(results_path, "w", encoding="utf-8") as f:
+                    json.dump(gen_results, f, indent=4)
             except Exception as e:
                 print(f"  ERROR scoring {model}: {e}")
                 model_data["scores"] = f"ERROR — {e}"
@@ -129,7 +134,7 @@ def run_scoring(models: list[str], results_filename: str) -> None:
 
 
 if __name__ == "__main__":
-    MODELS = ["gemma3:4b", "phi4-mini:3.8b", "qwen2.5-coder:3b"]
+    MODELS = ["gemma3:4b", "phi4-mini:3.8b", "qwen2.5-coder:3b", "llama-3.3-70b-versatile"]
 
-    for filename in ["rag_system_results_single.json", "rag_system_results_multi.json"]:
+    for filename in ["gen_results_single.json", "gen_results_multi.json"]:
         run_scoring(MODELS, filename)

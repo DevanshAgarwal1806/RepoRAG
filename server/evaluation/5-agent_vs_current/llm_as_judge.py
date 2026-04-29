@@ -11,7 +11,7 @@ SERVER_DIR = EVALUATION_DIR.parent
 GROUND_TRUTH_DIR = EVALUATION_DIR / "0-ground_truth_construction"
 DEFAULT_OUTPUT_DIR = SERVER_DIR / "sample_repository_output"
 COMPLETE_SYSTEM_EVALUATION_DIR = EVALUATION_DIR / "3-complete_system_evaluation"
-AGENTIC_SYSTEM_OUTPUT_DIR = EVALUATION_DIR / "4-agentic_ai_baseline"
+AGENTIC_SYSTEM_OUTPUT_DIR = EVALUATION_DIR / "4-agentic_rag_baseline"
 
 load_dotenv()
 
@@ -34,7 +34,7 @@ def _call_judge(prompt: str, expected_criteria: list[str]) -> dict:
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
             temperature=0.0,
-            max_output_tokens=1024,  # increased — scores need more tokens
+            max_output_tokens=1024,
         ),
     )
     output = json.loads(response.text)
@@ -54,8 +54,8 @@ def _call_judge(prompt: str, expected_criteria: list[str]) -> dict:
             if criterion not in scores[system]:
                 raise ValueError(f"Missing score '{criterion}' for system '{system}'")
             score = scores[system][criterion]
-            if not isinstance(score, (int, float)) or not (0 <= score <= 2):
-                raise ValueError(f"Score '{criterion}' for '{system}' must be 0-2, got: {score}")
+            if not isinstance(score, (int, float)) or not (0 <= score <= 5):
+                raise ValueError(f"Score '{criterion}' for '{system}' must be 0-5, got: {score}")
 
     return output
 
@@ -64,7 +64,7 @@ def judge_context_relevance(query: str, rag_context: str, agentic_context: str) 
     """
     Head-to-head: which system retrieved more relevant code snippets for the query?
     A = RAG system, B = Agentic system
-    Scores each system on relevance, completeness, precision (0-2 each).
+    Scores each system on relevance, completeness, precision (0-5 each).
     """
     prompt = f"""You are an expert code search evaluator. Your task is to judge which retrieved code context is MORE RELEVANT and USEFUL for answering the given user query.
 
@@ -77,10 +77,13 @@ def judge_context_relevance(query: str, rag_context: str, agentic_context: str) 
     --- Context B ---
     {agentic_context}
 
-    Score EACH system independently on all three criteria using this 0-2 scale:
-    0 = Poor   — Does not meet the criterion at all
-    1 = Partial — Partially meets the criterion
-    2 = Good   — Fully meets the criterion
+    Score EACH system independently on all three criteria using this 0-5 scale:
+    0 = Completely absent — criterion not met at all
+    1 = Minimal          — very weak signal, mostly irrelevant
+    2 = Poor             — some relevance but largely inadequate
+    3 = Partial          — meets the criterion to a moderate degree
+    4 = Good             — mostly meets the criterion with minor gaps
+    5 = Excellent        — fully and precisely meets the criterion
 
     Criteria definitions:
     relevance    — Does the context directly contain code related to the query?
@@ -88,20 +91,20 @@ def judge_context_relevance(query: str, rag_context: str, agentic_context: str) 
     precision    — Is the retrieved code focused with minimal noise/unrelated code?
 
     After scoring both systems, declare the overall winner based on total scores.
-    "If total scores are equal or differ by at most 1 (out of 6), declare a \"Tie\"."
+    If total scores are equal or differ by at most 2 (out of 15), declare a "Tie".
 
     Respond ONLY in this JSON format with no extra text:
     {{
     "scores": {{
         "A": {{
-        "relevance": <0|1|2>,
-        "completeness": <0|1|2>,
-        "precision": <0|1|2>
+        "relevance": <0|1|2|3|4|5>,
+        "completeness": <0|1|2|3|4|5>,
+        "precision": <0|1|2|3|4|5>
         }},
         "B": {{
-        "relevance": <0|1|2>,
-        "completeness": <0|1|2>,
-        "precision": <0|1|2>
+        "relevance": <0|1|2|3|4|5>,
+        "completeness": <0|1|2|3|4|5>,
+        "precision": <0|1|2|3|4|5>
         }}
     }},
     "winner": "<A | B | Tie>",
@@ -118,7 +121,7 @@ def judge_answer_quality(
     """
     Head-to-head: which system generated a better answer, grounded in its own retrieved context?
     A = RAG system, B = Agentic system
-    Scores each system on faithfulness, correctness, completeness, clarity (0-2 each).
+    Scores each system on faithfulness, correctness, completeness, clarity (0-5 each).
     """
     prompt = f"""You are an expert code reviewer. Your task is to judge which AI system produced a BETTER answer to the user query.
     Each system has its own retrieved code context and generated answer. Judge each answer ONLY against its own context — penalise any system that hallucinates logic not present in its retrieved code.
@@ -140,10 +143,13 @@ def judge_answer_quality(
     Generated Answer:
     {agentic_answer}
 
-    Score EACH system independently on all five criteria using this 0-2 scale:
-    0 = Poor    — Does not meet the criterion at all
-    1 = Partial — Partially meets the criterion
-    2 = Good    — Fully meets the criterion
+    Score EACH system independently on all four criteria using this 0-5 scale:
+    0 = Completely absent — criterion not met at all
+    1 = Minimal          — very weak signal, mostly irrelevant
+    2 = Poor             — some relevance but largely inadequate
+    3 = Partial          — meets the criterion to a moderate degree
+    4 = Good             — mostly meets the criterion with minor gaps
+    5 = Excellent        — fully and precisely meets the criterion
 
     Criteria definitions (evaluated in order of priority):
     faithfulness — Is the answer fully grounded in its own retrieved context with no hallucinations?
@@ -151,23 +157,23 @@ def judge_answer_quality(
     completeness — Does it fully address all parts of the query?
     clarity      — Is the explanation clear, structured, and easy to follow?
 
-    After scoring both systems, declare the overall winner based on total scores,
-    If total scores differ by at most 2 (out of 8), declare a \"Tie\".
+    After scoring both systems, declare the overall winner based on total scores.
+    If total scores differ by at most 3 (out of 20), declare a "Tie".
 
     Respond ONLY in this JSON format with no extra text:
     {{
     "scores": {{
         "A": {{
-        "faithfulness": <0|1|2>,
-        "correctness": <0|1|2>,
-        "completeness": <0|1|2>,
-        "clarity": <0|1|2>
+        "faithfulness": <0|1|2|3|4|5>,
+        "correctness": <0|1|2|3|4|5>,
+        "completeness": <0|1|2|3|4|5>,
+        "clarity": <0|1|2|3|4|5>
         }},
         "B": {{
-        "faithfulness": <0|1|2>,
-        "correctness": <0|1|2>,
-        "completeness": <0|1|2>,
-        "clarity": <0|1|2>
+        "faithfulness": <0|1|2|3|4|5>,
+        "correctness": <0|1|2|3|4|5>,
+        "completeness": <0|1|2|3|4|5>,
+        "clarity": <0|1|2|3|4|5>
         }}
     }},
     "winner": "<A | B | Tie>",
@@ -315,14 +321,13 @@ def aggregate_scores(comparison_results_filepath: str) -> None:
     comparison_results.append({"aggregate_context_scores": context_scores_dict})
     comparison_results.append({"aggregate_answer_scores": answer_scores_dict})
 
-    # FIX: write back to file
     with open(comparison_results_filepath, "w", encoding="utf-8") as f:
         json.dump(comparison_results, f, indent=4)
 
 if __name__ == "__main__":
     RESULTS_FILE = "comparison_results_multi.json"
     AGENTIC_SYSTEM_FILE = "agentic_rag_results_multi.json"
-    RAG_SYSTEM_FILE = "rag_system_results_multi.json"
+    RAG_SYSTEM_FILE = "rag_evaluation_results_multi.json"
 
     run_comparison(RESULTS_FILE, AGENTIC_SYSTEM_FILE, RAG_SYSTEM_FILE)
     print("Aggregating scores...")
@@ -330,7 +335,7 @@ if __name__ == "__main__":
 
     RESULTS_FILE = "comparison_results_single.json"
     AGENTIC_SYSTEM_FILE = "agentic_rag_results_single.json"
-    RAG_SYSTEM_FILE = "rag_system_results_single.json"
+    RAG_SYSTEM_FILE = "rag_evaluation_results_single.json"
 
     run_comparison(RESULTS_FILE, AGENTIC_SYSTEM_FILE, RAG_SYSTEM_FILE)
     print("Aggregating scores...")

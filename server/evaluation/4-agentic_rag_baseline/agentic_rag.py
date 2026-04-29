@@ -9,6 +9,13 @@ BASELINE_DIR = Path(__file__).resolve().parent
 SERVER_DIR = BASELINE_DIR.parent.parent
 if str(SERVER_DIR) not in sys.path:
     sys.path.insert(0, str(SERVER_DIR))
+    
+GROUND_TRUTH_DIR = SERVER_DIR / "evaluation" / "0-ground_truth_construction"
+SINGLEHOP_GROUND_TRUTH_PATH = GROUND_TRUTH_DIR / "singlehop_ground_truth.json"
+MULTIHOP_GROUND_TRUTH_PATH = GROUND_TRUTH_DIR / "multihop_ground_truth.json"
+SAMPLE_REPO_OUTPUT_DIR = SERVER_DIR / "sample_repository_output"
+AGENTIC_RAG_OUTPUT_PATH_SINGLEHOP = SERVER_DIR / "evaluation" / "4-agentic_rag_baseline" / "agentic_rag_results_single.json"
+AGENTIC_RAG_OUTPUT_PATH_MULTIHOP = SERVER_DIR / "evaluation" / "4-agentic_rag_baseline" / "agentic_rag_results_multi.json"
 
 for candidate in [SERVER_DIR / ".env"]:
     if candidate.exists():
@@ -339,43 +346,45 @@ def run_agentic_rag(query: str, output_dir: Path) -> dict:
             })
 
         steps += 1
+    
+    # After the while loop, set a default
+    generated_answer = ""
+    error_flag = None
 
-    # Force a final text answer if the loop ended on a tool result
     last = messages[-1]
     last_role = last.role if hasattr(last, "role") else last.get("role")
-    if last_role == "tool":
-        print("  Requesting final answer…")
-        messages.append({
-            "role": "user",
-            "content": (
-                "Based on all the code you have retrieved, provide a clear "
-                "and concise final answer to the original query."
-            ),
-        })
-        final = groq_client.chat.completions.create(
-            model=MODEL_NAME,
-            messages=messages,
-            temperature=0.2,
-            max_tokens=500,
-        )
-        generated_answer = final.choices[0].message.content
+
+    if response is None:
+        error_flag = "LLM failed after all retries"
+
+    elif last_role == "tool":
+        try:
+            final = groq_client.chat.completions.create(
+                model=MODEL_NAME,
+                messages=messages,
+                temperature=0.2,
+                max_tokens=500,
+            )
+            generated_answer = final.choices[0].message.content or ""
+        except Exception as e:
+            error_flag = f"Final answer generation failed: {str(e)}"
     else:
         generated_answer = (
             last.content if hasattr(last, "content") else last.get("content", "")
         ) or ""
-
+    
     print(f"  → Done in {steps} step(s). Context: {len(accumulated_context)} items.")
 
     return {
         "query": query,
         "retrieved_context": accumulated_context,
         "retrieved_context_str": _serialize_context(accumulated_context),
-        "generated_answer":  generated_answer,
+        "generated_answer": generated_answer,
+        "error": error_flag,
         "steps": steps,
     }
 
 def run_batch(
-    ground_truth_path: str,
     output_dir: str,
     results_path: str = "agentic_rag_results.json",
     query_key: str = "query",
@@ -384,56 +393,35 @@ def run_batch(
     Runs agentic RAG on every query in a ground-truth JSON file.
     Saves incrementally so it can resume if interrupted.
     """
-    with open(ground_truth_path, encoding="utf-8") as f:
-        ground_truth = json.load(f)
+    
+    num_results = 0
 
-    try:
-        with open(results_path, encoding="utf-8") as f:
-            results = json.load(f)
-        done = {r["query"] for r in results}
-        print(f"Resuming: {len(results)} already done.")
-    except (FileNotFoundError, json.JSONDecodeError):
-        results, done = [], set()
+    with open(results_path, encoding="utf-8") as f:
+        results = json.load(f)
 
-    out = Path(output_dir)
-    for idx, item in enumerate(ground_truth):
-        query = item.get(query_key, "")
-        if not query or query in done:
+    for idx, item in enumerate(results):
+        if item.get("retrieved_context") is not None or item.get("generated_answer") is not None:
+            num_results += 1
+            print(f"  SKIP [{idx+1}/{len(results)}] — already has results")
             continue
-        print(f"\n[{idx+1}/{len(ground_truth)}] {query[:70]}…")
+        query = item.get(query_key, "")
         try:
-            result = run_agentic_rag(query, out)
-            results.append(result)
-            with open(results_path, "w", encoding="utf-8") as f:
-                json.dump(results, f, indent=4)
+            result = run_agentic_rag(query, Path(output_dir))
+            if not result.get("error"):
+                results[idx]["retrieved_context"] = result["retrieved_context_str"]
+                results[idx]["generated_answer"] = result["generated_answer"]
+                results[idx]["steps"] = result["steps"]
+                with open(results_path, "w", encoding="utf-8") as f:
+                    json.dump(results, f, indent=4)
+                num_results += 1
+            else:
+                print(f"  ERROR in query [{idx+1}/{len(results)}]: {result['error']}")
         except Exception as e:
             print(f"  ERROR: {e}")
 
-    print(f"\nDone. {len(results)} results saved to {results_path}")
+    print(f"\nDone. {num_results} results saved to {results_path}")
     return results
 
 if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Agentic RAG Baseline")
-    sub = parser.add_subparsers(dest="cmd")
-
-    single = sub.add_parser("query", help="Run a single query")
-    single.add_argument("--output", "-o", required=True)
-    single.add_argument("--query",  "-q", required=True)
-
-    batch = sub.add_parser("batch", help="Run all queries from a ground-truth file")
-    batch.add_argument("--ground-truth", "-g", required=True)
-    batch.add_argument("--output",       "-o", required=True)
-    batch.add_argument("--results",      "-r", default="agentic_rag_results.json")
-
-    args = parser.parse_args()
-
-    if args.cmd == "query":
-        r = run_agentic_rag(args.query, Path(args.output))
-        print("\n--- Answer ---")
-        print(r["generated_answer"])
-    elif args.cmd == "batch":
-        run_batch(args.ground_truth, args.output, args.results)
-    else:
-        parser.print_help()
+    run_batch(str(SAMPLE_REPO_OUTPUT_DIR), str(AGENTIC_RAG_OUTPUT_PATH_SINGLEHOP))
+    run_batch(str(SAMPLE_REPO_OUTPUT_DIR), str(AGENTIC_RAG_OUTPUT_PATH_MULTIHOP))
