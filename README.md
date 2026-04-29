@@ -11,7 +11,7 @@ npm run dev
 The Vite dev server proxies `/api` requests to `http://127.0.0.1:8000`.
 
 ## Run Backend
-Ensure that a local python environment is setup to execute the commands below. Also ensure that `ollama` is installed and running.
+Ensure that a local python environment is setup and is running Python 3.10 to execute the commands below. Also ensure that `ollama` is installed and running.
 
 The system uses GROQ API key. Create a `.env` file in the server folder and format it as `GROQ_API_KEY = <API-KEY>`
 
