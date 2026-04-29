@@ -77,7 +77,7 @@ def generate_rag_answer(
 
     elif provider == "groq":
         load_dotenv(dotenv_path=env_path)
-        api_key = os.getenv("ANSWER_GENERATION_LLM_KEY") 
+        api_key = os.getenv("GROQ_API_KEY") 
         
         if not api_key or not api_key.startswith("gsk_"):
             raise ValueError("Valid Groq API Key (starting with 'gsk_') not found in server/.env.")

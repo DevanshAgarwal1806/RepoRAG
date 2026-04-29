@@ -19,7 +19,7 @@ for candidate in [SERVER_DIR / ".env"]:
         break
 
 client = OpenAI(
-    api_key=os.getenv("GROQ_API_KEY2"),
+    api_key=os.getenv("GROQ_API_KEY"),
     base_url="https://api.groq.com/openai/v1",
 )
 

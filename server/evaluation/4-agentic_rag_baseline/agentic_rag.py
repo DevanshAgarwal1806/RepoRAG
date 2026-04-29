@@ -34,7 +34,7 @@ TOP_K = 5 # results returned per hybrid_search call
 MIN_WEIGHT = 0.4 # graph edge weight threshold (matches graph_context defaults)
 MODEL_NAME = "llama-3.3-70b-versatile"
 
-groq_client = Groq(api_key=os.getenv("ANSWER_GENERATION_LLM_KEY"))
+groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 def _serialize_context(ctx: list[dict]) -> str:
     parts = []

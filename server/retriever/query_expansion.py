@@ -9,7 +9,7 @@ load_dotenv(dotenv_path=ENV_PATH)
 
 
 def get_client() -> OpenAI | None:
-    api_key = os.environ.get("QUERY_EXPANSION_LLM_KEY")
+    api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
         return None
 
